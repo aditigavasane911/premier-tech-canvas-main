@@ -503,3 +503,84 @@
   letter-spacing: 0.02em;
 }
 
+/* ─── COURSE CARD ENTRANCE ANIMATION ─────────────────────────── */
+/*
+ * One-time horizontal SLIDE FROM RIGHT entrance, triggered by IntersectionObserver.
+ * Cards start off-screen to the right, scaled down and transparent.
+ * .course-card-visible is added once (observer disconnects immediately after).
+ * animationDelay set inline per card creates the stagger.
+ * onAnimationEnd in React resets animation so surface-card hover works cleanly.
+ */
+@keyframes card-pop {
+  from {
+    opacity: 0;
+    transform: translateX(-90px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.course-card-enter {
+  opacity: 0;
+  transform: translateX(-90px) scale(0.92);
+}
+
+.course-card-enter.course-card-visible {
+  animation: card-pop 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ─── COURSES HORIZONTAL SCROLL LAYOUT ───────────────────────── */
+
+/* Outer wrapper — left + right edge fade masks like the reference */
+.courses-scroll-wrapper {
+  position: relative;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 5%,
+    black 95%,
+    transparent 100%
+  );
+}
+
+/* The scrollable flex track — hides scrollbar across all browsers */
+.courses-scroll-track {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  padding: 1rem 5vw 1.5rem;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.courses-scroll-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* Individual card — fixed width + identical exact height for uniformity */
+.courses-card {
+  flex-shrink: 0;
+  width: 260px;
+  height: 420px;
+  scroll-snap-align: start;
+}
+
+@media (min-width: 640px) {
+  .courses-card {
+    width: 280px;
+    height: 440px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .courses-card {
+    width: 300px;
+    height: 460px;
+  }
+  .courses-scroll-track {
+    padding-inline: 8vw;
+  }
+}
