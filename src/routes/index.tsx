@@ -1,5 +1,5 @@
-﻿import { createFileRoute } from "@tanstack/react-router";
-import { useState, useEffect, useRef } from "react";
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useEffect, useRef, Fragment } from "react";
 import {
   Users,
   Star,
@@ -187,10 +187,10 @@ function StatsSection() {
       <div className="stat-section-inner">
         <div className="stat-row">
           {STATS.map((s, i) => (
-            <>
-              <StatItem key={s.title} {...s} index={i} started={started} />
-              {i < STATS.length - 1 && <div className="stat-divider" key={`div-${i}`} />}
-            </>
+            <Fragment key={s.title}>
+              <StatItem {...s} index={i} started={started} />
+              {i < STATS.length - 1 && <div className="stat-divider" />}
+            </Fragment>
           ))}
         </div>
       </div>
