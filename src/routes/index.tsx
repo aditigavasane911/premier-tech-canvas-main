@@ -222,20 +222,44 @@ const COURSE_LIST = [
 
 const FAQS = [
   {
-    q: "Do you provide placement assistance after the course?",
-    a: "Yes. Every student gets resume reviews, mock interviews and direct referrals to our hiring partners until placed.",
+    q: "What does Softtech Solutions & Training do?",
+    a: "We work across two areas — building Manufacturing Execution Systems (MES) for manufacturing companies, and training students and developers in programming languages and modern frameworks.",
   },
   {
-    q: "Are the classes online or offline?",
-    a: "Both. You can join our classroom batches or attend the same live sessions online with recordings available.",
+    q: "What is a Manufacturing Execution System, and why does a company need one?",
+    a: "An MES connects the shop floor to the rest of the business — tracking production, quality, and traceability in real time. It helps manufacturers catch problems early, reduce downtime, and keep accurate records instead of relying on manual processes.",
   },
   {
-    q: "Do beginners with no coding background fit here?",
-    a: "Absolutely. Every track starts from programming fundamentals before moving into frameworks and live projects.",
+    q: "Which industries do you have experience in?",
+    a: "Our MES work comes primarily from the automotive sector, including projects for companies like Fiat India and Volvo-Eicher. The same design principles apply to most other manufacturing environments as well.",
   },
   {
-    q: "Will I work on real projects?",
-    a: "Each learner ships at least two production-style projects with code reviews from working industry mentors.",
+    q: "Do you build custom MES solutions, or only work with existing systems?",
+    a: "Both. We design systems from the ground up where needed, and we also customize, extend, or integrate existing MES, ERP, SCADA, and PLC setups.",
+  },
+  {
+    q: "What courses do you offer?",
+    a: "We teach Core and Advanced Java, Python, C, C++, AWS, Vaadin, Spring, and full-stack web development, along with the tools and practices used alongside them in real projects.",
+  },
+  {
+    q: "Do I need prior coding experience to join a course?",
+    a: "No. Courses are structured for different starting points — some build fundamentals from scratch, others are meant for developers adding a specific skill.",
+  },
+  {
+    q: "Are the sessions hands-on, or mostly lectures?",
+    a: "Hands-on. Each course is built around practical exercises and real project work, not theory alone.",
+  },
+  {
+    q: "Who conducts the training?",
+    a: "Training is led by our founder, Ravindra Swami, who brings both industry and classroom experience — years as a working software engineer, alongside time as a lecturer and Head of Department, teaching at engineering colleges across Pandharpur, Solapur, Akluj, and Barshi.",
+  },
+  {
+    q: "Do you provide support after an MES project is delivered?",
+    a: "Yes. Support continues after go-live — including production support, maintenance, troubleshooting, and training for the client's own staff.",
+  },
+  {
+    q: "How can I get in touch to learn more or enroll?",
+    a: "You can reach us using the contact details on this website, and we'll help you find the right course or service for what you need.",
   },
 ];
 
@@ -247,24 +271,108 @@ const AWARDS = [
   "Skill Partner of the Year",
 ];
 
+const TESTIMONIALS_PER_PAGE = 5;
+
 const TESTIMONIALS = [
   {
-    quote:
-      "The Java track was brutally practical. I built two full applications and cleared my first interview within weeks.",
-    name: "Sneha Patil",
-    role: "Software Engineer, Pune",
+    quote: "Before this C workshop, pointers haunted my dreams. But the instructor's simple, clear examples turned that fear into confidence—I was coding on my own by day two!",
+    name: "Rohit Sable",
+    role: "TE Computer Engineering",
   },
   {
-    quote:
-      "Mentors reviewed my code line by line. That habit is the reason I passed the technical rounds so comfortably.",
-    name: "Rohit Kulkarni",
-    role: "MERN Developer, Bengaluru",
+    quote: "I always found ES6 features confusing until we saw side-by-side code comparisons. It instantly clicked, and now I write modern JavaScript with ease.",
+    name: "Snehal Rane",
+    role: "TE IT",
   },
   {
-    quote:
-      "I came from a non-IT degree. The fundamentals were explained patiently and placement support never stopped.",
-    name: "Aditi Sharma",
-    role: "Cloud Associate, Hyderabad",
+    quote: "Teaching Java collections with patience and answering every question without judgment made this session truly stand out for our beginners.",
+    name: "Prof. Anil Deshpande",
+    role: "Java Faculty",
+  },
+  {
+    quote: "The Spring Boot microservices workshop was a game-changer. Breaking down the architecture into digestible pieces helped students grasp JPA queries in no time.",
+    name: "Ms. Meera Joshi",
+    role: "Backend Trainer",
+  },
+  {
+    quote: "I had zero Python knowledge coming in but left able to build backend logic. That kind of transformation speaks volumes about the workshop's quality.",
+    name: "Suraj Gaikwad",
+    role: "First Year, E&TC",
+  },
+  {
+    quote: "Seeing how OOP concepts map directly onto real-world DSA problems made this C++ session memorable. It's not just syntax; it's thinking like a programmer.",
+    name: "Sanika Kulkarni",
+    role: "TE IT",
+  },
+  {
+    quote: "As a non-CS student, I worried I'd fall behind, but the step-by-step pace and immediate hands-on tasks kept me engaged throughout.",
+    name: "Ankita Ghorpade",
+    role: "First Year, IT",
+  },
+  {
+    quote: "Students often get overwhelmed by Servlets and JSP in textbooks, but this workshop made those topics practical and approachable.",
+    name: "Nikhil Pawar",
+    role: "BE Computer Engineering",
+  },
+  {
+    quote: "The way the React hooks were demystified here completely changed my approach. I now understand what's going on under the hood instead of copy-pasting blindly.",
+    name: "Aditya Shinde",
+    role: "SE Computer",
+  },
+  {
+    quote: "I've seen many PHP sessions, but this one clarified SQL joins with real examples that stuck with me. Very practical and useful for our projects.",
+    name: "Komal Deshpande",
+    role: "TE Computer Engineering",
+  },
+  {
+    quote: "Breaking down Docker and containers into simple, relatable steps transformed my understanding from mystery to clarity. This session sparked my interest in DevOps careers.",
+    name: "Rahul Bansode",
+    role: "BE Computer Engineering",
+  },
+  {
+    quote: "The workshop on Cloud Computing didn't just show slides—it gave us hands-on experience with EC2 and S3, which is exactly what the industry demands today.",
+    name: "Tejas Kale",
+    role: "BE Computer Engineering",
+  },
+  {
+    quote: "The hands-on approach during the responsive Bootstrap session helped me build attractive, functional pages quickly without drowning in CSS.",
+    name: "Rutuja Salunkhe",
+    role: "First Year Computer Engineering",
+  },
+  {
+    quote: "I always thought MongoDB was a completely different beast compared to SQL, but this workshop made NoSQL accessible and even enjoyable.",
+    name: "Ruchita Kadam",
+    role: "BE IT",
+  },
+  {
+    quote: "One of the best workshops I've experienced—REST APIs finally made sense, not just in theory but through clear, practical examples.",
+    name: "Yash Kadam",
+    role: "BE Computer Engineering",
+  },
+  {
+    quote: "The DOM manipulation exercises were super practical—we didn't just watch slides; we built things on the spot, which made learning stick.",
+    name: "Aniket Shelar",
+    role: "SE Computer Engineering",
+  },
+  {
+    quote: "Our instructor's ability to connect OOP principles to solving real DSA problems makes complex concepts feel natural and intuitive.",
+    name: "Prof. Kavita Sharma",
+    role: "Computer Science Faculty",
+  },
+  {
+    quote: "This workshop was a perfect introduction for beginners who thought CSS and Flexbox were puzzles. By the end, I was confident in making layouts.",
+    name: "Kiran Bhagat",
+    role: "First Year Mechanical Engineering",
+  },
+  {
+    quote: "Explaining TypeScript's interfaces and types using everyday analogies helped me grasp this advanced topic without feeling overwhelmed.",
+    name: "Ishwari Kolhe",
+    role: "BE Computer Engineering",
+  },
+  {
+    quote: "It's rare to find a cloud session that's both relevant and practical. After this, I updated my resume with AWS skills I actually understand.",
+    name: "Sakshi Jagtap",
+    role: "TE Computer",
   },
 ];
 
@@ -273,6 +381,15 @@ function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showAllCourses, setShowAllCourses] = useState(false);
   const [showCallbackModal, setShowCallbackModal] = useState(false);
+  const [testimonialPage, setTestimonialPage] = useState(0);
+  const totalPages = Math.ceil(TESTIMONIALS.length / TESTIMONIALS_PER_PAGE);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTestimonialPage((p) => (p + 1) % totalPages);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [totalPages]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -385,16 +502,34 @@ function Home() {
               <span className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary">
                 Who we are
               </span>
-              <h2 className="mt-4 font-display text-3xl leading-[1.12] text-primary sm:text-4xl lg:text-5xl">
-                Building skills. <span className="text-gradient">Creating opportunities.</span>
-              </h2>
-              <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
-                We are a dedicated training studio focused on transforming beginners into job-ready professionals. We offer comprehensive, mentor-led courses in modern technologies, hands-on experience with real-world projects, and dedicated placement support to help you launch a successful career in tech.
-              </p>
 
-              <div className="mt-8">
-                <p className="font-display text-xl font-semibold text-primary">Ravindra Swami</p>
-                <p className="mt-1 text-sm text-muted-foreground">Founder</p>
+              <div className="mt-8 flex flex-col gap-7 max-w-xl">
+                <div>
+                  <p className="text-base leading-relaxed text-muted-foreground italic text-center">
+                    <span className="text-3xl font-bold text-secondary leading-none mr-1">&ldquo;</span>
+                    <span className="font-semibold not-italic text-foreground underline">Softtech</span>{" "}
+                    Solutions &amp; Training, based in Pune, builds Manufacturing Execution Systems (MES) for manufacturing environments, including automotive production lines, and trains students and developers in Java, Python, AWS,{" "}
+                    <span className="underline">Vaadin</span>, Spring, and full-stack web development.
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-base leading-relaxed text-muted-foreground italic text-center">
+                    Ravindra Swami, whose background spans MES engineering at companies like{" "}
+                    <span className="font-semibold not-italic text-foreground">Fiat India</span> and{" "}
+                    <span className="font-semibold not-italic text-foreground">Volvo-Eicher</span>, and academic teaching as a lecturer and Head of Department, the company brings both worlds into every project and course.
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-10 text-right">
+                <p
+                  className="text-2xl text-primary"
+                  style={{ fontFamily: "'Georgia', 'Times New Roman', serif", fontStyle: "italic", fontWeight: 600 }}
+                >
+                  &mdash; Ravindra Swami
+                </p>
+                <p className="mt-1 text-sm font-medium text-muted-foreground">Founder</p>
               </div>
             </div>
           </div>
@@ -507,16 +642,47 @@ function Home() {
         <section id="feedback" className="border-y border-border bg-muted/40 py-24 lg:py-32">
           <div className="mx-auto w-full max-w-screen-2xl px-5 lg:px-12">
             <h2 className="text-center font-display text-3xl text-primary sm:text-4xl">Student Feedback</h2>
-            <div className="mt-9 grid gap-5 md:grid-cols-3">
-              {TESTIMONIALS.map((t) => (
-                <figure key={t.name} className="surface-card p-7">
+            <p className="mx-auto mt-2 max-w-xl text-center text-sm text-muted-foreground">
+              What students and faculty say about our workshops.
+            </p>
+
+            {/* Animated card grid */}
+            <div
+              key={testimonialPage}
+              className="mt-10 flex flex-wrap justify-center gap-5"
+            >
+              {TESTIMONIALS.slice(
+                testimonialPage * TESTIMONIALS_PER_PAGE,
+                (testimonialPage + 1) * TESTIMONIALS_PER_PAGE
+              ).map((t, idx) => (
+                <figure
+                  key={t.name}
+                  className="feedback-card-animate surface-card flex w-full flex-col items-center p-7 text-center sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)]"
+                  style={{ animationDelay: `${idx * 80}ms` }}
+                >
+                  {/* Quote icon */}
                   <Quote className="h-7 w-7 text-secondary" />
-                  <blockquote className="mt-4 text-sm leading-relaxed text-muted-foreground">{t.quote}</blockquote>
-                  <figcaption className="mt-6 flex items-center gap-3">
-                    <span className="grid h-10 w-10 place-items-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+
+                  {/* Quote text */}
+                  <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-muted-foreground">
+                    {t.quote}
+                  </blockquote>
+
+                  {/* 5-star rating */}
+                  <div className="mt-4 flex items-center justify-center gap-0.5" aria-label="5 out of 5 stars">
+                    {[1,2,3,4,5].map((s) => (
+                      <svg key={s} className="h-4 w-4 fill-amber-400 text-amber-400" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+
+                  {/* Author */}
+                  <figcaption className="mt-5 flex items-center justify-center gap-3">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
                       {t.name.charAt(0)}
                     </span>
-                    <span>
+                    <span className="text-left">
                       <span className="block text-sm font-semibold text-foreground">{t.name}</span>
                       <span className="block text-xs text-muted-foreground">{t.role}</span>
                     </span>
@@ -524,11 +690,39 @@ function Home() {
                 </figure>
               ))}
             </div>
+
+            {/* Progress bar + dots */}
+            <div className="mt-8 flex flex-col items-center gap-3">
+              {/* Thin progress bar */}
+              <div className="h-0.5 w-48 overflow-hidden rounded-full bg-border">
+                <div
+                  key={`prog-${testimonialPage}`}
+                  className="feedback-progress-bar h-full rounded-full bg-secondary"
+                  style={{ animationDuration: "5s" }}
+                />
+              </div>
+              {/* Dot indicators */}
+              <div className="flex items-center gap-2">
+                {Array.from({ length: totalPages }).map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    aria-label={`Go to feedback page ${i + 1}`}
+                    onClick={() => setTestimonialPage(i)}
+                    className={`h-2 rounded-full transition-all duration-500 ${
+                      i === testimonialPage
+                        ? "w-6 bg-secondary"
+                        : "w-2 bg-border hover:bg-muted-foreground"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
         {/* FAQ */}
-        <section id="faqs" className="mx-auto max-w-3xl px-5 py-24 lg:px-8 lg:py-32">
+        <section id="faqs" className="mx-auto max-w-5xl px-5 py-24 lg:px-8 lg:py-32">
           <h2 className="text-center font-display text-3xl text-primary sm:text-4xl">FAQs</h2>
           <div className="mt-8 space-y-3">
             {FAQS.map((f, i) => {
