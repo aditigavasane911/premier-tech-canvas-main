@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+﻿import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef } from "react";
 import {
   Users,
@@ -202,22 +202,246 @@ function StatsSection() {
 const DEVICON = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/";
 
 const COURSE_LIST = [
-  { name: "C Fundamentals", level: "Beginner", icon: "c/c-original.svg", teaches: ["Basics", "Pointers", "Arrays", "File I/O"] },
-  { name: "DSA using C++", level: "Intermediate", icon: "cplusplus/cplusplus-original.svg", teaches: ["OOP", "STL", "Inheritance", "Templates"] },
-  { name: "Core Java Fundamentals", level: "Beginner", icon: "java/java-original.svg", teaches: ["OOP", "Collections", "Multithreading", "JDBC"] },
-  { name: "Advanced Java for Enterprise", level: "Advanced", icon: "java/java-original.svg", teaches: ["Servlets", "JSP", "Hibernate", "Spring Core"] },
-  { name: "Spring Boot Microservices", level: "Advanced", icon: "spring/spring-original.svg", teaches: ["REST APIs", "JPA", "Security", "Microservices"] },
-  { name: "Frontend with React", level: "Intermediate", icon: "react/react-original.svg", teaches: ["Components", "Hooks", "Redux", "Routing"] },
-  { name: "Python for Backend", level: "Beginner to Intermediate", icon: "python/python-original.svg", teaches: ["Basics", "OOP", "NumPy", "Pandas"] },
-  { name: "Cloud Computing with AWS", level: "Intermediate", icon: "amazonwebservices/amazonwebservices-original-wordmark.svg", teaches: ["EC2", "S3", "Lambda", "RDS"] },
-  { name: "Web Design (HTML5 & CSS3)", level: "Beginner", icon: "html5/html5-original.svg", teaches: ["Semantic HTML", "Flexbox", "Grid", "Responsive"] },
-  { name: "Modern JavaScript (ES6+)", level: "Intermediate", icon: "javascript/javascript-original.svg", teaches: ["ES6+", "DOM", "Async", "Events"] },
-  { name: "Responsive UI with Bootstrap", level: "Beginner", icon: "bootstrap/bootstrap-original.svg", teaches: ["Grid", "Components", "Utilities", "Theming"] },
-  { name: "Backend with PHP & MySQL", level: "Intermediate", icon: "php/php-original.svg", teaches: ["PHP Basics", "SQL", "CRUD", "Sessions"] },
-  { name: "Backend with Node.js", level: "Intermediate", icon: "nodejs/nodejs-original.svg", teaches: ["Express", "APIs", "Middleware", "MongoDB"] },
-  { name: "Database Design with MongoDB", level: "Intermediate", icon: "mongodb/mongodb-original.svg", teaches: ["Documents", "Aggregation", "Indexing", "Atlas"] },
-  { name: "Type-Safe Code with TypeScript", level: "Advanced", icon: "typescript/typescript-original.svg", teaches: ["Types", "Interfaces", "Generics", "Decorators"] },
-  { name: "DevOps Basics with Docker", level: "Advanced", icon: "docker/docker-original.svg", teaches: ["Containers", "Images", "Compose", "Volumes"] },
+  {
+    name: "C Fundamentals",
+    level: "Beginner",
+    icon: "c/c-original.svg",
+    bg: "linear-gradient(145deg,#0d2137 0%,#0e3460 60%,#1a5276 100%)",
+    teaches: ["Basics", "Pointers", "Arrays", "File I/O"],
+    duration: "4–6 weeks",
+    description:
+      "Build a rock-solid programming foundation with C — the language behind operating systems, embedded systems and high-performance software. You'll learn procedural programming, pointers and memory management from the ground up.",
+    topicsFull: ["Variables & Data Types", "Operators & Control Flow", "Functions & Recursion", "Pointers & Memory Addresses", "Arrays & Strings", "Structures & Unions", "File I/O Operations"],
+    skills: ["Procedural Programming", "Memory Management", "Low-Level Thinking", "Debugging with GCC"],
+    prerequisites: "None — suitable for absolute beginners",
+    mode: "Online & Offline",
+    fee: "Contact Us",
+  },
+  {
+    name: "DSA using C++",
+    level: "Intermediate",
+    icon: "cplusplus/cplusplus-original.svg",
+    bg: "linear-gradient(145deg,#1a0533 0%,#3b0764 60%,#5b21b6 100%)",
+    teaches: ["OOP", "STL", "Inheritance", "Templates"],
+    duration: "8–10 weeks",
+    description:
+      "Master data structures and algorithms using C++ — the language favoured in competitive programming and system design interviews. Covers STL, OOP and template programming.",
+    topicsFull: ["OOP Concepts", "STL Containers & Algorithms", "Sorting & Searching", "Linked Lists, Trees, Graphs", "Inheritance & Polymorphism", "Templates & Generic Programming", "Time & Space Complexity"],
+    skills: ["OOP Design", "Problem Solving", "Competitive Programming", "STL Proficiency"],
+    prerequisites: "Basic programming knowledge (C or equivalent)",
+    mode: "Online & Offline",
+    fee: "Contact Us",
+  },
+  {
+    name: "Core Java Fundamentals",
+    level: "Beginner",
+    icon: "java/java-original.svg",
+    bg: "linear-gradient(145deg,#7c2400 0%,#b93e00 60%,#f97316 100%)",
+    teaches: ["OOP", "Collections", "Multithreading", "JDBC"],
+    duration: "8 weeks",
+    description:
+      "Start your Java journey with solid fundamentals — OOP principles, Collections, exception handling, multithreading and JDBC database connectivity. Build real console and GUI-based applications.",
+    topicsFull: ["OOP Principles (Encapsulation, Inheritance, Polymorphism, Abstraction)", "Collections Framework", "Exception Handling", "Multithreading & Concurrency", "JDBC & Database Connectivity", "Java I/O Streams", "Generics & Lambda Expressions"],
+    skills: ["Object-Oriented Design", "Database Integration", "Concurrent Programming", "Java SE"],
+    prerequisites: "None — beginners welcome",
+    mode: "Online & Offline",
+    fee: "Contact Us",
+  },
+  {
+    name: "Advanced Java for Enterprise",
+    level: "Advanced",
+    icon: "java/java-original.svg",
+    bg: "linear-gradient(145deg,#431407 0%,#7c2d12 55%,#c2410c 100%)",
+    teaches: ["Servlets", "JSP", "Hibernate", "Spring Core"],
+    duration: "10 weeks",
+    description:
+      "Move into enterprise-grade Java development with Servlets, JSP, Hibernate ORM and Spring Core. Build multi-tier web applications with proper MVC architecture and database persistence.",
+    topicsFull: ["Servlets & JSP", "MVC Architecture", "Hibernate ORM", "Spring Core & DI", "Spring MVC", "JPA & Entity Mapping", "Connection Pooling"],
+    skills: ["Enterprise Java Development", "ORM & Database Persistence", "Spring Framework", "Web Application Architecture"],
+    prerequisites: "Core Java Fundamentals",
+    mode: "Online & Offline",
+    fee: "Contact Us",
+  },
+  {
+    name: "Spring Boot Microservices",
+    level: "Advanced",
+    icon: "spring/spring-original.svg",
+    bg: "linear-gradient(145deg,#052e16 0%,#14532d 55%,#15803d 100%)",
+    teaches: ["REST APIs", "JPA", "Security", "Microservices"],
+    duration: "12 weeks",
+    description:
+      "Build production-ready microservices with Spring Boot — the most in-demand Java framework. Learn REST API design, JPA data access, Spring Security and cloud-native microservice patterns.",
+    topicsFull: ["Spring Boot Setup & Auto-Configuration", "RESTful API Design", "Spring Data JPA", "Spring Security & JWT", "Microservices Architecture", "Service Discovery & API Gateway", "Docker & Deployment"],
+    skills: ["REST API Development", "Microservices Design", "Spring Security", "Cloud Deployment"],
+    prerequisites: "Advanced Java or equivalent experience",
+    mode: "Online & Offline",
+    fee: "Contact Us",
+  },
+  {
+    name: "Frontend with React",
+    level: "Intermediate",
+    icon: "react/react-original.svg",
+    bg: "linear-gradient(145deg,#082f49 0%,#075985 55%,#0ea5e9 100%)",
+    teaches: ["Components", "Hooks", "Redux", "Routing"],
+    duration: "10 weeks",
+    description:
+      "Build modern, dynamic user interfaces with React — the most widely used front-end library. From components and hooks to Redux state management and React Router, you'll ship real-world SPAs.",
+    topicsFull: ["JSX & Component Architecture", "Props, State & Lifecycle", "React Hooks (useState, useEffect, useContext)", "React Router", "Redux & Redux Toolkit", "API Integration & Fetch", "Performance Optimisation"],
+    skills: ["SPA Development", "State Management", "Component Design", "API Integration"],
+    prerequisites: "HTML, CSS and JavaScript basics",
+    mode: "Online & Offline",
+    fee: "Contact Us",
+  },
+  {
+    name: "Python for Backend",
+    level: "Beginner to Intermediate",
+    icon: "python/python-original.svg",
+    bg: "linear-gradient(145deg,#1e3a5f 0%,#1d4ed8 55%,#f59e0b 100%)",
+    teaches: ["Basics", "OOP", "NumPy", "Pandas"],
+    duration: "8 weeks",
+    description:
+      "Learn Python from scratch and progress to backend development, data manipulation with NumPy & Pandas, and building web APIs. An excellent first language that scales to professional use.",
+    topicsFull: ["Python Syntax & Data Types", "Control Flow & Functions", "OOP in Python", "File Handling & Modules", "NumPy & Pandas", "REST APIs with Flask / FastAPI", "Database Integration"],
+    skills: ["Python Programming", "Data Manipulation", "Backend API Development", "OOP"],
+    prerequisites: "None — beginners welcome",
+    mode: "Online & Offline",
+    fee: "Contact Us",
+  },
+  {
+    name: "Cloud Computing with AWS",
+    level: "Intermediate",
+    icon: "amazonwebservices/amazonwebservices-original-wordmark.svg",
+    bg: "linear-gradient(145deg,#1c1917 0%,#292524 55%,#ff9900 100%)",
+    teaches: ["EC2", "S3", "Lambda", "RDS"],
+    duration: "8 weeks",
+    description:
+      "Learn to design, deploy and manage cloud infrastructure on AWS — the world's leading cloud platform. Covers core services, serverless architecture and managed databases for real-world workloads.",
+    topicsFull: ["AWS Core Services (EC2, S3, VPC)", "IAM & Security", "RDS & DynamoDB", "Lambda & Serverless", "Load Balancing & Auto Scaling", "CloudFront & Route 53", "Deployment Pipelines"],
+    skills: ["Cloud Architecture", "AWS Core Services", "Serverless Development", "Cloud Security"],
+    prerequisites: "Basic networking and Linux knowledge recommended",
+    mode: "Online & Offline",
+    fee: "Contact Us",
+  },
+  {
+    name: "Web Design (HTML5 & CSS3)",
+    level: "Beginner",
+    icon: "html5/html5-original.svg",
+    bg: "linear-gradient(145deg,#7c1d1d 0%,#b91c1c 55%,#e4713a 100%)",
+    teaches: ["Semantic HTML", "Flexbox", "Grid", "Responsive"],
+    duration: "4 weeks",
+    description:
+      "Master HTML5 and CSS3 to build beautiful, responsive websites from scratch. You'll learn semantic markup, Flexbox, CSS Grid, animations and mobile-first design principles.",
+    topicsFull: ["HTML5 Semantic Elements", "CSS Selectors & Box Model", "Flexbox Layout", "CSS Grid", "Responsive Design & Media Queries", "CSS Animations & Transitions", "Forms & Accessibility"],
+    skills: ["Responsive Web Design", "CSS Layouts", "HTML5 Semantics", "Accessibility"],
+    prerequisites: "None — suitable for absolute beginners",
+    mode: "Online & Offline",
+    fee: "Contact Us",
+  },
+  {
+    name: "Modern JavaScript (ES6+)",
+    level: "Intermediate",
+    icon: "javascript/javascript-original.svg",
+    bg: "linear-gradient(145deg,#1c1400 0%,#3d2e00 55%,#ca8a04 100%)",
+    teaches: ["ES6+", "DOM", "Async", "Events"],
+    duration: "6 weeks",
+    description:
+      "Go beyond basics and master modern JavaScript — arrow functions, destructuring, async/await, Promises and DOM manipulation. Build interactive web applications with vanilla JS.",
+    topicsFull: ["ES6+ Syntax (Arrow Functions, Destructuring, Spread)", "DOM Manipulation", "Events & Event Loop", "Promises & Async/Await", "Fetch API & AJAX", "Modules & Bundlers", "Error Handling"],
+    skills: ["Modern JS Syntax", "Async Programming", "DOM Manipulation", "API Consumption"],
+    prerequisites: "HTML & CSS basics",
+    mode: "Online & Offline",
+    fee: "Contact Us",
+  },
+  {
+    name: "Responsive UI with Bootstrap",
+    level: "Beginner",
+    icon: "bootstrap/bootstrap-original.svg",
+    bg: "linear-gradient(145deg,#2e0068 0%,#5a0096 55%,#7c3aed 100%)",
+    teaches: ["Grid", "Components", "Utilities", "Theming"],
+    duration: "4 weeks",
+    description:
+      "Build mobile-first, responsive websites quickly with Bootstrap 5 — the world's most popular CSS framework. Learn the grid system, components, utilities and custom theming.",
+    topicsFull: ["Bootstrap Grid System", "Navbar & Navigation", "Cards, Modals & Alerts", "Forms & Validation", "Utility Classes", "Custom Theming with SASS", "JavaScript Plugins"],
+    skills: ["Bootstrap 5", "Rapid UI Development", "Responsive Design", "Component Usage"],
+    prerequisites: "HTML & CSS basics",
+    mode: "Online & Offline",
+    fee: "Contact Us",
+  },
+  {
+    name: "Backend with PHP & MySQL",
+    level: "Intermediate",
+    icon: "php/php-original.svg",
+    bg: "linear-gradient(145deg,#1e1b4b 0%,#312e81 55%,#6366f1 100%)",
+    teaches: ["PHP Basics", "SQL", "CRUD", "Sessions"],
+    duration: "8 weeks",
+    description:
+      "Build dynamic, database-driven websites with PHP and MySQL — the classic combination powering millions of websites. Covers server-side scripting, CRUD operations and session management.",
+    topicsFull: ["PHP Syntax & Functions", "MySQL Database Design", "CRUD Operations", "Sessions & Cookies", "Form Handling & Validation", "PDO & Prepared Statements", "MVC Pattern"],
+    skills: ["Server-Side Scripting", "Database Design", "Web Security Basics", "CRUD Operations"],
+    prerequisites: "HTML & CSS basics",
+    mode: "Online & Offline",
+    fee: "Contact Us",
+  },
+  {
+    name: "Backend with Node.js",
+    level: "Intermediate",
+    icon: "nodejs/nodejs-original.svg",
+    bg: "linear-gradient(145deg,#052e16 0%,#166534 55%,#4ade80 100%)",
+    teaches: ["Express", "APIs", "Middleware", "MongoDB"],
+    duration: "10 weeks",
+    description:
+      "Build fast, scalable backend services with Node.js and Express. Develop RESTful APIs, middleware systems and connect to MongoDB for full-stack JavaScript development.",
+    topicsFull: ["Node.js Runtime & Event Loop", "Express.js & Routing", "Middleware & Error Handling", "RESTful API Design", "MongoDB & Mongoose", "Authentication & JWT", "File Uploads & Streaming"],
+    skills: ["Node.js Backend Development", "REST API Design", "MongoDB Integration", "Authentication"],
+    prerequisites: "JavaScript fundamentals",
+    mode: "Online & Offline",
+    fee: "Contact Us",
+  },
+  {
+    name: "Database Design with MongoDB",
+    level: "Intermediate",
+    icon: "mongodb/mongodb-original.svg",
+    bg: "linear-gradient(145deg,#052e16 0%,#134e1a 55%,#00ed64 100%)",
+    teaches: ["Documents", "Aggregation", "Indexing", "Atlas"],
+    duration: "6 weeks",
+    description:
+      "Master NoSQL database design with MongoDB — from document modelling and CRUD operations to aggregation pipelines, indexing strategies and cloud deployment with MongoDB Atlas.",
+    topicsFull: ["Document Model & BSON", "CRUD Operations", "Query Operators & Filtering", "Aggregation Pipeline", "Indexing & Performance", "Schema Design Patterns", "MongoDB Atlas & Cloud"],
+    skills: ["NoSQL Database Design", "Aggregation Pipelines", "Performance Tuning", "Cloud Databases"],
+    prerequisites: "Basic database knowledge recommended",
+    mode: "Online & Offline",
+    fee: "Contact Us",
+  },
+  {
+    name: "Type-Safe Code with TypeScript",
+    level: "Advanced",
+    icon: "typescript/typescript-original.svg",
+    bg: "linear-gradient(145deg,#172554 0%,#1e3a8a 55%,#2563eb 100%)",
+    teaches: ["Types", "Interfaces", "Generics", "Decorators"],
+    duration: "6 weeks",
+    description:
+      "Eliminate runtime bugs with TypeScript — the typed superset of JavaScript adopted by every major framework. Learn interfaces, generics, decorators and advanced type patterns for enterprise code.",
+    topicsFull: ["Types & Type Inference", "Interfaces & Type Aliases", "Generics & Constraints", "Enums & Utility Types", "Decorators & Metadata", "TypeScript with React", "Configuration & Build Tools"],
+    skills: ["Static Typing", "Generics & Advanced Types", "TypeScript with React", "Code Safety"],
+    prerequisites: "Solid JavaScript experience",
+    mode: "Online & Offline",
+    fee: "Contact Us",
+  },
+  {
+    name: "DevOps Basics with Docker",
+    level: "Advanced",
+    icon: "docker/docker-original.svg",
+    bg: "linear-gradient(145deg,#0c2a4a 0%,#0d3a6e 55%,#2496ed 100%)",
+    teaches: ["Containers", "Images", "Compose", "Volumes"],
+    duration: "6 weeks",
+    description:
+      "Containerise and ship applications with Docker — the cornerstone of modern DevOps. Learn to build images, orchestrate services with Docker Compose, manage volumes and integrate CI/CD pipelines.",
+    topicsFull: ["Docker Architecture & Concepts", "Building Custom Images", "Docker Compose", "Networking & Volumes", "CI/CD Integration", "Container Registry", "Best Practices & Security"],
+    skills: ["Containerisation", "Docker Compose", "DevOps Workflow", "CI/CD Pipelines"],
+    prerequisites: "Linux command line basics",
+    mode: "Online & Offline",
+    fee: "Contact Us",
+  },
 ];
 
 const FAQS = [
@@ -376,10 +600,190 @@ const TESTIMONIALS = [
   },
 ];
 
+const LEVEL_COLOR: Record<string, string> = {
+  Beginner: "bg-emerald-50 text-emerald-700 border-emerald-200",
+  Intermediate: "bg-blue-50 text-blue-700 border-blue-200",
+  Advanced: "bg-violet-50 text-violet-700 border-violet-200",
+  "Beginner to Intermediate": "bg-sky-50 text-sky-700 border-sky-200",
+};
+
+function CourseModal({
+  course,
+  onClose,
+}: {
+  course: (typeof COURSE_LIST)[0];
+  onClose: () => void;
+}) {
+  return (
+    <div
+      className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center bg-black/40 backdrop-blur-sm px-0 sm:px-4 py-0 sm:py-8"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div className="animate-fade-in relative w-full sm:max-w-2xl max-h-[92vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl bg-white border border-border/50 shadow-2xl">
+        {/* Top accent bar */}
+        <div
+          className="h-1 w-full rounded-t-3xl"
+          style={{ background: "var(--gradient-primary)" }}
+        />
+
+        {/* Close */}
+        <button
+          type="button"
+          aria-label="Close course details"
+          onClick={onClose}
+          className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full border border-border bg-muted/60 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground z-10"
+        >
+          <X className="h-4 w-4" />
+        </button>
+
+        <div className="p-6 sm:p-8">
+          {/* Header */}
+          <div className="flex items-start gap-4 pr-10">
+            <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-muted border border-border shadow-sm">
+              <img
+                src={`${DEVICON}${course.icon}`}
+                alt={`${course.name} logo`}
+                className="h-8 w-8 object-contain"
+              />
+            </div>
+            <div>
+              <h2 className="font-display text-2xl font-bold leading-tight text-primary">
+                {course.name}
+              </h2>
+              <span
+                className={`mt-1.5 inline-block rounded-md border px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider ${LEVEL_COLOR[course.level] ?? "bg-muted text-muted-foreground border-border"
+                  }`}
+              >
+                {course.level}
+              </span>
+            </div>
+          </div>
+
+          {/* Meta chips */}
+          <div className="mt-5 flex flex-wrap gap-2.5">
+            <div className="flex items-center gap-1.5 rounded-xl border border-border bg-muted/60 px-3.5 py-1.5 text-sm text-foreground">
+              <svg className="h-4 w-4 text-secondary" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              <span className="font-medium">{course.duration}</span>
+            </div>
+            <div className="flex items-center gap-1.5 rounded-xl border border-border bg-muted/60 px-3.5 py-1.5 text-sm text-foreground">
+              <svg className="h-4 w-4 text-secondary" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+              <span className="font-medium">{course.mode}</span>
+            </div>
+            <div className="flex items-center gap-1.5 rounded-xl border border-border bg-muted/60 px-3.5 py-1.5 text-sm text-foreground">
+              <svg className="h-4 w-4 text-secondary" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <line x1="12" y1="1" x2="12" y2="23" />
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+              </svg>
+              <span className="font-medium">{course.fee}</span>
+            </div>
+          </div>
+
+          {/* Description */}
+          <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
+            {course.description}
+          </p>
+
+          {/* Topics */}
+          <div className="mt-6">
+            <h3 className="font-display text-base font-semibold text-foreground">Topics Covered</h3>
+            <ul className="mt-3 space-y-2">
+              {course.topicsFull.map((topic) => (
+                <li key={topic} className="flex items-center gap-2.5 text-sm text-muted-foreground">
+                  <svg
+                    className="h-4 w-4 shrink-0 text-secondary"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2.5}
+                    viewBox="0 0 24 24"
+                  >
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                  {topic}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Skills */}
+          <div className="mt-6">
+            <h3 className="font-display text-base font-semibold text-foreground">Skills You'll Learn</h3>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {course.skills.map((skill) => (
+                <span
+                  key={skill}
+                  className="rounded-lg border border-secondary/30 bg-secondary/10 px-3 py-1 text-xs font-medium text-secondary"
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Prerequisites */}
+          <div className="mt-6 rounded-2xl border border-border bg-muted/40 p-4">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Prerequisites</p>
+            <p className="mt-1.5 text-sm text-foreground">{course.prerequisites}</p>
+          </div>
+
+          {/* CTA */}
+          <div className="mt-7 flex flex-col sm:flex-row gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                setTimeout(() => document.querySelector<HTMLElement>("#contact")?.scrollIntoView({ behavior: "smooth" }), 100);
+              }}
+              className="flex-1 rounded-xl bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground shadow-[var(--shadow-soft)] transition-all hover:-translate-y-0.5 hover:shadow-[var(--shadow-lift)]"
+            >
+              Enrol / Enquire Now
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 rounded-xl border border-border bg-muted/50 px-6 py-3.5 text-sm font-semibold text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            >
+              Back to Courses
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const [showAllCourses, setShowAllCourses] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState<(typeof COURSE_LIST)[0] | null>(null);
+  const [coursesTriggered, setCoursesTriggered] = useState(false);
+  const coursesRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = coursesRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setCoursesTriggered(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
   const [showCallbackModal, setShowCallbackModal] = useState(false);
   const [testimonialPage, setTestimonialPage] = useState(0);
   const totalPages = Math.ceil(TESTIMONIALS.length / TESTIMONIALS_PER_PAGE);
@@ -536,63 +940,173 @@ function Home() {
         </section>
 
         {/* COURSES */}
-        <section id="courses" className="mx-auto w-full max-w-screen-2xl px-5 py-24 lg:px-12 lg:py-32">
-          <h2 className="text-center font-display text-3xl text-primary sm:text-4xl">
-            The Courses We Provide
-          </h2>
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {(showAllCourses ? COURSE_LIST : COURSE_LIST.slice(0, 4)).map((c) => (
-              <div key={c.name} className="surface-card group relative flex flex-col items-start gap-4 p-6 transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-lift)] overflow-hidden cursor-pointer" onClick={() => setShowAllCourses(true)}>
-                <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-secondary/10 transition-transform group-hover:scale-150" />
-                <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-card border border-border shadow-sm z-10">
-                  <img
-                    src={`${DEVICON}${c.icon}`}
-                    alt={`${c.name} logo`}
-                    loading="lazy"
-                    className="h-6 w-6 object-contain"
-                  />
-                </div>
-                <div className="z-10 flex flex-col gap-1">
-                  <p className="font-display text-lg font-semibold leading-tight text-foreground group-hover:text-primary transition-colors">{c.name}</p>
-                  <p className="text-[11px] font-bold uppercase tracking-wider text-secondary">{c.level}</p>
-                </div>
-                <div className="z-10 mt-auto flex flex-wrap gap-2 pt-2">
-                   {c.teaches.slice(0, 2).map((t) => (
-                     <span key={t} className="rounded-md bg-muted px-2 py-1 text-[10px] font-medium text-muted-foreground">{t}</span>
-                   ))}
-                   {c.teaches.length > 2 && (
-                     <span className="rounded-md bg-muted px-2 py-1 text-[10px] font-medium text-muted-foreground">
-                       +{c.teaches.length - 2} more
-                     </span>
-                   )}
-                </div>
-              </div>
-            ))}
+        <section id="courses" className="py-24 lg:py-32 overflow-hidden">
+          <div className="mx-auto w-full max-w-screen-2xl px-5 lg:px-12">
+            <h2 className="text-center font-display text-3xl text-primary sm:text-4xl">
+              The Courses We Provide
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-center text-sm text-muted-foreground">
+              48+ tracks across beginner, intermediate and advanced levels — click any card to explore.
+            </p>
           </div>
+
+          {/* Horizontal scroll row with fade masks on edges (hidden when full grid is open) */}
           {!showAllCourses && (
+            <div className="courses-scroll-wrapper mt-10">
+              <div
+                ref={coursesRef}
+                className="courses-scroll-track"
+              >
+                {COURSE_LIST.map((c, i) => (
+                  <div
+                    key={c.name}
+                    className={`courses-card surface-card group relative flex flex-col p-0 overflow-hidden cursor-pointer course-card-enter${coursesTriggered ? " course-card-visible" : ""}`}
+                    style={coursesTriggered ? { animationDelay: `${i * 60}ms` } : undefined}
+                    onClick={() => setSelectedCourse(c)}
+                    onAnimationEnd={(e) => {
+                      e.currentTarget.style.animation = "none";
+                      e.currentTarget.style.opacity = "1";
+                      e.currentTarget.style.transform = "none";
+                    }}
+                  >
+                    {/* Colored Top Section */}
+                    <div className="relative h-48 w-full p-6 shrink-0 overflow-hidden" style={{ background: c.bg }}>
+                      {/* Subtle light burst */}
+                      <div className="absolute right-0 top-0 h-full w-full opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 100% 0%, white 0%, transparent 60%)' }} />
+                      
+                      {/* Large technology logo watermark */}
+                      <img 
+                        src={`${DEVICON}${c.icon}`} 
+                        alt="" 
+                        className="absolute -right-6 -bottom-6 h-48 w-48 object-contain opacity-[0.15] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-6"
+                        style={{ filter: 'grayscale(100%) brightness(200%)' }}
+                      />
+
+                      {/* Small icon box */}
+                      <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white shadow-sm relative z-10 transition-transform duration-500 group-hover:scale-110">
+                        <img
+                          src={`${DEVICON}${c.icon}`}
+                          alt={`${c.name} logo`}
+                          loading="lazy"
+                          className="h-6 w-6 object-contain"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Content Bottom Section */}
+                    <div className="flex flex-1 flex-col items-start gap-4 p-6 bg-card relative z-10 w-full">
+                      <div className="flex flex-col gap-1 w-full">
+                        <p className="font-display text-lg font-semibold leading-tight text-foreground group-hover:text-primary transition-colors">{c.name}</p>
+                        <p className="text-[11px] font-bold uppercase tracking-wider text-secondary">{c.level}</p>
+                      </div>
+                      <div className="flex flex-wrap gap-2 w-full">
+                        {c.teaches.slice(0, 2).map((t) => (
+                          <span key={t} className="rounded-md bg-muted px-2 py-1 text-[10px] font-medium text-muted-foreground">{t}</span>
+                        ))}
+                        {c.teaches.length > 2 && (
+                          <span className="rounded-md bg-muted px-2 py-1 text-[10px] font-medium text-muted-foreground">
+                            +{c.teaches.length - 2} more
+                          </span>
+                        )}
+                      </div>
+                      {/* Open Course CTA */}
+                      <div className="mt-auto pt-2 w-full border-t border-border/60">
+                        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary group-hover:text-secondary transition-colors">
+                          Open Course
+                          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Expanded grid — all 16 courses */}
+          <div className="mx-auto w-full max-w-screen-2xl px-5 lg:px-12">
+            {showAllCourses && (
+              <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                {COURSE_LIST.map((c) => (
+                  <div
+                    key={`grid-${c.name}`}
+                    className="surface-card h-full group relative flex flex-col p-0 overflow-hidden cursor-pointer"
+                    onClick={() => setSelectedCourse(c)}
+                  >
+                    {/* Colored Top Section */}
+                    <div className="relative h-48 w-full p-6 shrink-0 overflow-hidden" style={{ background: c.bg }}>
+                      {/* Subtle light burst */}
+                      <div className="absolute right-0 top-0 h-full w-full opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 100% 0%, white 0%, transparent 60%)' }} />
+                      
+                      {/* Large technology logo watermark */}
+                      <img 
+                        src={`${DEVICON}${c.icon}`} 
+                        alt="" 
+                        className="absolute -right-6 -bottom-6 h-48 w-48 object-contain opacity-[0.15] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-6"
+                        style={{ filter: 'grayscale(100%) brightness(200%)' }}
+                      />
+
+                      {/* Small icon box */}
+                      <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white shadow-sm relative z-10 transition-transform duration-500 group-hover:scale-110">
+                        <img
+                          src={`${DEVICON}${c.icon}`}
+                          alt={`${c.name} logo`}
+                          loading="lazy"
+                          className="h-6 w-6 object-contain"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Content Bottom Section */}
+                    <div className="flex flex-1 flex-col items-start gap-4 p-6 bg-card relative z-10 w-full">
+                      <div className="flex flex-col gap-1 w-full">
+                        <p className="font-display text-lg font-semibold leading-tight text-foreground group-hover:text-primary transition-colors">{c.name}</p>
+                        <p className="text-[11px] font-bold uppercase tracking-wider text-secondary">{c.level}</p>
+                      </div>
+                      <div className="flex flex-wrap gap-2 w-full">
+                        {c.teaches.slice(0, 2).map((t) => (
+                          <span key={t} className="rounded-md bg-muted px-2 py-1 text-[10px] font-medium text-muted-foreground">{t}</span>
+                        ))}
+                        {c.teaches.length > 2 && (
+                          <span className="rounded-md bg-muted px-2 py-1 text-[10px] font-medium text-muted-foreground">
+                            +{c.teaches.length - 2} more
+                          </span>
+                        )}
+                      </div>
+                      {/* Open Course CTA */}
+                      <div className="mt-auto pt-2 w-full border-t border-border/60">
+                        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary group-hover:text-secondary transition-colors">
+                          Open Course
+                          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* See all / Show less toggle (moved to bottom) */}
             <div className="mt-8 flex justify-center">
               <button
                 type="button"
-                onClick={() => setShowAllCourses(true)}
+                onClick={() => setShowAllCourses((v) => !v)}
                 className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-6 py-3 text-sm font-semibold text-primary shadow-[var(--shadow-soft)] transition-transform hover:-translate-y-0.5"
               >
-                See all courses
-                <ArrowRight className="h-4 w-4 transition-transform" />
+                {showAllCourses ? (
+                  <>
+                    Show less
+                    <ArrowRight className="h-4 w-4 -rotate-90 transition-transform" />
+                  </>
+                ) : (
+                  <>
+                    See all courses
+                    <ArrowRight className="h-4 w-4 transition-transform" />
+                  </>
+                )}
               </button>
             </div>
-          )}
-          {showAllCourses && (
-            <div className="mt-8 flex justify-center">
-              <button
-                type="button"
-                onClick={() => setShowAllCourses(false)}
-                className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-6 py-3 text-sm font-semibold text-primary shadow-[var(--shadow-soft)] transition-transform hover:-translate-y-0.5"
-              >
-                Show less
-                <ArrowRight className="h-4 w-4 transition-transform -rotate-90" />
-              </button>
-            </div>
-          )}
+          </div>
         </section>
 
         {/* TECH STACK MARQUEE */}
@@ -750,6 +1264,14 @@ function Home() {
           </div>
         </section>
       </main>
+
+      {/* COURSE DETAIL MODAL */}
+      {selectedCourse && (
+        <CourseModal
+          course={selectedCourse}
+          onClose={() => setSelectedCourse(null)}
+        />
+      )}
 
       {/* CONTACT / FOOTER */}
       <footer id="contact" className="bg-blue-50/80 border-t border-blue-100/50">
@@ -936,3 +1458,4 @@ function Home() {
     </div>
   );
 }
+
