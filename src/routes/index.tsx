@@ -447,20 +447,44 @@ const COURSE_LIST = [
 
 const FAQS = [
   {
-    q: "Do you provide placement assistance after the course?",
-    a: "Yes. Every student gets resume reviews, mock interviews and direct referrals to our hiring partners until placed.",
+    q: "What does Softtech Solutions & Training do?",
+    a: "We work across two areas — building Manufacturing Execution Systems (MES) for manufacturing companies, and training students and developers in programming languages and modern frameworks.",
   },
   {
-    q: "Are the classes online or offline?",
-    a: "Both. You can join our classroom batches or attend the same live sessions online with recordings available.",
+    q: "What is a Manufacturing Execution System, and why does a company need one?",
+    a: "An MES connects the shop floor to the rest of the business — tracking production, quality, and traceability in real time. It helps manufacturers catch problems early, reduce downtime, and keep accurate records instead of relying on manual processes.",
   },
   {
-    q: "Do beginners with no coding background fit here?",
-    a: "Absolutely. Every track starts from programming fundamentals before moving into frameworks and live projects.",
+    q: "Which industries do you have experience in?",
+    a: "Our MES work comes primarily from the automotive sector, including projects for companies like Fiat India and Volvo-Eicher. The same design principles apply to most other manufacturing environments as well.",
   },
   {
-    q: "Will I work on real projects?",
-    a: "Each learner ships at least two production-style projects with code reviews from working industry mentors.",
+    q: "Do you build custom MES solutions, or only work with existing systems?",
+    a: "Both. We design systems from the ground up where needed, and we also customize, extend, or integrate existing MES, ERP, SCADA, and PLC setups.",
+  },
+  {
+    q: "What courses do you offer?",
+    a: "We teach Core and Advanced Java, Python, C, C++, AWS, Vaadin, Spring, and full-stack web development, along with the tools and practices used alongside them in real projects.",
+  },
+  {
+    q: "Do I need prior coding experience to join a course?",
+    a: "No. Courses are structured for different starting points — some build fundamentals from scratch, others are meant for developers adding a specific skill.",
+  },
+  {
+    q: "Are the sessions hands-on, or mostly lectures?",
+    a: "Hands-on. Each course is built around practical exercises and real project work, not theory alone.",
+  },
+  {
+    q: "Who conducts the training?",
+    a: "Training is led by our founder, Ravindra Swami, who brings both industry and classroom experience — years as a working software engineer, alongside time as a lecturer and Head of Department, teaching at engineering colleges across Pandharpur, Solapur, Akluj, and Barshi.",
+  },
+  {
+    q: "Do you provide support after an MES project is delivered?",
+    a: "Yes. Support continues after go-live — including production support, maintenance, troubleshooting, and training for the client's own staff.",
+  },
+  {
+    q: "How can I get in touch to learn more or enroll?",
+    a: "You can reach us using the contact details on this website, and we'll help you find the right course or service for what you need.",
   },
 ];
 
@@ -1058,7 +1082,7 @@ function Home() {
         </section>
 
         {/* FAQ */}
-        <section id="faqs" className="mx-auto max-w-3xl px-5 py-24 lg:px-8 lg:py-32">
+        <section id="faqs" className="mx-auto max-w-4xl px-5 py-24 lg:px-8 lg:py-32">
           <h2 className="text-center font-display text-3xl text-primary sm:text-4xl">FAQs</h2>
           <div className="mt-8 space-y-3">
             {FAQS.map((f, i) => {
