@@ -105,21 +105,73 @@ const STATS = [
   },
 ];
 
-function useCountUp(end: number, duration = 2000, started = false) {
-  const [count, setCount] = useState(0);
+function useCountUp({
+  end,
+  duration = 1800,
+  pauseDuration = 1000,
+  delay = 0,
+  isHovered = false,
+}: {
+  end: number;
+  duration?: number;
+  pauseDuration?: number;
+  delay?: number;
+  isHovered: boolean;
+}) {
+  const [count, setCount] = useState(end);
+
   useEffect(() => {
-    if (!started) return;
-    let startTime: number | null = null;
-    const step = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 1);
-      // easeOutExpo
-      const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-      setCount(Math.floor(eased * end));
-      if (progress < 1) requestAnimationFrame(step);
+    if (!isHovered) {
+      setCount(end);
+      return;
+    }
+
+    let animFrameId: number;
+    let timerId: ReturnType<typeof setTimeout>;
+    let delayTimerId: ReturnType<typeof setTimeout>;
+    let active = true;
+
+    const runCycle = () => {
+      setCount(0);
+      let startTime: number | null = null;
+
+      const step = (timestamp: number) => {
+        if (!active) return;
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+        // easeOutExpo
+        const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        setCount(Math.floor(eased * end));
+
+        if (progress < 1) {
+          animFrameId = requestAnimationFrame(step);
+        } else {
+          // Pause briefly at max value before restarting next cycle
+          timerId = setTimeout(() => {
+            if (active) {
+              runCycle();
+            }
+          }, pauseDuration);
+        }
+      };
+
+      animFrameId = requestAnimationFrame(step);
     };
-    requestAnimationFrame(step);
-  }, [end, duration, started]);
+
+    delayTimerId = setTimeout(() => {
+      if (active) {
+        runCycle();
+      }
+    }, delay);
+
+    return () => {
+      active = false;
+      cancelAnimationFrame(animFrameId);
+      clearTimeout(timerId);
+      clearTimeout(delayTimerId);
+    };
+  }, [end, duration, pauseDuration, delay, isHovered]);
+
   return count;
 }
 
@@ -129,19 +181,26 @@ function StatItem({
   title,
   label,
   index,
-  started,
+  isHovered,
 }: {
   end: number;
   suffix: string;
   title: string;
   label: string;
   index: number;
-  started: boolean;
+  isHovered: boolean;
 }) {
-  const count = useCountUp(end, 2000, started);
+  const count = useCountUp({
+    end,
+    duration: 1800,
+    pauseDuration: 1000,
+    delay: index * 180,
+    isHovered,
+  });
+
   return (
     <div
-      className="stat-item"
+      className="stat-item transition-transform duration-300"
       style={{ animationDelay: `${index * 120}ms`, animationFillMode: "both" }}
     >
       {/* Count */}
@@ -161,35 +220,19 @@ function StatItem({
 }
 
 function StatsSection() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [started, setStarted] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setStarted(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.25 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  const [isSectionHovered, setIsSectionHovered] = useState(false);
 
   return (
     <section
-      ref={ref}
-      className="stat-section"
+      className="stat-section cursor-pointer transition-all duration-300"
+      onMouseEnter={() => setIsSectionHovered(true)}
+      onMouseLeave={() => setIsSectionHovered(false)}
     >
       <div className="stat-section-inner">
         <div className="stat-row">
           {STATS.map((s, i) => (
             <Fragment key={s.title}>
-              <StatItem {...s} index={i} started={started} />
+              <StatItem {...s} index={i} isHovered={isSectionHovered} />
               {i < STATS.length - 1 && <div className="stat-divider" />}
             </Fragment>
           ))}
@@ -687,6 +730,7 @@ function Home() {
   const [coursesTriggered, setCoursesTriggered] = useState(false);
   const coursesRef = useRef<HTMLDivElement>(null);
 
+
   useEffect(() => {
     const el = coursesRef.current;
     if (!el) return;
@@ -802,7 +846,7 @@ function Home() {
               </div>
             </div>
 
-            <div className="animate-fade-in overflow-hidden rounded-[2rem] shadow-2xl shadow-blue-900/10">
+            <div className="animate-fade-in-up overflow-hidden rounded-[2rem] shadow-2xl shadow-blue-900/10">
               <img
                 src={heroImage}
                 alt="Workshop teaching session"
@@ -818,26 +862,40 @@ function Home() {
         <StatsSection />
 
         {/* ABOUT */}
-        <section id="about" className="border-y border-border bg-muted/40 py-24 lg:py-32">
+        <section id="about" className="border-y border-border bg-[#F8FAFC] py-20 lg:py-28">
           <div className="mx-auto grid w-full max-w-screen-2xl items-center gap-12 px-5 lg:grid-cols-2 lg:gap-16 lg:px-12">
             <div className="animate-fade-in">
               <AboutCollage />
             </div>
 
-            <div className="animate-fade-in">
-              <span className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary">
-                Who we are
-              </span>
-              <h2 className="mt-4 font-display text-3xl leading-[1.12] text-primary sm:text-4xl lg:text-5xl">
-                Building skills. <span className="text-gradient">Creating opportunities.</span>
-              </h2>
-              <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
-                We are a dedicated training studio focused on transforming beginners into job-ready professionals. We offer comprehensive, mentor-led courses in modern technologies, hands-on experience with real-world projects, and dedicated placement support to help you launch a successful career in tech.
+            <div className="animate-fade-in flex flex-col justify-center space-y-8 lg:pl-6">
+              {/* Category Tag */}
+              <div>
+                <span className="text-xs sm:text-sm font-bold tracking-[0.2em] text-[#2A75D3] uppercase">
+                  WHO WE ARE
+                </span>
+              </div>
+
+              {/* Paragraph 1 */}
+              <p className="text-center text-base sm:text-lg italic leading-relaxed text-slate-700 font-normal max-w-2xl mx-auto">
+                <span className="text-amber-500 font-serif font-bold text-2xl leading-none inline-block mr-0.5">“</span>
+                <span className="underline decoration-slate-400/60 underline-offset-4 font-semibold text-slate-800">Softtech</span> Solutions &amp; Training, based in Pune, builds Manufacturing Execution Systems (MES) for manufacturing environments, including automotive production lines, and trains students and developers in Java, Python, AWS, <span className="underline decoration-slate-400/60 underline-offset-4">Vaadin</span>, Spring, and full-stack web development.
               </p>
 
-              <div className="mt-8">
-                <p className="font-display text-xl font-semibold text-primary">Ravindra Swami</p>
-                <p className="mt-1 text-sm text-muted-foreground">Founder</p>
+              {/* Paragraph 2 */}
+              <p className="text-center text-base sm:text-lg italic leading-relaxed text-slate-700 font-normal max-w-2xl mx-auto">
+                Ravindra Swami, whose background spans MES engineering at companies like <strong className="font-semibold text-slate-900">Fiat India</strong> and <strong className="font-semibold text-slate-900">Volvo-Eicher</strong>, and academic teaching as a lecturer and Head of Department, the company brings both worlds into every project and course.
+              </p>
+
+              {/* Founder Signature */}
+              <div className="pt-4 flex flex-col items-end pr-4">
+                <p className="text-2xl sm:text-3xl font-bold tracking-tight text-[#0B2559] font-serif flex items-center gap-1.5">
+                  <span className="text-amber-500 text-3xl font-serif">“</span>
+                  Ravindra Swami
+                </p>
+                <p className="mt-0.5 text-sm font-medium text-slate-500 mr-1">
+                  Founder
+                </p>
               </div>
             </div>
           </div>
@@ -1231,7 +1289,7 @@ function Home() {
                   required
                   type="text"
                   placeholder="Enter your Name here"
-                  className="w-full rounded-xl border border-input bg-white px-4 py-3 text-sm outline-none transition-colors focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+                  className="w-full rounded-xl border border-input bg-white px-4 py-3 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                 />
               </div>
 
@@ -1242,14 +1300,14 @@ function Home() {
                   required
                   type="email"
                   placeholder="Enter your Email here"
-                  className="w-full rounded-xl border border-input bg-white px-4 py-3 text-sm outline-none transition-colors focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+                  className="w-full rounded-xl border border-input bg-white px-4 py-3 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                 />
               </div>
 
               {/* Phone */}
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-foreground">Phone no.</label>
-                <div className="flex items-center gap-0 rounded-xl border border-input bg-white transition-colors focus-within:border-orange-400 focus-within:ring-2 focus-within:ring-orange-200">
+                <div className="flex items-center gap-0 rounded-xl border border-input bg-white transition-colors focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200">
                   <span className="flex shrink-0 items-center gap-1.5 border-r border-input px-3 py-3 text-sm text-muted-foreground">
                     🇮🇳 +91
                   </span>
@@ -1269,7 +1327,7 @@ function Home() {
                   <select
                     required
                     defaultValue="Online Course (Website)"
-                    className="w-full appearance-none rounded-xl border border-input bg-white px-4 py-3 pr-10 text-sm outline-none transition-colors focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+                    className="w-full appearance-none rounded-xl border border-input bg-white px-4 py-3 pr-10 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                   >
                     {ENQUIRY_OPTIONS.map((opt) => (
                       <option key={opt} value={opt}>{opt}</option>
@@ -1285,14 +1343,14 @@ function Home() {
                 <textarea
                   rows={3}
                   placeholder="E.g. I want details about the offline course, fees, and schedule..."
-                  className="w-full resize-none rounded-xl border border-input bg-white px-4 py-3 text-sm outline-none transition-colors focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+                  className="w-full resize-none rounded-xl border border-input bg-white px-4 py-3 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                 />
               </div>
 
               {/* Submit */}
               <button
                 type="submit"
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-orange-500 px-6 py-3.5 text-sm font-bold text-white shadow-lg transition-all hover:bg-orange-600 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-500/25 transition-all hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-500/35 hover:-translate-y-0.5 active:translate-y-0"
               >
                 <Send className="h-4 w-4" />
                 Book My Callback
