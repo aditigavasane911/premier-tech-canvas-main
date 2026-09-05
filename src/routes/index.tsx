@@ -497,24 +497,38 @@ const AWARDS = [
 ];
 
 const TESTIMONIALS = [
-  {
-    quote:
-      "The Java track was brutally practical. I built two full applications and cleared my first interview within weeks.",
-    name: "Sneha Patil",
-    role: "Software Engineer, Pune",
-  },
-  {
-    quote:
-      "Mentors reviewed my code line by line. That habit is the reason I passed the technical rounds so comfortably.",
-    name: "Rohit Kulkarni",
-    role: "MERN Developer, Bengaluru",
-  },
-  {
-    quote:
-      "I came from a non-IT degree. The fundamentals were explained patiently and placement support never stopped.",
-    name: "Aditi Sharma",
-    role: "Cloud Associate, Hyderabad",
-  },
+  { quote: "Before this C workshop, pointers haunted my dreams. But the instructor's simple, clear examples turned that fear into confidence—I was coding on my own by day two!", name: "Rohit Sable", role: "TE Computer Engineering", rating: 5 },
+  { quote: "I always found ES6 features confusing until we saw side-by-side code comparisons. It instantly clicked, and now I write modern JavaScript with ease.", name: "Snehal Rane", role: "TE IT", rating: 5 },
+  { quote: "Teaching Java collections with patience and answering every question without judgment made this session truly stand out for our beginners.", name: "Prof. Anil Deshpande", role: "Java Faculty", rating: 5 },
+  { quote: "The Spring Boot microservices workshop was a game-changer. Breaking down the architecture into digestible pieces helped students grasp JPA queries in no time.", name: "Ms. Meera Joshi", role: "Backend Trainer", rating: 5 },
+  { quote: "I had zero Python knowledge coming in but left able to build backend logic. That kind of transformation speaks volumes about the workshop's quality.", name: "Suraj Gaikwad", role: "First Year, E&TC", rating: 5 },
+  { quote: "Seeing how OOP concepts map directly onto real-world DSA problems made this C++ session memorable. It’s not just syntax; it’s thinking like a programmer.", name: "Sanika Kulkarni", role: "TE IT", rating: 5 },
+  { quote: "As a non-CS student, I worried I'd fall behind, but the step-by-step pace and immediate hands-on tasks kept me engaged throughout.", name: "Ankita Ghorpade", role: "First Year, IT", rating: 5 },
+  { quote: "Students often get overwhelmed by Servlets and JSP in textbooks, but this workshop made those topics practical and approachable.", name: "Nikhil Pawar", role: "BE Computer Engineering", rating: 5 },
+  { quote: "The way the React hooks were demystified here completely changed my approach. I now understand what’s going on under the hood instead of copy-pasting blindly.", name: "Aditya Shinde", role: "SE Computer", rating: 5 },
+  { quote: "I’ve seen many PHP sessions, but this one clarified SQL joins with real examples that stuck with me. Very practical and useful for our projects.", name: "Komal Deshpande", role: "TE Computer Engineering", rating: 5 },
+  { quote: "Breaking down Docker and containers into simple, relatable steps transformed my understanding from mystery to clarity. This session sparked my interest in DevOps careers.", name: "Rahul Bansode", role: "BE Computer Engineering", rating: 5 },
+  { quote: "The workshop on Cloud Computing didn’t just show slides—it gave us hands-on experience with EC2 and S3, which is exactly what the industry demands today.", name: "Tejas Kale", role: "BE Computer Engineering", rating: 5 },
+  { quote: "The hands-on approach during the responsive Bootstrap session helped me build attractive, functional pages quickly without drowning in CSS.", name: "Rutuja Salunkhe", role: "First Year Computer Engineering", rating: 5 },
+  { quote: "I always thought MongoDB was a completely different beast compared to SQL, but this workshop made NoSQL accessible and even enjoyable.", name: "Ruchita Kadam", role: "BE IT", rating: 5 },
+  { quote: "One of the best workshops I've experienced—REST APIs finally made sense, not just in theory but through clear, practical examples.", name: "Yash Kadam", role: "BE Computer Engineering", rating: 5 },
+  { quote: "The DOM manipulation exercises were super practical—we didn’t just watch slides; we built things on the spot, which made learning stick.", name: "Aniket Shelar", role: "SE Computer Engineering", rating: 5 },
+  { quote: "Our instructor’s ability to connect OOP principles to solving real DSA problems makes complex concepts feel natural and intuitive.", name: "Prof. Kavita Sharma", role: "Computer Science Faculty", rating: 5 },
+  { quote: "This workshop was a perfect introduction for beginners who thought CSS and Flexbox were puzzles. By the end, I was confident in making layouts.", name: "Kiran Bhagat", role: "First Year Mechanical Engineering", rating: 5 },
+  { quote: "Explaining TypeScript’s interfaces and types using everyday analogies helped me grasp this advanced topic without feeling overwhelmed.", name: "Ishwari Kolhe", role: "BE Computer Engineering", rating: 5 },
+  { quote: "It’s rare to find a cloud session that’s both relevant and practical. After this, I updated my resume with AWS skills I actually understand.", name: "Sakshi Jagtap", role: "TE Computer", rating: 5 },
+  { quote: "The Node.js backend workshop broke down Express step-by-step, which cleared up all the confusion I had from online tutorials.", name: "Pallavi Yadav", role: "SE Computer Engineering", rating: 5 },
+  { quote: "Hands-on, no fluff—this Java session made collections click for me, and the patient teaching helped everyone feel comfortable asking questions.", name: "Omkar Deshmukh", role: "SE Computer", rating: 5 },
+  { quote: "I never thought a CSS session could be so engaging and fun—this completely changed my mindset about frontend design.", name: "Vaishnavi Thorat", role: "First Year IT", rating: 5 },
+  { quote: "API request-response flows were brought to life with clear diagrams, making the entire concept easy to understand and apply.", name: "Devendra More", role: "TE Computer", rating: 5 },
+  { quote: "The workshop’s practical approach to backend with PHP and MySQL had immediate impact—we applied concepts directly to our mini-projects.", name: "Akash Bhoir", role: "BE IT", rating: 5 },
+  { quote: "This was hands down the most useful DSA session I’ve attended. The STL used to be a black box, but now I actually enjoy solving problems with it.", name: "Prathamesh Jadhav", role: "SE Computer Engineering", rating: 5 },
+  { quote: "I’ve attended many Java sessions before, but this one’s focus on practical enterprise applications made it invaluable for placements.", name: "Shraddha More", role: "TE IT", rating: 5 },
+  { quote: "This workshop was the perfect entry point for absolute beginners like me, making coding feel approachable and exciting.", name: "Kiran Bhagat", role: "First Year Mechanical Engineering", rating: 5 },
+  { quote: "The instructor’s interactive style kept energy high and made a three-hour React workshop fly by without losing attention.", name: "Pooja Chavan", role: "TE Computer Engineering", rating: 5 },
+  { quote: "Aggregation pipelines in MongoDB felt intimidating until this session made them approachable through clear examples and patient teaching.", name: "Vedant Pisal", role: "SE Computer Engineering", rating: 5 },
+  { quote: "I never thought I’d understand containers, but this Docker workshop made everything so clear that I’m now seriously considering DevOps.", name: "Rahul Bansode", role: "BE Computer Engineering", rating: 5 },
+  { quote: "The practical focus on building something functional by the end helped me overcome my fear of enterprise Java.", name: "Nikhil Pawar", role: "BE Computer Engineering", rating: 5 }
 ];
 
 const LEVEL_COLOR: Record<string, string> = {
@@ -1061,21 +1075,53 @@ function Home() {
         <section id="feedback" className="border-y border-border bg-muted/40 py-24 lg:py-32">
           <div className="mx-auto w-full max-w-screen-2xl px-5 lg:px-12">
             <h2 className="text-center font-display text-3xl text-primary sm:text-4xl">Student Feedback</h2>
-            <div className="mt-9 grid gap-5 md:grid-cols-3">
-              {TESTIMONIALS.map((t) => (
-                <figure key={t.name} className="surface-card p-7">
-                  <Quote className="h-7 w-7 text-secondary" />
-                  <blockquote className="mt-4 text-sm leading-relaxed text-muted-foreground">{t.quote}</blockquote>
-                  <figcaption className="mt-6 flex items-center gap-3">
-                    <span className="grid h-10 w-10 place-items-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
-                      {t.name.charAt(0)}
-                    </span>
-                    <span>
-                      <span className="block text-sm font-semibold text-foreground">{t.name}</span>
-                      <span className="block text-xs text-muted-foreground">{t.role}</span>
-                    </span>
-                  </figcaption>
-                </figure>
+            <div className="mt-9 overflow-hidden relative">
+              <div 
+                className="flex transition-transform duration-700 ease-in-out" 
+                style={{ transform: `translateX(-${testimonialPage * 100}%)` }}
+              >
+                {Array.from({ length: totalPages }).map((_, pageIndex) => (
+                  <div key={pageIndex} className="w-full shrink-0 flex flex-wrap justify-center gap-5">
+                    {TESTIMONIALS.slice(pageIndex * TESTIMONIALS_PER_PAGE, (pageIndex + 1) * TESTIMONIALS_PER_PAGE).map((t) => (
+                      <figure key={t.name} className="surface-card p-7 w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)] flex flex-col">
+                        <Quote className="h-7 w-7 text-secondary mx-auto" />
+                        <blockquote className="mt-4 text-sm leading-relaxed text-muted-foreground text-center flex-1">{t.quote}</blockquote>
+                        
+                        <div className="mt-4 flex items-center justify-center gap-1" aria-label="5 out of 5 stars">
+                          {[1, 2, 3, 4, 5].map((s) => (
+                            <svg key={s} className="h-4 w-4 fill-amber-400 text-amber-400" viewBox="0 0 20 20">
+                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                          ))}
+                        </div>
+
+                        <figcaption className="mt-6 flex items-center justify-center gap-3">
+                          <span className="grid h-10 w-10 place-items-center rounded-full bg-primary text-sm font-semibold text-primary-foreground shrink-0">
+                            {t.name.charAt(0)}
+                          </span>
+                          <span className="text-left">
+                            <span className="block text-sm font-semibold text-foreground">{t.name}</span>
+                            <span className="block text-xs text-muted-foreground">{t.role}</span>
+                          </span>
+                        </figcaption>
+                      </figure>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Pagination dots */}
+            <div className="mt-8 flex justify-center gap-2">
+              {Array.from({ length: totalPages }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setTestimonialPage(i)}
+                  className={`h-2.5 rounded-full transition-all duration-300 ${
+                    testimonialPage === i ? "w-8 bg-secondary" : "w-2.5 bg-border hover:bg-muted-foreground"
+                  }`}
+                  aria-label={`Go to page ${i + 1}`}
+                />
               ))}
             </div>
           </div>
