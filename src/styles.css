@@ -56,17 +56,13 @@
   --input: oklch(0.92 0.008 250);
   --ring: oklch(0.58 0.21 260);
 
-  --gradient-hero: linear-gradient(
-    140deg,
-    oklch(0.99 0.004 250) 0%,
-    oklch(0.965 0.02 250) 45%,
-    oklch(0.94 0.045 245) 100%
-  );
-  --gradient-primary: linear-gradient(
-    120deg,
-    oklch(0.29 0.11 265),
-    oklch(0.58 0.21 260)
-  );
+  --gradient-hero: linear-gradient(140deg,
+      oklch(0.99 0.004 250) 0%,
+      oklch(0.965 0.02 250) 45%,
+      oklch(0.94 0.045 245) 100%);
+  --gradient-primary: linear-gradient(120deg,
+      oklch(0.29 0.11 265),
+      oklch(0.58 0.21 260));
   --shadow-soft: 0 1px 2px oklch(0.29 0.11 265 / 0.05),
     0 12px 30px -18px oklch(0.29 0.11 265 / 0.28);
   --shadow-lift: 0 24px 60px -30px oklch(0.29 0.11 265 / 0.4);
@@ -122,13 +118,11 @@
 
 @utility marquee-mask {
   overflow: hidden;
-  mask-image: linear-gradient(
-    to right,
-    transparent,
-    black 8%,
-    black 92%,
-    transparent
-  );
+  mask-image: linear-gradient(to right,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent);
 }
 
 @utility marquee-track {
@@ -163,16 +157,19 @@
   from {
     transform: translateX(0);
   }
+
   to {
     transform: translateX(-50%);
   }
 }
 
 @keyframes float-soft {
+
   0%,
   100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-10px);
   }
@@ -187,13 +184,11 @@
 .whyus-track-wrapper {
   overflow: hidden;
   padding-block: 1.5rem;
-  mask-image: linear-gradient(
-    to right,
-    transparent,
-    black 6%,
-    black 94%,
-    transparent
-  );
+  mask-image: linear-gradient(to right,
+      transparent,
+      black 6%,
+      black 94%,
+      transparent);
 }
 
 .whyus-track {
@@ -279,12 +274,10 @@
   inset-inline: 0;
   bottom: 0;
   padding: 1.25rem;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.85) 0%,
-    rgba(0, 0, 0, 0.45) 55%,
-    transparent 100%
-  );
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.85) 0%,
+      rgba(0, 0, 0, 0.45) 55%,
+      transparent 100%);
   opacity: 0;
   transform: translateY(12px);
   transition:
@@ -387,6 +380,7 @@
     opacity: 0;
     transform: translateY(32px) scale(0.94);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -394,12 +388,19 @@
 }
 
 @keyframes shimmer-slide {
-  from { transform: translateX(-130%) skewX(-20deg); }
-  to   { transform: translateX(230%) skewX(-20deg); }
+  from {
+    transform: translateX(-130%) skewX(-20deg);
+  }
+
+  to {
+    transform: translateX(230%) skewX(-20deg);
+  }
 }
 
 @keyframes border-spin {
-  to { --border-angle: 360deg; }
+  to {
+    --border-angle: 360deg;
+  }
 }
 
 /* ── Section wrapper ── */
@@ -414,7 +415,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(circle, rgba(121,186,236,0.1) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(121, 186, 236, 0.1) 1px, transparent 1px);
   background-size: 26px 26px;
   pointer-events: none;
 }
@@ -428,7 +429,7 @@
   width: 34rem;
   height: 34rem;
   border-radius: 9999px;
-  background: radial-gradient(circle, rgba(121,186,236,0.14) 0%, transparent 65%);
+  background: radial-gradient(circle, rgba(121, 186, 236, 0.14) 0%, transparent 65%);
   pointer-events: none;
 }
 
@@ -480,8 +481,8 @@
   line-height: 1;
   color: #ffffff;
   text-shadow:
-    0 1px 0 rgba(255,255,255,0.4),
-    0 3px 16px rgba(0,0,0,0.3);
+    0 1px 0 rgba(255, 255, 255, 0.4),
+    0 3px 16px rgba(0, 0, 0, 0.3);
 }
 
 /* Primary label — uppercase tracking */
@@ -491,7 +492,7 @@
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.85);
+  color: rgba(255, 255, 255, 0.85);
 }
 
 /* Secondary label */
@@ -499,7 +500,7 @@
   margin-top: 0.18rem;
   font-size: 0.75rem;
   font-weight: 500;
-  color: rgba(255,255,255,0.52);
+  color: rgba(255, 255, 255, 0.52);
   letter-spacing: 0.02em;
 }
 
@@ -516,6 +517,7 @@
     opacity: 0;
     transform: translateX(-90px) scale(0.92);
   }
+
   to {
     opacity: 1;
     transform: translateX(0) scale(1);
@@ -536,13 +538,11 @@
 /* Outer wrapper — left + right edge fade masks like the reference */
 .courses-scroll-wrapper {
   position: relative;
-  mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black 5%,
-    black 95%,
-    transparent 100%
-  );
+  mask-image: linear-gradient(to right,
+      transparent 0%,
+      black 5%,
+      black 95%,
+      transparent 100%);
 }
 
 /* The scrollable flex track — hides scrollbar across all browsers */
@@ -564,22 +564,23 @@
 .courses-card {
   flex-shrink: 0;
   width: 260px;
-  height: 420px;
+  height: 350px;
   scroll-snap-align: start;
 }
 
 @media (min-width: 640px) {
   .courses-card {
-    width: 280px;
-    height: 440px;
+    width: 275px;
+    height: 365px;
   }
 }
 
 @media (min-width: 1024px) {
   .courses-card {
-    width: 300px;
-    height: 460px;
+    width: 290px;
+    height: 375px;
   }
+
   .courses-scroll-track {
     padding-inline: 8vw;
   }
@@ -591,6 +592,7 @@
     opacity: 0;
     transform: translateY(48px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -600,4 +602,3 @@
 .animate-fade-in-up {
   animation: fade-in-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
-

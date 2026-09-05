@@ -945,7 +945,7 @@ function Home() {
                     }}
                   >
                     {/* Colored Top Section */}
-                    <div className="relative h-48 w-full p-6 shrink-0 overflow-hidden" style={{ background: c.bg }}>
+                    <div className="relative h-36 w-full p-4 sm:p-5 shrink-0 overflow-hidden" style={{ background: c.bg }}>
                       {/* Subtle light burst */}
                       <div className="absolute right-0 top-0 h-full w-full opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 100% 0%, white 0%, transparent 60%)' }} />
                       
@@ -953,40 +953,40 @@ function Home() {
                       <img 
                         src={`${DEVICON}${c.icon}`} 
                         alt="" 
-                        className="absolute -right-6 -bottom-6 h-48 w-48 object-contain opacity-[0.15] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-6"
+                        className="absolute -right-5 -bottom-5 h-36 w-36 object-contain opacity-[0.15] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-6"
                         style={{ filter: 'grayscale(100%) brightness(200%)' }}
                       />
 
                       {/* Small icon box */}
-                      <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white shadow-sm relative z-10 transition-transform duration-500 group-hover:scale-110">
+                      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white shadow-sm relative z-10 transition-transform duration-500 group-hover:scale-110">
                         <img
                           src={`${DEVICON}${c.icon}`}
                           alt={`${c.name} logo`}
                           loading="lazy"
-                          className="h-6 w-6 object-contain"
+                          className="h-5 w-5 object-contain"
                         />
                       </div>
                     </div>
 
                     {/* Content Bottom Section */}
-                    <div className="flex flex-1 flex-col items-start gap-4 p-6 bg-card relative z-10 w-full">
-                      <div className="flex flex-col gap-1 w-full">
-                        <p className="font-display text-lg font-semibold leading-tight text-foreground group-hover:text-primary transition-colors">{c.name}</p>
-                        <p className="text-[11px] font-bold uppercase tracking-wider text-secondary">{c.level}</p>
+                    <div className="flex flex-1 flex-col items-start gap-3 p-4 sm:p-5 bg-card relative z-10 w-full">
+                      <div className="flex flex-col gap-0.5 w-full">
+                        <p className="font-display text-base font-semibold leading-snug text-foreground group-hover:text-primary transition-colors">{c.name}</p>
+                        <p className="text-[10px] font-bold uppercase tracking-wider text-secondary">{c.level}</p>
                       </div>
-                      <div className="flex flex-wrap gap-2 w-full">
+                      <div className="flex flex-wrap gap-1.5 w-full">
                         {c.teaches.slice(0, 2).map((t) => (
-                          <span key={t} className="rounded-md bg-muted px-2 py-1 text-[10px] font-medium text-muted-foreground">{t}</span>
+                          <span key={t} className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{t}</span>
                         ))}
                         {c.teaches.length > 2 && (
-                          <span className="rounded-md bg-muted px-2 py-1 text-[10px] font-medium text-muted-foreground">
+                          <span className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
                             +{c.teaches.length - 2} more
                           </span>
                         )}
                       </div>
                       {/* Open Course CTA */}
                       <div className="mt-auto pt-2 w-full border-t border-border/60">
-                        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary group-hover:text-secondary transition-colors">
+                        <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-secondary transition-colors">
                           Open Course
                           <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                         </span>
@@ -1009,7 +1009,7 @@ function Home() {
                     onClick={() => setSelectedCourse(c)}
                   >
                     {/* Colored Top Section */}
-                    <div className="relative h-48 w-full p-6 shrink-0 overflow-hidden" style={{ background: c.bg }}>
+                    <div className="relative h-36 w-full p-4 sm:p-5 shrink-0 overflow-hidden" style={{ background: c.bg }}>
                       {/* Subtle light burst */}
                       <div className="absolute right-0 top-0 h-full w-full opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 100% 0%, white 0%, transparent 60%)' }} />
                       
@@ -1017,40 +1017,40 @@ function Home() {
                       <img 
                         src={`${DEVICON}${c.icon}`} 
                         alt="" 
-                        className="absolute -right-6 -bottom-6 h-48 w-48 object-contain opacity-[0.15] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-6"
+                        className="absolute -right-5 -bottom-5 h-36 w-36 object-contain opacity-[0.15] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-6"
                         style={{ filter: 'grayscale(100%) brightness(200%)' }}
                       />
 
                       {/* Small icon box */}
-                      <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white shadow-sm relative z-10 transition-transform duration-500 group-hover:scale-110">
+                      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white shadow-sm relative z-10 transition-transform duration-500 group-hover:scale-110">
                         <img
                           src={`${DEVICON}${c.icon}`}
                           alt={`${c.name} logo`}
                           loading="lazy"
-                          className="h-6 w-6 object-contain"
+                          className="h-5 w-5 object-contain"
                         />
                       </div>
                     </div>
 
                     {/* Content Bottom Section */}
-                    <div className="flex flex-1 flex-col items-start gap-4 p-6 bg-card relative z-10 w-full">
-                      <div className="flex flex-col gap-1 w-full">
-                        <p className="font-display text-lg font-semibold leading-tight text-foreground group-hover:text-primary transition-colors">{c.name}</p>
-                        <p className="text-[11px] font-bold uppercase tracking-wider text-secondary">{c.level}</p>
+                    <div className="flex flex-1 flex-col items-start gap-3 p-4 sm:p-5 bg-card relative z-10 w-full">
+                      <div className="flex flex-col gap-0.5 w-full">
+                        <p className="font-display text-base font-semibold leading-snug text-foreground group-hover:text-primary transition-colors">{c.name}</p>
+                        <p className="text-[10px] font-bold uppercase tracking-wider text-secondary">{c.level}</p>
                       </div>
-                      <div className="flex flex-wrap gap-2 w-full">
+                      <div className="flex flex-wrap gap-1.5 w-full">
                         {c.teaches.slice(0, 2).map((t) => (
-                          <span key={t} className="rounded-md bg-muted px-2 py-1 text-[10px] font-medium text-muted-foreground">{t}</span>
+                          <span key={t} className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{t}</span>
                         ))}
                         {c.teaches.length > 2 && (
-                          <span className="rounded-md bg-muted px-2 py-1 text-[10px] font-medium text-muted-foreground">
+                          <span className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
                             +{c.teaches.length - 2} more
                           </span>
                         )}
                       </div>
                       {/* Open Course CTA */}
                       <div className="mt-auto pt-2 w-full border-t border-border/60">
-                        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary group-hover:text-secondary transition-colors">
+                        <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-secondary transition-colors">
                           Open Course
                           <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                         </span>
