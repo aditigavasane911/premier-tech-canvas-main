@@ -679,7 +679,7 @@ function CourseModal({
 }
 
 function Home() {
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [showAllCourses, setShowAllCourses] = useState(false);
   const [showCallbackModal, setShowCallbackModal] = useState(false);
@@ -1082,7 +1082,7 @@ function Home() {
         </section>
 
         {/* FAQ */}
-        <section id="faqs" className="mx-auto max-w-4xl px-5 py-24 lg:px-8 lg:py-32">
+        <section id="faqs" className="mx-auto max-w-5xl px-5 py-24 lg:px-8 lg:py-32">
           <h2 className="text-center font-display text-3xl text-primary sm:text-4xl">FAQs</h2>
           <div className="mt-8 space-y-3">
             {FAQS.map((f, i) => {
