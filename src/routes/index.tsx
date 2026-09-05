@@ -819,41 +819,55 @@ function Home() {
 
       <main>
         {/* HERO */}
-        <section id="home" className="relative overflow-hidden bg-[#F4F9FF]">
-          <div className="mx-auto grid w-full max-w-screen-2xl items-center gap-12 px-5 py-24 lg:grid-cols-[1fr_1fr] lg:px-12 lg:py-32">
-            <div className="animate-fade-in lg:px-8 xl:pl-16 xl:pr-10">
-              <span className="text-sm font-bold tracking-wider text-[#2A75D3] uppercase">
-                TECHNOLOGY EDUCATOR • MENTOR • WORKSHOP FACILITATOR
-              </span>
-              <h1 className="mt-4 font-display text-5xl font-black leading-[1.1] text-[#0B2559] sm:text-6xl lg:text-[72px] min-h-[3em] sm:min-h-0">
-                <span className="text-[#3B82F6]">
+        <section id="home" className="relative min-h-[88vh] lg:min-h-[92vh] w-full flex items-center overflow-hidden bg-slate-950">
+          {/* Full-screen background image */}
+          <img
+            src={heroImage}
+            alt="Workshop teaching session"
+            className="absolute inset-0 h-full w-full object-cover object-center animate-fade-in scale-105 transition-transform duration-1000"
+          />
+
+          {/* Dark gradient overlay for text legibility */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#061229]/95 via-[#0B2559]/80 to-slate-950/60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#061229] via-transparent to-black/40" />
+
+          {/* Foreground text content */}
+          <div className="relative z-10 mx-auto w-full max-w-screen-2xl px-6 py-20 lg:px-16 lg:py-32">
+            <div className="max-w-2xl animate-fade-in space-y-6">
+              <div className="inline-flex items-center gap-2 rounded-full border border-sky-400/30 bg-sky-500/10 px-4 py-1.5 backdrop-blur-md">
+                <span className="h-2 w-2 rounded-full bg-sky-400 animate-pulse" />
+                <span className="text-xs sm:text-sm font-bold tracking-widest text-sky-300 uppercase">
+                  TECHNOLOGY EDUCATOR • MENTOR • WORKSHOP FACILITATOR
+                </span>
+              </div>
+
+              <h1 className="font-display text-5xl font-black leading-[1.1] text-white sm:text-6xl lg:text-[76px] min-h-[2.5em] sm:min-h-0 drop-shadow-md">
+                <span className="text-sky-400">
                   <Typewriter words={["INNOVATE.", "EDUCATE.", "ELEVATE."]} delay={300} speed={100} pause={1500} deleteSpeed={60} />
                 </span>
               </h1>
-              <p className="mt-6 max-w-lg text-[17px] leading-relaxed text-[#4A5568] font-medium">
+
+              <p className="max-w-xl text-lg sm:text-xl leading-relaxed text-slate-200 font-normal drop-shadow">
                 Empowering students with real-world technology skills through hands-on workshops, mentorship and innovation.
               </p>
-              
-              <div className="mt-10">
+
+              <div className="pt-4 flex flex-wrap items-center gap-4">
                 <button
                   type="button"
                   onClick={() => setShowCallbackModal(true)}
-                  className="inline-flex items-center gap-2.5 rounded-xl bg-[#0B2559] px-7 py-4 text-[15px] font-semibold text-white shadow-lg shadow-blue-900/20 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-900/30"
+                  className="inline-flex items-center gap-2.5 rounded-xl bg-blue-600 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-blue-600/30 transition-all hover:bg-blue-500 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-500/40 active:translate-y-0"
                 >
                   <Calendar className="h-5 w-5" />
                   Book a Workshop
                 </button>
+                <a
+                  href="#courses"
+                  className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-7 py-4 text-base font-semibold text-white backdrop-blur-md transition-all hover:bg-white/20 hover:-translate-y-0.5"
+                >
+                  Explore Courses
+                  <ArrowRight className="h-4 w-4" />
+                </a>
               </div>
-            </div>
-
-            <div className="animate-fade-in-up overflow-hidden rounded-[2rem] shadow-2xl shadow-blue-900/10">
-              <img
-                src={heroImage}
-                alt="Workshop teaching session"
-                width={1280}
-                height={960}
-                className="h-full w-full object-cover sm:h-[32rem] lg:h-[36rem]"
-              />
             </div>
           </div>
         </section>
