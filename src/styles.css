@@ -503,35 +503,6 @@
   letter-spacing: 0.02em;
 }
 
-/* ── Feedback card slide-in animation ── */
-@keyframes feedbackCardIn {
-  from {
-    opacity: 0;
-    transform: translateY(24px) scale(0.96);
-    filter: blur(2px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
-  }
-}
-
-.feedback-card-animate {
-  animation: feedbackCardIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-/* ── Feedback progress bar sweep ── */
-@keyframes feedbackProgress {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
-}
-
-.feedback-progress-bar {
-  transform-origin: left center;
-  animation: feedbackProgress linear both;
-}
-
 /* ─── COURSE CARD ENTRANCE ANIMATION ─────────────────────────── */
 /*
  * One-time horizontal SLIDE FROM RIGHT entrance, triggered by IntersectionObserver.

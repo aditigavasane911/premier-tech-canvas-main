@@ -1,98 +1,66 @@
 import { useState, useEffect } from "react";
 
-/** Single-word mode: type once and stop */
-type SingleProps = {
-  text: string;
-  words?: never;
-  speed?: number;
-  delay?: number;
-  pause?: never;
-  deleteSpeed?: never;
-};
-
-/** Multi-word cycling mode: type → pause → delete → next word */
-type MultiProps = {
-  words: string[];
-  text?: never;
-  speed?: number;
-  delay?: number;
-  pause?: number;
-  deleteSpeed?: number;
-};
-
-type TypewriterProps = SingleProps | MultiProps;
-
-export function Typewriter({
-  text,
-  words,
-  speed = 100,
+export function Typewriter({ 
+  words, 
+  speed = 100, 
   delay = 0,
-  pause = 1500,
-  deleteSpeed = 60,
-}: TypewriterProps) {
+  deleteSpeed = 50,
+  pause = 1500
+}: { 
+  words: string[]; 
+  speed?: number; 
+  delay?: number;
+  deleteSpeed?: number;
+  pause?: number;
+}) {
   const [displayedText, setDisplayedText] = useState("");
+  const [wordIndex, setWordIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [started, setStarted] = useState(false);
 
-  // Single-word mode
   useEffect(() => {
-    if (words) return;
-    const t = setTimeout(() => setStarted(true), delay);
-    return () => clearTimeout(t);
-  }, [delay, words]);
+    const startTimeout = setTimeout(() => {
+      setStarted(true);
+    }, delay);
+
+    return () => clearTimeout(startTimeout);
+  }, [delay]);
 
   useEffect(() => {
-    if (words || !started || !text) return;
-    let i = 0;
-    const iv = setInterval(() => {
-      if (i < text.length) {
-        setDisplayedText(text.substring(0, i + 1));
-        i++;
-      } else {
-        clearInterval(iv);
-      }
-    }, speed);
-    return () => clearInterval(iv);
-  }, [text, speed, started, words]);
+    if (!started) return;
 
-  // Multi-word cycling mode
-  useEffect(() => {
-    if (!words || words.length === 0) return;
-
-    let wordIndex = 0;
-    let charIndex = 0;
-    let deleting = false;
     let timeout: ReturnType<typeof setTimeout>;
+    
+    const currentWord = words[wordIndex % words.length];
 
-    const tick = () => {
-      const currentWord = words[wordIndex];
-
-      if (!deleting) {
-        charIndex++;
-        setDisplayedText(currentWord.substring(0, charIndex));
-        if (charIndex === currentWord.length) {
-          deleting = true;
-          timeout = setTimeout(tick, pause);
-          return;
-        }
+    if (isDeleting) {
+      if (displayedText.length > 0) {
+        timeout = setTimeout(() => {
+          setDisplayedText(currentWord.substring(0, displayedText.length - 1));
+        }, deleteSpeed);
       } else {
-        charIndex--;
-        setDisplayedText(currentWord.substring(0, charIndex));
-        if (charIndex === 0) {
-          deleting = false;
-          wordIndex = (wordIndex + 1) % words.length;
-        }
+        setIsDeleting(false);
+        setWordIndex((prev) => prev + 1);
       }
-      timeout = setTimeout(tick, deleting ? deleteSpeed : speed);
-    };
+    } else {
+      if (displayedText.length < currentWord.length) {
+        timeout = setTimeout(() => {
+          setDisplayedText(currentWord.substring(0, displayedText.length + 1));
+        }, speed);
+      } else {
+        timeout = setTimeout(() => {
+          setIsDeleting(true);
+        }, pause);
+      }
+    }
 
-    timeout = setTimeout(tick, delay);
     return () => clearTimeout(timeout);
-  }, [words, speed, delay, pause, deleteSpeed]);
+  }, [displayedText, isDeleting, started, wordIndex, words, speed, deleteSpeed, pause]);
 
   return (
     <span className="inline-block">
       {displayedText}
-      <span className="animate-pulse border-r-4 border-current ml-1 inline-block h-[0.85em] align-middle -mt-1" />
+      <span className="animate-pulse border-r-4 border-current ml-[2px] inline-block h-[0.85em] align-middle -mt-1"></span>
     </span>
   );
 }
