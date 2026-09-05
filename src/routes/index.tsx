@@ -25,6 +25,9 @@ import { TechMarquee } from "@/components/site/Marquee";
 import { WhyUsGallery } from "@/components/site/WhyUsGallery";
 import { AboutCollage } from "@/components/site/AboutCollage";
 import { Typewriter } from "@/components/site/Typewriter";
+import sveriLogo from "@/assets/colleges/sveri.png";
+import fabtechLogo from "@/assets/colleges/fabtech.png";
+import mitcrerLogo from "@/assets/colleges/mitcrer.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -50,6 +53,7 @@ const NAV = [
   { label: "Home", href: "#home" },
   { label: "About Us", href: "#about" },
   { label: "Courses", href: "#courses" },
+  { label: "Workshops", href: "#workshops" },
   { label: "FAQs", href: "#faqs" },
   { label: "Contact", href: "#contact" },
 ];
@@ -989,6 +993,67 @@ function Home() {
           </div>
         </section>
 
+        {/* WORKSHOPS & CAMPUS ENGAGEMENT */}
+        <section id="workshops" className="border-y border-border bg-[#F4F9FF] py-24 lg:py-32 overflow-hidden">
+          <div className="mx-auto w-full max-w-screen-2xl px-5 lg:px-12">
+            <div className="text-center animate-fade-in">
+              <span className="text-sm font-bold tracking-wider text-[#2A75D3] uppercase">
+                EMPOWERING STUDENTS
+              </span>
+              <h2 className="mt-4 font-display text-4xl font-bold text-[#0B2559] sm:text-5xl">
+                Workshops & Campus Engagement
+              </h2>
+              <p className="mx-auto mt-6 max-w-2xl text-[17px] leading-relaxed text-[#4A5568] font-medium">
+                We bring industry-grade training directly to college campuses, providing students with hands-on experience in the latest technologies.
+              </p>
+            </div>
+
+            <div className="mt-16 grid gap-8 sm:grid-cols-3">
+              {[
+                { name: "SVERIS COLLEGE OF ENGINEERING", loc: "Pandharpur", tech: "Java Development", img: sveriLogo, isLogo: true },
+                { name: "MIT College of Railway Engineering & Research", loc: "Barshi", tech: "Python Programming", img: mitcrerLogo, isLogo: true },
+                { name: "FABTECH COLLEGE", loc: "Sangola", tech: "AWS Cloud Services", img: fabtechLogo, isLogo: true },
+              ].map((college, i) => (
+                <div 
+                  key={college.name} 
+                  className="group relative overflow-hidden rounded-2xl bg-white shadow-lg shadow-blue-900/5 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:shadow-blue-900/10"
+                  style={{ animation: `stat-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${i * 0.15}s both` }}
+                >
+                  <div className={`aspect-video overflow-hidden ${college.isLogo ? 'bg-white p-6' : ''}`}>
+                    <img 
+                      src={college.img} 
+                      alt={college.name} 
+                      className={`h-full w-full transition-transform duration-700 group-hover:scale-110 ${college.isLogo ? 'object-contain' : 'object-cover'}`} 
+                    />
+                  </div>
+                  <div className="p-6">
+                    <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#3B82F6]">
+                      <MapPin className="h-4 w-4" />
+                      {college.loc}
+                    </div>
+                    <h3 className="mt-3 font-display text-xl font-bold leading-tight text-[#0B2559] group-hover:text-[#2A75D3] transition-colors">
+                      {college.name}
+                    </h3>
+                    <div className="mt-5 border-t border-blue-900/10 pt-4">
+                      <p className="text-sm font-semibold text-[#4A5568]">Workshop Technology:</p>
+                      <p className="mt-1 font-display text-lg font-bold text-[#0B2559]">{college.tech}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-16 flex justify-center">
+              <a
+                href="/workshops"
+                className="inline-flex items-center gap-2 rounded-xl bg-[#0B2559] px-8 py-4 text-[15px] font-semibold text-white shadow-lg shadow-blue-900/20 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-900/30"
+              >
+                VIEW ALL WORKSHOPS
+                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </a>
+            </div>
+          </div>
+        </section>
 
         {/* TECH STACK MARQUEE */}
         <section className="border-y border-border bg-muted/40 py-24 lg:py-32">
