@@ -109,21 +109,73 @@ const STATS = [
   },
 ];
 
-function useCountUp(end: number, duration = 2000, started = false) {
-  const [count, setCount] = useState(0);
+function useCountUp({
+  end,
+  duration = 1800,
+  pauseDuration = 1000,
+  delay = 0,
+  isHovered = false,
+}: {
+  end: number;
+  duration?: number;
+  pauseDuration?: number;
+  delay?: number;
+  isHovered: boolean;
+}) {
+  const [count, setCount] = useState(end);
+
   useEffect(() => {
-    if (!started) return;
-    let startTime: number | null = null;
-    const step = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 1);
-      // easeOutExpo
-      const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-      setCount(Math.floor(eased * end));
-      if (progress < 1) requestAnimationFrame(step);
+    if (!isHovered) {
+      setCount(end);
+      return;
+    }
+
+    let animFrameId: number;
+    let timerId: ReturnType<typeof setTimeout>;
+    let delayTimerId: ReturnType<typeof setTimeout>;
+    let active = true;
+
+    const runCycle = () => {
+      setCount(0);
+      let startTime: number | null = null;
+
+      const step = (timestamp: number) => {
+        if (!active) return;
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+        // easeOutExpo
+        const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        setCount(Math.floor(eased * end));
+
+        if (progress < 1) {
+          animFrameId = requestAnimationFrame(step);
+        } else {
+          // Pause briefly at max value before restarting next cycle
+          timerId = setTimeout(() => {
+            if (active) {
+              runCycle();
+            }
+          }, pauseDuration);
+        }
+      };
+
+      animFrameId = requestAnimationFrame(step);
     };
-    requestAnimationFrame(step);
-  }, [end, duration, started]);
+
+    delayTimerId = setTimeout(() => {
+      if (active) {
+        runCycle();
+      }
+    }, delay);
+
+    return () => {
+      active = false;
+      cancelAnimationFrame(animFrameId);
+      clearTimeout(timerId);
+      clearTimeout(delayTimerId);
+    };
+  }, [end, duration, pauseDuration, delay, isHovered]);
+
   return count;
 }
 
@@ -133,19 +185,26 @@ function StatItem({
   title,
   label,
   index,
-  started,
+  isHovered,
 }: {
   end: number;
   suffix: string;
   title: string;
   label: string;
   index: number;
-  started: boolean;
+  isHovered: boolean;
 }) {
-  const count = useCountUp(end, 2000, started);
+  const count = useCountUp({
+    end,
+    duration: 1800,
+    pauseDuration: 1000,
+    delay: index * 180,
+    isHovered,
+  });
+
   return (
     <div
-      className="stat-item"
+      className="stat-item transition-transform duration-300"
       style={{ animationDelay: `${index * 120}ms`, animationFillMode: "both" }}
     >
       {/* Count */}
@@ -165,35 +224,19 @@ function StatItem({
 }
 
 function StatsSection() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [started, setStarted] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setStarted(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.25 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  const [isSectionHovered, setIsSectionHovered] = useState(false);
 
   return (
     <section
-      ref={ref}
-      className="stat-section"
+      className="stat-section cursor-pointer transition-all duration-300"
+      onMouseEnter={() => setIsSectionHovered(true)}
+      onMouseLeave={() => setIsSectionHovered(false)}
     >
       <div className="stat-section-inner">
         <div className="stat-row">
           {STATS.map((s, i) => (
             <Fragment key={s.title}>
-              <StatItem {...s} index={i} started={started} />
+              <StatItem {...s} index={i} isHovered={isSectionHovered} />
               {i < STATS.length - 1 && <div className="stat-divider" />}
             </Fragment>
           ))}
@@ -726,6 +769,7 @@ function Home() {
   const [coursesTriggered, setCoursesTriggered] = useState(false);
   const coursesRef = useRef<HTMLDivElement>(null);
 
+
   useEffect(() => {
     const el = coursesRef.current;
     if (!el) return;
@@ -814,41 +858,54 @@ function Home() {
 
       <main>
         {/* HERO */}
-        <section id="home" className="relative overflow-hidden bg-[#F4F9FF]">
-          <div className="mx-auto grid w-full max-w-screen-2xl items-center gap-12 px-5 py-24 lg:grid-cols-[1fr_1fr] lg:px-12 lg:py-32">
-            <div className="animate-fade-in lg:px-8 xl:pl-16 xl:pr-10">
-              <span className="text-sm font-bold tracking-wider text-[#2A75D3] uppercase">
-                TECHNOLOGY EDUCATOR • MENTOR • WORKSHOP FACILITATOR
-              </span>
-              <h1 className="mt-4 font-display text-5xl font-black leading-[1.1] text-[#0B2559] sm:text-6xl lg:text-[72px] min-h-[3em] sm:min-h-0">
+        <section id="home" className="relative min-h-[85vh] lg:min-h-[90vh] w-full flex items-center overflow-hidden bg-slate-100">
+          {/* Background image — Focused on projector code & classroom */}
+          <img
+            src={heroImage}
+            alt="Workshop teaching session showing Java code on projector"
+            className="absolute inset-0 h-full w-full object-cover object-[55%_20%] animate-fade-in"
+          />
+
+          {/* Left-side fade ONLY — leaves projector screen & code 100% crystal clear */}
+          <div className="absolute left-0 top-0 bottom-0 w-full sm:w-[65%] lg:w-[52%] bg-gradient-to-r from-white via-white/95 via-80% to-transparent pointer-events-none z-10" />
+
+          {/* Foreground text content */}
+          <div className="relative z-20 mx-auto w-full max-w-screen-2xl px-6 py-20 lg:px-16 lg:py-28">
+            <div className="max-w-xl animate-fade-in space-y-6">
+              <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50/95 px-4 py-1.5 shadow-sm">
+                <span className="h-2 w-2 rounded-full bg-[#2A75D3] animate-pulse" />
+                <span className="text-xs sm:text-sm font-bold tracking-widest text-[#2A75D3] uppercase">
+                  TECHNOLOGY EDUCATOR • MENTOR • WORKSHOP FACILITATOR
+                </span>
+              </div>
+
+              <h1 className="font-display text-5xl font-black leading-[1.1] text-[#0B2559] sm:text-6xl lg:text-[72px] min-h-[2.5em] sm:min-h-0">
                 <span className="text-[#3B82F6]">
                   <Typewriter words={["INNOVATE.", "EDUCATE.", "ELEVATE."]} delay={300} speed={100} pause={1500} deleteSpeed={60} />
                 </span>
               </h1>
-              <p className="mt-6 max-w-lg text-[17px] leading-relaxed text-[#4A5568] font-medium">
+
+              <p className="max-w-lg text-lg sm:text-xl leading-relaxed text-[#4A5568] font-medium">
                 Empowering students with real-world technology skills through hands-on workshops, mentorship and innovation.
               </p>
-              
-              <div className="mt-10">
+
+              <div className="pt-4 flex flex-wrap items-center gap-4">
                 <button
                   type="button"
                   onClick={() => setShowCallbackModal(true)}
-                  className="inline-flex items-center gap-2.5 rounded-xl bg-[#0B2559] px-7 py-4 text-[15px] font-semibold text-white shadow-lg shadow-blue-900/20 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-900/30"
+                  className="inline-flex items-center gap-2.5 rounded-xl bg-[#0B2559] px-8 py-4 text-base font-semibold text-white shadow-lg shadow-blue-900/25 transition-all hover:bg-[#13377a] hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-900/35 active:translate-y-0"
                 >
                   <Calendar className="h-5 w-5" />
                   Book a Workshop
                 </button>
+                <a
+                  href="#courses"
+                  className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white/90 px-7 py-4 text-base font-semibold text-slate-800 shadow-sm transition-all hover:bg-white hover:-translate-y-0.5"
+                >
+                  Explore Courses
+                  <ArrowRight className="h-4 w-4" />
+                </a>
               </div>
-            </div>
-
-            <div className="animate-fade-in overflow-hidden rounded-[2rem] shadow-2xl shadow-blue-900/10">
-              <img
-                src={heroImage}
-                alt="Workshop teaching session"
-                width={1280}
-                height={960}
-                className="h-full w-full object-cover sm:h-[32rem] lg:h-[36rem]"
-              />
             </div>
           </div>
         </section>
@@ -857,26 +914,40 @@ function Home() {
         <StatsSection />
 
         {/* ABOUT */}
-        <section id="about" className="border-y border-border bg-muted/40 py-24 lg:py-32">
+        <section id="about" className="border-y border-border bg-[#F8FAFC] pt-8 pb-16 sm:pt-10 sm:pb-20 lg:pt-10 lg:pb-24">
           <div className="mx-auto grid w-full max-w-screen-2xl items-center gap-12 px-5 lg:grid-cols-2 lg:gap-16 lg:px-12">
             <div className="animate-fade-in">
               <AboutCollage />
             </div>
 
-            <div className="animate-fade-in">
-              <span className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary">
-                Who we are
-              </span>
-              <h2 className="mt-4 font-display text-3xl leading-[1.12] text-primary sm:text-4xl lg:text-5xl">
-                Building skills. <span className="text-gradient">Creating opportunities.</span>
-              </h2>
-              <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
-                We are a dedicated training studio focused on transforming beginners into job-ready professionals. We offer comprehensive, mentor-led courses in modern technologies, hands-on experience with real-world projects, and dedicated placement support to help you launch a successful career in tech.
+            <div className="animate-fade-in flex flex-col justify-center space-y-8 lg:pl-6">
+              {/* Category Tag */}
+              <div>
+                <span className="text-xs sm:text-sm font-bold tracking-[0.2em] text-[#2A75D3] uppercase">
+                  WHO WE ARE
+                </span>
+              </div>
+
+              {/* Paragraph 1 */}
+              <p className="text-center text-base sm:text-lg italic leading-relaxed text-slate-700 font-normal max-w-2xl mx-auto">
+                <span className="text-amber-500 font-serif font-bold text-2xl leading-none inline-block mr-0.5">“</span>
+                <span className="underline decoration-slate-400/60 underline-offset-4 font-semibold text-slate-800">Softtech</span> Solutions &amp; Training, based in Pune, builds Manufacturing Execution Systems (MES) for manufacturing environments, including automotive production lines, and trains students and developers in Java, Python, AWS, <span className="underline decoration-slate-400/60 underline-offset-4">Vaadin</span>, Spring, and full-stack web development.
               </p>
 
-              <div className="mt-8">
-                <p className="font-display text-xl font-semibold text-primary">Ravindra Swami</p>
-                <p className="mt-1 text-sm text-muted-foreground">Founder</p>
+              {/* Paragraph 2 */}
+              <p className="text-center text-base sm:text-lg italic leading-relaxed text-slate-700 font-normal max-w-2xl mx-auto">
+                Ravindra Swami, whose background spans MES engineering at companies like <strong className="font-semibold text-slate-900">Fiat India</strong> and <strong className="font-semibold text-slate-900">Volvo-Eicher</strong>, and academic teaching as a lecturer and Head of Department, the company brings both worlds into every project and course.
+              </p>
+
+              {/* Founder Signature */}
+              <div className="pt-4 flex flex-col items-end pr-4">
+                <p className="text-2xl sm:text-3xl font-bold tracking-tight text-[#0B2559] font-serif flex items-center gap-1.5">
+                  <span className="text-amber-500 text-3xl font-serif">“</span>
+                  Ravindra Swami
+                </p>
+                <p className="mt-0.5 text-sm font-medium text-slate-500 mr-1">
+                  Founder
+                </p>
               </div>
             </div>
           </div>
@@ -913,7 +984,7 @@ function Home() {
                     }}
                   >
                     {/* Colored Top Section */}
-                    <div className="relative h-48 w-full p-6 shrink-0 overflow-hidden" style={{ background: c.bg }}>
+                    <div className="relative h-24 w-full p-3.5 sm:p-4 shrink-0 overflow-hidden" style={{ background: c.bg }}>
                       {/* Subtle light burst */}
                       <div className="absolute right-0 top-0 h-full w-full opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 100% 0%, white 0%, transparent 60%)' }} />
                       
@@ -921,42 +992,42 @@ function Home() {
                       <img 
                         src={`${DEVICON}${c.icon}`} 
                         alt="" 
-                        className="absolute -right-6 -bottom-6 h-48 w-48 object-contain opacity-[0.15] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-6"
+                        className="absolute -right-3 -bottom-3 h-24 w-24 object-contain opacity-[0.15] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-6"
                         style={{ filter: 'grayscale(100%) brightness(200%)' }}
                       />
 
                       {/* Small icon box */}
-                      <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white shadow-sm relative z-10 transition-transform duration-500 group-hover:scale-110">
+                      <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white shadow-sm relative z-10 transition-transform duration-500 group-hover:scale-110">
                         <img
                           src={`${DEVICON}${c.icon}`}
                           alt={`${c.name} logo`}
                           loading="lazy"
-                          className="h-6 w-6 object-contain"
+                          className="h-4.5 w-4.5 object-contain"
                         />
                       </div>
                     </div>
 
                     {/* Content Bottom Section */}
-                    <div className="flex flex-1 flex-col items-start gap-4 p-6 bg-card relative z-10 w-full">
-                      <div className="flex flex-col gap-1 w-full">
-                        <p className="font-display text-lg font-semibold leading-tight text-foreground group-hover:text-primary transition-colors">{c.name}</p>
-                        <p className="text-[11px] font-bold uppercase tracking-wider text-secondary">{c.level}</p>
+                    <div className="flex flex-1 flex-col items-start gap-2 p-3.5 sm:p-4 bg-card relative z-10 w-full">
+                      <div className="flex flex-col gap-0.5 w-full">
+                        <p className="font-display text-base font-semibold leading-snug text-foreground group-hover:text-primary transition-colors">{c.name}</p>
+                        <p className="text-[10px] font-bold uppercase tracking-wider text-secondary">{c.level}</p>
                       </div>
-                      <div className="flex flex-wrap gap-2 w-full">
+                      <div className="flex flex-wrap gap-1.5 w-full">
                         {c.teaches.slice(0, 2).map((t) => (
-                          <span key={t} className="rounded-md bg-muted px-2 py-1 text-[10px] font-medium text-muted-foreground">{t}</span>
+                          <span key={t} className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{t}</span>
                         ))}
                         {c.teaches.length > 2 && (
-                          <span className="rounded-md bg-muted px-2 py-1 text-[10px] font-medium text-muted-foreground">
+                          <span className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
                             +{c.teaches.length - 2} more
                           </span>
                         )}
                       </div>
                       {/* Open Course CTA */}
-                      <div className="mt-auto pt-2 w-full border-t border-border/60">
-                        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary group-hover:text-secondary transition-colors">
+                      <div className="mt-auto pt-1.5 w-full border-t border-border/60">
+                        <span className="inline-flex items-center gap-2 text-base font-bold text-primary group-hover:text-secondary transition-colors">
                           Open Course
-                          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                         </span>
                       </div>
                     </div>
@@ -977,7 +1048,7 @@ function Home() {
                     onClick={() => setSelectedCourse(c)}
                   >
                     {/* Colored Top Section */}
-                    <div className="relative h-48 w-full p-6 shrink-0 overflow-hidden" style={{ background: c.bg }}>
+                    <div className="relative h-24 w-full p-3.5 sm:p-4 shrink-0 overflow-hidden" style={{ background: c.bg }}>
                       {/* Subtle light burst */}
                       <div className="absolute right-0 top-0 h-full w-full opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 100% 0%, white 0%, transparent 60%)' }} />
                       
@@ -985,42 +1056,42 @@ function Home() {
                       <img 
                         src={`${DEVICON}${c.icon}`} 
                         alt="" 
-                        className="absolute -right-6 -bottom-6 h-48 w-48 object-contain opacity-[0.15] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-6"
+                        className="absolute -right-3 -bottom-3 h-24 w-24 object-contain opacity-[0.15] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-6"
                         style={{ filter: 'grayscale(100%) brightness(200%)' }}
                       />
 
                       {/* Small icon box */}
-                      <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white shadow-sm relative z-10 transition-transform duration-500 group-hover:scale-110">
+                      <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white shadow-sm relative z-10 transition-transform duration-500 group-hover:scale-110">
                         <img
                           src={`${DEVICON}${c.icon}`}
                           alt={`${c.name} logo`}
                           loading="lazy"
-                          className="h-6 w-6 object-contain"
+                          className="h-4.5 w-4.5 object-contain"
                         />
                       </div>
                     </div>
 
                     {/* Content Bottom Section */}
-                    <div className="flex flex-1 flex-col items-start gap-4 p-6 bg-card relative z-10 w-full">
-                      <div className="flex flex-col gap-1 w-full">
-                        <p className="font-display text-lg font-semibold leading-tight text-foreground group-hover:text-primary transition-colors">{c.name}</p>
-                        <p className="text-[11px] font-bold uppercase tracking-wider text-secondary">{c.level}</p>
+                    <div className="flex flex-1 flex-col items-start gap-2 p-3.5 sm:p-4 bg-card relative z-10 w-full">
+                      <div className="flex flex-col gap-0.5 w-full">
+                        <p className="font-display text-base font-semibold leading-snug text-foreground group-hover:text-primary transition-colors">{c.name}</p>
+                        <p className="text-[10px] font-bold uppercase tracking-wider text-secondary">{c.level}</p>
                       </div>
-                      <div className="flex flex-wrap gap-2 w-full">
+                      <div className="flex flex-wrap gap-1.5 w-full">
                         {c.teaches.slice(0, 2).map((t) => (
-                          <span key={t} className="rounded-md bg-muted px-2 py-1 text-[10px] font-medium text-muted-foreground">{t}</span>
+                          <span key={t} className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{t}</span>
                         ))}
                         {c.teaches.length > 2 && (
-                          <span className="rounded-md bg-muted px-2 py-1 text-[10px] font-medium text-muted-foreground">
+                          <span className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
                             +{c.teaches.length - 2} more
                           </span>
                         )}
                       </div>
                       {/* Open Course CTA */}
-                      <div className="mt-auto pt-2 w-full border-t border-border/60">
-                        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary group-hover:text-secondary transition-colors">
+                      <div className="mt-auto pt-1.5 w-full border-t border-border/60">
+                        <span className="inline-flex items-center gap-2 text-base font-bold text-primary group-hover:text-secondary transition-colors">
                           Open Course
-                          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                         </span>
                       </div>
                     </div>
@@ -1370,7 +1441,7 @@ function Home() {
                   required
                   type="text"
                   placeholder="Enter your Name here"
-                  className="w-full rounded-xl border border-input bg-white px-4 py-3 text-sm outline-none transition-colors focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+                  className="w-full rounded-xl border border-input bg-white px-4 py-3 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                 />
               </div>
 
@@ -1381,14 +1452,14 @@ function Home() {
                   required
                   type="email"
                   placeholder="Enter your Email here"
-                  className="w-full rounded-xl border border-input bg-white px-4 py-3 text-sm outline-none transition-colors focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+                  className="w-full rounded-xl border border-input bg-white px-4 py-3 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                 />
               </div>
 
               {/* Phone */}
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-foreground">Phone no.</label>
-                <div className="flex items-center gap-0 rounded-xl border border-input bg-white transition-colors focus-within:border-orange-400 focus-within:ring-2 focus-within:ring-orange-200">
+                <div className="flex items-center gap-0 rounded-xl border border-input bg-white transition-colors focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200">
                   <span className="flex shrink-0 items-center gap-1.5 border-r border-input px-3 py-3 text-sm text-muted-foreground">
                     🇮🇳 +91
                   </span>
@@ -1408,7 +1479,7 @@ function Home() {
                   <select
                     required
                     defaultValue="Online Course (Website)"
-                    className="w-full appearance-none rounded-xl border border-input bg-white px-4 py-3 pr-10 text-sm outline-none transition-colors focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+                    className="w-full appearance-none rounded-xl border border-input bg-white px-4 py-3 pr-10 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                   >
                     {ENQUIRY_OPTIONS.map((opt) => (
                       <option key={opt} value={opt}>{opt}</option>
@@ -1424,14 +1495,14 @@ function Home() {
                 <textarea
                   rows={3}
                   placeholder="E.g. I want details about the offline course, fees, and schedule..."
-                  className="w-full resize-none rounded-xl border border-input bg-white px-4 py-3 text-sm outline-none transition-colors focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+                  className="w-full resize-none rounded-xl border border-input bg-white px-4 py-3 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                 />
               </div>
 
               {/* Submit */}
               <button
                 type="submit"
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-orange-500 px-6 py-3.5 text-sm font-bold text-white shadow-lg transition-all hover:bg-orange-600 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-500/25 transition-all hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-500/35 hover:-translate-y-0.5 active:translate-y-0"
               >
                 <Send className="h-4 w-4" />
                 Book My Callback
