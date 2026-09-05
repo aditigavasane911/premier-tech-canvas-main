@@ -819,35 +819,34 @@ function Home() {
 
       <main>
         {/* HERO */}
-        <section id="home" className="relative min-h-[85vh] lg:min-h-[90vh] w-full flex items-center overflow-hidden bg-white">
-          {/* Full-screen background image */}
+        <section id="home" className="relative min-h-[85vh] lg:min-h-[90vh] w-full flex items-center overflow-hidden bg-slate-100">
+          {/* Background image — Focused on projector code & classroom */}
           <img
             src={heroImage}
-            alt="Workshop teaching session"
-            className="absolute inset-0 h-full w-full object-cover object-center animate-fade-in transition-transform duration-1000"
+            alt="Workshop teaching session showing Java code on projector"
+            className="absolute inset-0 h-full w-full object-cover object-[55%_20%] animate-fade-in"
           />
 
-          {/* Soft light gradient overlay so the classroom image is bright & visible */}
-          <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/85 to-white/35 sm:to-white/20" />
-          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-white/30" />
+          {/* Left-side fade ONLY — leaves projector screen & code 100% crystal clear */}
+          <div className="absolute left-0 top-0 bottom-0 w-full sm:w-[65%] lg:w-[52%] bg-gradient-to-r from-white via-white/95 via-80% to-transparent pointer-events-none z-10" />
 
-          {/* Foreground text content with crisp dark typography */}
-          <div className="relative z-10 mx-auto w-full max-w-screen-2xl px-6 py-20 lg:px-16 lg:py-28">
-            <div className="max-w-2xl animate-fade-in space-y-6">
-              <div className="inline-flex items-center gap-2 rounded-full border border-blue-200/80 bg-blue-50/90 px-4 py-1.5 backdrop-blur-md shadow-sm">
+          {/* Foreground text content */}
+          <div className="relative z-20 mx-auto w-full max-w-screen-2xl px-6 py-20 lg:px-16 lg:py-28">
+            <div className="max-w-xl animate-fade-in space-y-6">
+              <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50/95 px-4 py-1.5 shadow-sm">
                 <span className="h-2 w-2 rounded-full bg-[#2A75D3] animate-pulse" />
                 <span className="text-xs sm:text-sm font-bold tracking-widest text-[#2A75D3] uppercase">
                   TECHNOLOGY EDUCATOR • MENTOR • WORKSHOP FACILITATOR
                 </span>
               </div>
 
-              <h1 className="font-display text-5xl font-black leading-[1.1] text-[#0B2559] sm:text-6xl lg:text-[76px] min-h-[2.5em] sm:min-h-0">
+              <h1 className="font-display text-5xl font-black leading-[1.1] text-[#0B2559] sm:text-6xl lg:text-[72px] min-h-[2.5em] sm:min-h-0">
                 <span className="text-[#3B82F6]">
                   <Typewriter words={["INNOVATE.", "EDUCATE.", "ELEVATE."]} delay={300} speed={100} pause={1500} deleteSpeed={60} />
                 </span>
               </h1>
 
-              <p className="max-w-xl text-lg sm:text-xl leading-relaxed text-[#4A5568] font-medium">
+              <p className="max-w-lg text-lg sm:text-xl leading-relaxed text-[#4A5568] font-medium">
                 Empowering students with real-world technology skills through hands-on workshops, mentorship and innovation.
               </p>
 
@@ -862,7 +861,7 @@ function Home() {
                 </button>
                 <a
                   href="#courses"
-                  className="inline-flex items-center gap-2 rounded-xl border border-slate-300/90 bg-white/80 px-7 py-4 text-base font-semibold text-slate-800 backdrop-blur-md shadow-sm transition-all hover:bg-white hover:-translate-y-0.5"
+                  className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white/90 px-7 py-4 text-base font-semibold text-slate-800 shadow-sm transition-all hover:bg-white hover:-translate-y-0.5"
                 >
                   Explore Courses
                   <ArrowRight className="h-4 w-4" />
