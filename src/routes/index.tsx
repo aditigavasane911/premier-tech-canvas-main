@@ -693,6 +693,17 @@ function CourseModal({
 }
 
 function Home() {
+  const TESTIMONIALS_PER_PAGE = 5;
+  const totalPages = Math.ceil(TESTIMONIALS.length / TESTIMONIALS_PER_PAGE);
+  const [testimonialPage, setTestimonialPage] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTestimonialPage((prev) => (prev + 1) % totalPages);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [totalPages]);
+
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [showAllCourses, setShowAllCourses] = useState(false);
