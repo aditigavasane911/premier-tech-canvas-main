@@ -560,25 +560,25 @@
   display: none;
 }
 
-/* Individual card — fixed width + identical exact height for uniformity */
+/* Individual card — fits content length, short & compact with no empty space */
 .courses-card {
   flex-shrink: 0;
   width: 260px;
-  height: 350px;
+  height: auto;
   scroll-snap-align: start;
 }
 
 @media (min-width: 640px) {
   .courses-card {
     width: 275px;
-    height: 365px;
+    height: auto;
   }
 }
 
 @media (min-width: 1024px) {
   .courses-card {
     width: 290px;
-    height: 375px;
+    height: auto;
   }
 
   .courses-scroll-track {
