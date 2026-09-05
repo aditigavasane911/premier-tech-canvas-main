@@ -526,9 +526,7 @@ const TESTIMONIALS = [
   { quote: "I’ve attended many Java sessions before, but this one’s focus on practical enterprise applications made it invaluable for placements.", name: "Shraddha More", role: "TE IT", rating: 5 },
   { quote: "This workshop was the perfect entry point for absolute beginners like me, making coding feel approachable and exciting.", name: "Kiran Bhagat", role: "First Year Mechanical Engineering", rating: 5 },
   { quote: "The instructor’s interactive style kept energy high and made a three-hour React workshop fly by without losing attention.", name: "Pooja Chavan", role: "TE Computer Engineering", rating: 5 },
-  { quote: "Aggregation pipelines in MongoDB felt intimidating until this session made them approachable through clear examples and patient teaching.", name: "Vedant Pisal", role: "SE Computer Engineering", rating: 5 },
-  { quote: "I never thought I’d understand containers, but this Docker workshop made everything so clear that I’m now seriously considering DevOps.", name: "Rahul Bansode", role: "BE Computer Engineering", rating: 5 },
-  { quote: "The practical focus on building something functional by the end helped me overcome my fear of enterprise Java.", name: "Nikhil Pawar", role: "BE Computer Engineering", rating: 5 }
+  { quote: "Aggregation pipelines in MongoDB felt intimidating until this session made them approachable through clear examples and patient teaching.", name: "Vedant Pisal", role: "SE Computer Engineering", rating: 5 }
 ];
 
 const LEVEL_COLOR: Record<string, string> = {
@@ -696,13 +694,25 @@ function Home() {
   const TESTIMONIALS_PER_PAGE = 5;
   const totalPages = Math.ceil(TESTIMONIALS.length / TESTIMONIALS_PER_PAGE);
   const [testimonialPage, setTestimonialPage] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(true);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTestimonialPage((prev) => (prev + 1) % totalPages);
+      setIsTransitioning(true);
+      setTestimonialPage((prev) => prev + 1);
     }, 5000);
     return () => clearInterval(timer);
-  }, [totalPages]);
+  }, []);
+
+  useEffect(() => {
+    if (testimonialPage === totalPages) {
+      const timeout = setTimeout(() => {
+        setIsTransitioning(false);
+        setTestimonialPage(0);
+      }, 700);
+      return () => clearTimeout(timeout);
+    }
+  }, [testimonialPage, totalPages]);
 
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -1088,12 +1098,14 @@ function Home() {
             <h2 className="text-center font-display text-3xl text-primary sm:text-4xl">Student Feedback</h2>
             <div className="mt-9 overflow-hidden relative">
               <div 
-                className="flex transition-transform duration-700 ease-in-out" 
+                className={`flex ${isTransitioning ? "transition-transform duration-700 ease-in-out" : ""}`}
                 style={{ transform: `translateX(-${testimonialPage * 100}%)` }}
               >
-                {Array.from({ length: totalPages }).map((_, pageIndex) => (
-                  <div key={pageIndex} className="w-full shrink-0 flex flex-wrap justify-center gap-5">
-                    {TESTIMONIALS.slice(pageIndex * TESTIMONIALS_PER_PAGE, (pageIndex + 1) * TESTIMONIALS_PER_PAGE).map((t) => (
+                {Array.from({ length: totalPages + 1 }).map((_, pageIndex) => {
+                  const actualPageIndex = pageIndex % totalPages;
+                  return (
+                    <div key={pageIndex} className="w-full shrink-0 flex flex-wrap justify-center gap-5">
+                      {TESTIMONIALS.slice(actualPageIndex * TESTIMONIALS_PER_PAGE, (actualPageIndex + 1) * TESTIMONIALS_PER_PAGE).map((t) => (
                       <figure key={t.name} className="surface-card p-7 w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)] flex flex-col">
                         <Quote className="h-7 w-7 text-secondary mx-auto" />
                         <blockquote className="mt-4 text-sm leading-relaxed text-muted-foreground text-center flex-1">{t.quote}</blockquote>
@@ -1117,8 +1129,9 @@ function Home() {
                         </figcaption>
                       </figure>
                     ))}
-                  </div>
-                ))}
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
@@ -1127,9 +1140,12 @@ function Home() {
               {Array.from({ length: totalPages }).map((_, i) => (
                 <button
                   key={i}
-                  onClick={() => setTestimonialPage(i)}
+                  onClick={() => {
+                    setIsTransitioning(true);
+                    setTestimonialPage(i);
+                  }}
                   className={`h-2.5 rounded-full transition-all duration-300 ${
-                    testimonialPage === i ? "w-8 bg-secondary" : "w-2.5 bg-border hover:bg-muted-foreground"
+                    (testimonialPage === totalPages ? 0 : testimonialPage) === i ? "w-8 bg-secondary" : "w-2.5 bg-border hover:bg-muted-foreground"
                   }`}
                   aria-label={`Go to page ${i + 1}`}
                 />
