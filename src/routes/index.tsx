@@ -819,35 +819,35 @@ function Home() {
 
       <main>
         {/* HERO */}
-        <section id="home" className="relative min-h-[88vh] lg:min-h-[92vh] w-full flex items-center overflow-hidden bg-slate-950">
+        <section id="home" className="relative min-h-[85vh] lg:min-h-[90vh] w-full flex items-center overflow-hidden bg-white">
           {/* Full-screen background image */}
           <img
             src={heroImage}
             alt="Workshop teaching session"
-            className="absolute inset-0 h-full w-full object-cover object-center animate-fade-in scale-105 transition-transform duration-1000"
+            className="absolute inset-0 h-full w-full object-cover object-center animate-fade-in transition-transform duration-1000"
           />
 
-          {/* Dark gradient overlay for text legibility */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#061229]/95 via-[#0B2559]/80 to-slate-950/60" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#061229] via-transparent to-black/40" />
+          {/* Soft light gradient overlay so the classroom image is bright & visible */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/85 to-white/35 sm:to-white/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-white/30" />
 
-          {/* Foreground text content */}
-          <div className="relative z-10 mx-auto w-full max-w-screen-2xl px-6 py-20 lg:px-16 lg:py-32">
+          {/* Foreground text content with crisp dark typography */}
+          <div className="relative z-10 mx-auto w-full max-w-screen-2xl px-6 py-20 lg:px-16 lg:py-28">
             <div className="max-w-2xl animate-fade-in space-y-6">
-              <div className="inline-flex items-center gap-2 rounded-full border border-sky-400/30 bg-sky-500/10 px-4 py-1.5 backdrop-blur-md">
-                <span className="h-2 w-2 rounded-full bg-sky-400 animate-pulse" />
-                <span className="text-xs sm:text-sm font-bold tracking-widest text-sky-300 uppercase">
+              <div className="inline-flex items-center gap-2 rounded-full border border-blue-200/80 bg-blue-50/90 px-4 py-1.5 backdrop-blur-md shadow-sm">
+                <span className="h-2 w-2 rounded-full bg-[#2A75D3] animate-pulse" />
+                <span className="text-xs sm:text-sm font-bold tracking-widest text-[#2A75D3] uppercase">
                   TECHNOLOGY EDUCATOR • MENTOR • WORKSHOP FACILITATOR
                 </span>
               </div>
 
-              <h1 className="font-display text-5xl font-black leading-[1.1] text-white sm:text-6xl lg:text-[76px] min-h-[2.5em] sm:min-h-0 drop-shadow-md">
-                <span className="text-sky-400">
+              <h1 className="font-display text-5xl font-black leading-[1.1] text-[#0B2559] sm:text-6xl lg:text-[76px] min-h-[2.5em] sm:min-h-0">
+                <span className="text-[#3B82F6]">
                   <Typewriter words={["INNOVATE.", "EDUCATE.", "ELEVATE."]} delay={300} speed={100} pause={1500} deleteSpeed={60} />
                 </span>
               </h1>
 
-              <p className="max-w-xl text-lg sm:text-xl leading-relaxed text-slate-200 font-normal drop-shadow">
+              <p className="max-w-xl text-lg sm:text-xl leading-relaxed text-[#4A5568] font-medium">
                 Empowering students with real-world technology skills through hands-on workshops, mentorship and innovation.
               </p>
 
@@ -855,14 +855,14 @@ function Home() {
                 <button
                   type="button"
                   onClick={() => setShowCallbackModal(true)}
-                  className="inline-flex items-center gap-2.5 rounded-xl bg-blue-600 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-blue-600/30 transition-all hover:bg-blue-500 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-500/40 active:translate-y-0"
+                  className="inline-flex items-center gap-2.5 rounded-xl bg-[#0B2559] px-8 py-4 text-base font-semibold text-white shadow-lg shadow-blue-900/25 transition-all hover:bg-[#13377a] hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-900/35 active:translate-y-0"
                 >
                   <Calendar className="h-5 w-5" />
                   Book a Workshop
                 </button>
                 <a
                   href="#courses"
-                  className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-7 py-4 text-base font-semibold text-white backdrop-blur-md transition-all hover:bg-white/20 hover:-translate-y-0.5"
+                  className="inline-flex items-center gap-2 rounded-xl border border-slate-300/90 bg-white/80 px-7 py-4 text-base font-semibold text-slate-800 backdrop-blur-md shadow-sm transition-all hover:bg-white hover:-translate-y-0.5"
                 >
                   Explore Courses
                   <ArrowRight className="h-4 w-4" />
