@@ -875,7 +875,7 @@ function Home() {
         <StatsSection />
 
         {/* ABOUT */}
-        <section id="about" className="border-y border-border bg-[#F8FAFC] py-20 lg:py-28">
+        <section id="about" className="border-y border-border bg-[#F8FAFC] pt-8 pb-16 sm:pt-10 sm:pb-20 lg:pt-10 lg:pb-24">
           <div className="mx-auto grid w-full max-w-screen-2xl items-center gap-12 px-5 lg:grid-cols-2 lg:gap-16 lg:px-12">
             <div className="animate-fade-in">
               <AboutCollage />
