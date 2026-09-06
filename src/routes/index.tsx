@@ -931,7 +931,7 @@ function Home() {
           <div className="absolute left-0 top-0 bottom-0 w-full sm:w-[60%] lg:w-[48%] bg-gradient-to-r from-white/85 via-white/45 via-60% to-transparent pointer-events-none z-10 backdrop-blur-[1px]" />
 
           {/* Foreground text content */}
-          <div className="relative z-20 mx-auto w-full max-w-screen-2xl px-6 py-20 lg:px-16 lg:py-28">
+          <div className="relative z-20 mx-auto w-full max-w-screen-2xl px-6 py-12 lg:px-16 lg:py-16">
             <div className="max-w-xl animate-fade-in space-y-6">
               <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50/95 px-4 py-1.5 shadow-sm">
                 <span className="h-2 w-2 rounded-full bg-[#2A75D3] animate-pulse" />
@@ -1008,7 +1008,7 @@ function Home() {
         </section>
 
         {/* COURSES */}
-        <section id="courses" className="py-24 lg:py-32 overflow-hidden">
+        <section id="courses" className="py-12 lg:py-16 overflow-hidden">
           <div className="mx-auto w-full max-w-screen-2xl px-5 lg:px-12">
             <h2 className="text-center font-display text-3xl text-primary sm:text-4xl">
               The Courses We Provide
@@ -1178,7 +1178,7 @@ function Home() {
         </section>
 
         {/* WORKSHOPS & CAMPUS ENGAGEMENT */}
-        <section id="workshops" className="border-y border-border bg-[#F4F9FF] py-24 lg:py-32 overflow-hidden">
+        <section id="workshops" className="border-y border-border bg-[#F4F9FF] py-12 lg:py-16 overflow-hidden">
           <div className="mx-auto w-full max-w-screen-2xl px-5 lg:px-12">
             <div className="text-center animate-fade-in">
               <span className="text-sm font-bold tracking-wider text-[#2A75D3] uppercase">
@@ -1226,7 +1226,7 @@ function Home() {
         </section>
 
         {/* TECH STACK MARQUEE */}
-        <section className="border-y border-border bg-muted/40 py-24 lg:py-32">
+        <section className="border-y border-border bg-muted/40 py-12 lg:py-16">
           <div className="mx-auto w-full max-w-screen-2xl px-5 lg:px-12">
             <h2 className="text-center font-display text-3xl text-primary sm:text-4xl">Tech Stack We Teach</h2>
             <p className="mx-auto mt-3 max-w-xl text-center text-sm text-muted-foreground">
@@ -1239,7 +1239,7 @@ function Home() {
         </section>
 
         {/* WHY US — cinematic gallery */}
-        <section className="border-y border-border bg-primary py-24 lg:py-32">
+        <section className="border-y border-border bg-primary py-12 lg:py-16">
           <div className="mx-auto w-full max-w-screen-2xl px-5 text-center lg:px-12">
             <span className="text-xs font-semibold uppercase tracking-[0.24em] text-primary-foreground/60">
               The HATAEC difference
@@ -1259,11 +1259,13 @@ function Home() {
 
 
         {/* News & Recognition */}
-        <section className="bg-background py-24 lg:py-32 overflow-hidden">
-          <div className="mx-auto w-full max-w-screen-2xl px-5 lg:px-12 space-y-24 lg:space-y-32">
+        <section className="bg-background py-12 lg:py-16 overflow-hidden">
+          <div className="mx-auto w-full max-w-screen-2xl px-5 lg:px-12">
+            <h2 className="text-center font-display text-3xl text-primary sm:text-4xl mb-8 sm:mb-12 lg:mb-16">Awards and Rewards</h2>
+            <div className="space-y-8 lg:space-y-12">
             
             {/* We in News */}
-            <div className="flex flex-col md:flex-row items-center gap-16 lg:gap-24">
+            <div className="flex flex-col md:flex-row items-center gap-8 lg:gap-12">
               <div className="w-full md:w-1/2 flex flex-col items-center">
                 <ImageStack 
                   images={['/news1.png', '/news2.png']} 
@@ -1283,16 +1285,16 @@ function Home() {
               </div>
             </div>
 
-            {/* We Awarded For */}
-            <div className="flex flex-col md:flex-row-reverse items-center gap-16 lg:gap-24">
+            {/* Awards and Rewards */}
+            <div className="flex flex-col md:flex-row-reverse items-center gap-8 lg:gap-12">
               <div className="w-full md:w-1/2 flex flex-col items-center">
                 <ImageStack 
                   images={['/award1.jpg', '/award2.png']} 
                   className="w-72 h-48 sm:w-[400px] sm:h-[260px] mt-10" 
                   reverse
                 />
-                <h3 className="mt-12 font-display text-2xl font-bold text-foreground">
-                  We <span className="text-[#3b82f6]">Awarded For</span>
+                <h3 className="mt-12 font-display text-2xl font-bold text-primary">
+                  Awards and <span className="text-[#3b82f6]">Rewards</span>
                 </h3>
               </div>
               <div className="w-full md:w-1/2 mt-12 md:mt-0">
@@ -1304,11 +1306,11 @@ function Home() {
                 </p>
               </div>
             </div>
-
+            </div>
           </div>
         </section>
 
-        <section id="feedback" className="border-y border-border bg-muted/40 py-24 lg:py-32">
+        <section id="feedback" className="border-y border-border bg-muted/40 py-12 lg:py-16">
           <div className="mx-auto w-full max-w-screen-2xl px-5 lg:px-12">
             <h2 className="text-center font-display text-3xl text-primary sm:text-4xl">Student Feedback</h2>
             <div className="mt-9 overflow-hidden relative">
@@ -1371,7 +1373,7 @@ function Home() {
         </section>
 
         {/* FAQ */}
-        <section id="faqs" className="mx-auto max-w-5xl px-5 py-24 lg:px-8 lg:py-32">
+        <section id="faqs" className="mx-auto max-w-5xl px-5 py-12 lg:px-8 lg:py-16">
           <h2 className="text-center font-display text-3xl text-primary sm:text-4xl">FAQs</h2>
           <div className="mt-8 space-y-3">
             {FAQS.map((f, i) => {
@@ -1410,7 +1412,7 @@ function Home() {
 
       {/* CONTACT / FOOTER */}
       <footer id="contact" className="bg-white">
-        <div className="mx-auto grid w-full max-w-screen-2xl gap-10 px-5 py-16 lg:grid-cols-3 lg:px-12">
+        <div className="mx-auto grid w-full max-w-screen-2xl gap-10 px-5 py-10 lg:grid-cols-3 lg:px-12">
           <div className="flex flex-col gap-6 items-start">
             <div className="flex items-center gap-4">
               <img src="/softtech-logo.png" alt="Softtech Logo" className="h-24 sm:h-32 w-auto object-contain" />
