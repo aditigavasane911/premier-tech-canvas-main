@@ -18,6 +18,9 @@ import {
   Send,
   ChevronDown,
   Calendar,
+  Linkedin,
+  Twitter,
+  Instagram,
   type LucideIcon,
 } from "lucide-react";
 import heroImage from "@/assets/home page image.png";
@@ -28,6 +31,18 @@ import { Typewriter } from "@/components/site/Typewriter";
 import sveriLogo from "@/assets/colleges/sveri.png";
 import fabtechLogo from "@/assets/colleges/fabtech.png";
 import mitcrerLogo from "@/assets/colleges/mitcrer.png";
+
+const DiscordIcon = ({ className }: { className?: string }) => (
+  <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z" />
+  </svg>
+);
+
+const XIcon = ({ className }: { className?: string }) => (
+  <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
+  </svg>
+);
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -930,8 +945,8 @@ function Home() {
 
               {/* Paragraph 1 */}
               <p className="text-center text-base sm:text-lg italic leading-relaxed text-slate-700 font-normal max-w-2xl mx-auto">
-                <span className="text-amber-500 font-serif font-bold text-2xl leading-none inline-block mr-0.5">“</span>
-                <span className="underline decoration-slate-400/60 underline-offset-4 font-semibold text-slate-800">Softtech</span> Solutions &amp; Training, based in Pune, builds Manufacturing Execution Systems (MES) for manufacturing environments, including automotive production lines, and trains students and developers in Java, Python, AWS, <span className="underline decoration-slate-400/60 underline-offset-4">Vaadin</span>, Spring, and full-stack web development.
+                <span className="text-primary font-serif font-bold text-2xl leading-none inline-block mr-0.5">“</span>
+                <span className="font-semibold text-slate-800">Softtech</span> Solutions &amp; Training, based in Pune, builds Manufacturing Execution Systems (MES) for manufacturing environments, including automotive production lines, and trains students and developers in Java, Python, AWS, Vaadin, Spring, and full-stack web development.
               </p>
 
               {/* Paragraph 2 */}
@@ -942,7 +957,7 @@ function Home() {
               {/* Founder Signature */}
               <div className="pt-4 flex flex-col items-end pr-4">
                 <p className="text-2xl sm:text-3xl font-bold tracking-tight text-[#0B2559] font-serif flex items-center gap-1.5">
-                  <span className="text-amber-500 text-3xl font-serif">“</span>
+                  <span className="text-primary text-3xl font-serif">“</span>
                   Ravindra Swami
                 </p>
                 <p className="mt-0.5 text-sm font-medium text-slate-500 mr-1">
@@ -1330,33 +1345,33 @@ function Home() {
       )}
 
       {/* CONTACT / FOOTER */}
-      <footer id="contact" className="bg-blue-50/80 border-t border-blue-100/50">
-        <div className="mx-auto grid w-full max-w-screen-2xl gap-10 px-5 py-24 lg:grid-cols-3 lg:px-12 lg:py-32">
-          <div>
-            <h2 className="font-display text-2xl text-primary">Contact</h2>
-            <ul className="mt-5 space-y-4 text-sm text-muted-foreground">
-              <li className="flex gap-3">
-                <MapPin className="h-5 w-5 shrink-0 text-secondary" />
-                <span>
-                  2nd Floor, Tech Park Avenue
-                  <br />
-                  Baner, Pune 411045
-                </span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone className="h-5 w-5 text-secondary" />
-                <a href="tel:+919876543210">+91 98765 43210</a>
-              </li>
-              <li className="flex items-center gap-3">
-                <Mail className="h-5 w-5 text-secondary" />
-                <a href="mailto:info@hataectech.com">info@hataectech.com</a>
-              </li>
-            </ul>
+      <footer id="contact" className="bg-white">
+        <div className="mx-auto grid w-full max-w-screen-2xl gap-10 px-5 py-16 lg:grid-cols-3 lg:px-12">
+          <div className="flex flex-col gap-6 items-start">
+            <div className="flex items-center gap-3">
+              <img src="/softtech-logo.png" alt="Softtech Logo" className="h-14 sm:h-16 w-auto object-contain" />
+              <h2 className="font-display text-xl font-bold text-primary leading-tight">Softtech Solutions and Training</h2>
+            </div>
+            
+            <div className="flex items-center gap-5 mt-2">
+              <a href="#" className="text-muted-foreground hover:text-black transition-colors" aria-label="Instagram">
+                <Instagram className="h-6 w-6" />
+              </a>
+              <a href="https://www.linkedin.com/company/softtech-solutions-and-training/posts/?feedView=all" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-[#0A66C2] transition-colors" aria-label="LinkedIn">
+                <Linkedin className="h-6 w-6" />
+              </a>
+              <a href="#" className="text-muted-foreground hover:text-[#5865F2] transition-colors" aria-label="Discord">
+                <DiscordIcon className="h-6 w-6" />
+              </a>
+              <a href="#" className="text-muted-foreground hover:text-black transition-colors" aria-label="X (Twitter)">
+                <XIcon className="h-5 w-5" />
+              </a>
+            </div>
           </div>
 
           <div>
-            <h3 className="font-display text-lg font-semibold text-primary">Quick Links</h3>
-            <ul className="mt-5 space-y-2.5 text-sm text-muted-foreground">
+            <h3 className="font-display text-lg font-semibold text-primary uppercase">QUICK LINKS</h3>
+            <ul className="mt-5 space-y-3 text-sm text-muted-foreground">
               {NAV.map((n) => (
                 <li key={n.label}>
                   <a href={n.href} className="transition-colors hover:text-secondary">
@@ -1367,36 +1382,32 @@ function Home() {
             </ul>
           </div>
 
-          <div className="rounded-3xl bg-secondary/10 p-8 border border-secondary/20 shadow-sm relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent pointer-events-none" />
-            <h3 className="relative font-display text-lg font-semibold text-primary">Newsletter</h3>
-            <p className="relative mt-4 text-sm text-muted-foreground">
-              Stay updated with our latest courses, batches and offers.
-            </p>
-            <form
-              className="relative mt-4 flex gap-2"
-              onSubmit={(e) => {
-                e.preventDefault();
-                (e.currentTarget as HTMLFormElement).reset();
-              }}
-            >
-              <input
-                required
-                type="email"
-                placeholder="Enter your email"
-                className="w-full rounded-xl border border-input bg-card/80 px-4 py-3 text-sm outline-none focus:border-secondary focus:ring-2 focus:ring-ring/25 backdrop-blur-sm"
-              />
-              <button
-                type="submit"
-                className="shrink-0 rounded-xl bg-secondary px-5 py-3 text-sm font-semibold text-secondary-foreground shadow-[var(--shadow-soft)] hover:opacity-90 transition-opacity"
-              >
-                Subscribe
-              </button>
-            </form>
+          <div className="bg-[#eff6ff] p-8 rounded-3xl lg:-mr-4">
+            <h3 className="font-display text-lg font-semibold text-primary uppercase mb-5">CONTACT</h3>
+            <ul className="space-y-4 text-sm text-muted-foreground">
+              <li className="flex gap-3">
+                <MapPin className="h-5 w-5 shrink-0 text-secondary" />
+                <span>
+                  623/6/6, Shree Swamikrupa Sprash, Bafna Property Backside, Bibavewadi, Pune, Maharashtra 411037, IN
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <Phone className="h-5 w-5 shrink-0 text-secondary" />
+                <div className="flex flex-col gap-1">
+                  <a href="tel:8275265361" className="hover:text-secondary transition-colors">8275265361</a>
+                  <a href="tel:7020370236" className="hover:text-secondary transition-colors">7020370236</a>
+                </div>
+              </li>
+              <li className="flex items-center gap-3">
+                <Mail className="h-5 w-5 shrink-0 text-secondary" />
+                <a href="mailto:info@softtechsolutionsandtraining.com" className="hover:text-secondary transition-colors">info@softtechsolutionsandtraining.com</a>
+              </li>
+            </ul>
           </div>
         </div>
+        
         <div className="border-t border-border py-6 text-center text-xs text-muted-foreground">
-          © 2026 HATAEC TECH. All rights reserved.
+          © 2026@SOFTTECH SOLUTIONS AND TRAINING.All Rights Reserved.
         </div>
       </footer>
 
