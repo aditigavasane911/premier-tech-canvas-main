@@ -898,13 +898,6 @@ function Home() {
                   <Calendar className="h-5 w-5" />
                   Book a Workshop
                 </button>
-                <a
-                  href="#courses"
-                  className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white/90 px-7 py-4 text-base font-semibold text-slate-800 shadow-sm transition-all hover:bg-white hover:-translate-y-0.5"
-                >
-                  Explore Courses
-                  <ArrowRight className="h-4 w-4" />
-                </a>
               </div>
             </div>
           </div>
