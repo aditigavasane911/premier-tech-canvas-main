@@ -20,7 +20,7 @@ import {
   Calendar,
   type LucideIcon,
 } from "lucide-react";
-import heroImage from "@/assets/home page image.png";
+import heroImage from "@/assets/group-photo.png";
 import { TechMarquee } from "@/components/site/Marquee";
 import { WhyUsGallery } from "@/components/site/WhyUsGallery";
 import { AboutCollage } from "@/components/site/AboutCollage";
@@ -859,11 +859,11 @@ function Home() {
       <main>
         {/* HERO */}
         <section id="home" className="relative min-h-[85vh] lg:min-h-[90vh] w-full flex items-center overflow-hidden bg-slate-100">
-          {/* Background image — Focused on projector code & classroom */}
+          {/* Background image — Workshop students & mentor batch */}
           <img
             src={heroImage}
-            alt="Workshop teaching session showing Java code on projector"
-            className="absolute inset-0 h-full w-full object-cover object-[55%_20%] animate-fade-in"
+            alt="Softtech Solutions workshop training batch"
+            className="absolute inset-0 h-full w-full object-cover object-center animate-fade-in"
           />
 
           {/* Left-side fade ONLY — leaves projector screen & code 100% crystal clear */}
