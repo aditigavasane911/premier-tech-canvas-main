@@ -22,7 +22,18 @@ import {
   Twitter,
   Instagram,
   type LucideIcon,
+  ChevronRight,
+  Play,
+  Code,
+  Briefcase,
+  Zap,
+  Cpu,
+  Database,
+  Layout,
+  GraduationCap,
 } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { ImageStack } from "@/components/site/ImageStack";
 import heroImage1 from "@/assets/group-photo.png";
 import heroImage2 from "@/assets/hero-teaching.jpg";
 import { TechMarquee } from "@/components/site/Marquee";
@@ -1245,16 +1256,55 @@ function Home() {
           </div>
         </section>
 
-        {/* AWARDS */}
-        <section id="awards" className="mx-auto w-full max-w-screen-2xl px-5 py-24 lg:px-12 lg:py-32">
-          <h2 className="text-center font-display text-3xl text-primary sm:text-4xl">Awards & Rewards</h2>
-          <div className="mt-9 grid gap-4 sm:grid-cols-3 lg:grid-cols-5">
-            {AWARDS.map((a) => (
-              <div key={a} className="surface-card flex flex-col items-center gap-3 px-4 py-7 text-center">
-                <ShieldCheck className="h-9 w-9 text-secondary" />
-                <p className="text-sm font-medium text-foreground">{a}</p>
+
+
+        {/* News & Recognition */}
+        <section className="bg-background py-24 lg:py-32 overflow-hidden">
+          <div className="mx-auto w-full max-w-screen-2xl px-5 lg:px-12 space-y-24 lg:space-y-32">
+            
+            {/* We in News */}
+            <div className="flex flex-col md:flex-row items-center gap-16 lg:gap-24">
+              <div className="w-full md:w-1/2 flex flex-col items-center">
+                <ImageStack 
+                  images={['/news1.png', '/news2.png']} 
+                  className="w-72 h-56 sm:w-[400px] sm:h-[300px] mt-10" 
+                />
+                <h3 className="mt-12 font-display text-2xl font-bold text-primary">
+                  We in <span className="text-[#3b82f6]">News</span>
+                </h3>
               </div>
-            ))}
+              <div className="w-full md:w-1/2 mt-12 md:mt-0">
+                <h2 className="font-display text-3xl font-bold text-foreground sm:text-[2.5rem] leading-tight">
+                  From the classroom to the headlines.
+                </h2>
+                <p className="mt-6 text-[1.1rem] leading-relaxed text-muted-foreground">
+                  Our work, ideas, and impact have been recognized by leading media platforms, helping us share our journey, innovations, and the people behind them with a wider audience.
+                </p>
+              </div>
+            </div>
+
+            {/* We Awarded For */}
+            <div className="flex flex-col md:flex-row-reverse items-center gap-16 lg:gap-24">
+              <div className="w-full md:w-1/2 flex flex-col items-center">
+                <ImageStack 
+                  images={['/award1.jpg', '/award2.png']} 
+                  className="w-72 h-48 sm:w-[400px] sm:h-[260px] mt-10" 
+                  reverse
+                />
+                <h3 className="mt-12 font-display text-2xl font-bold text-foreground">
+                  We <span className="text-[#3b82f6]">Awarded For</span>
+                </h3>
+              </div>
+              <div className="w-full md:w-1/2 mt-12 md:mt-0">
+                <h2 className="font-display text-3xl font-bold text-foreground sm:text-[2.5rem] leading-tight">
+                  Recognized for the work that creates impact.
+                </h2>
+                <p className="mt-6 text-[1.1rem] leading-relaxed text-muted-foreground">
+                  Every award represents a milestone in our journey ; celebrating innovation, meaningful contributions, and the commitment to turning ideas into real-world change.
+                </p>
+              </div>
+            </div>
+
           </div>
         </section>
 

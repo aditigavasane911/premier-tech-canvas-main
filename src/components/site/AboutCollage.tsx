@@ -2,6 +2,7 @@ import group from "@/assets/about-group.jpeg";
 import portrait from "@/assets/about-portrait.jpeg";
 import pair from "@/assets/about-pair.jpeg";
 import teach from "@/assets/about-teach.jpeg";
+import replacePhoto from "@/assets/replace-photo.png";
 
 export function AboutCollage() {
   return (
@@ -23,6 +24,10 @@ export function AboutCollage() {
         <img src={pair} alt="Students pair programming in a lab" loading="lazy" width={900} height={700} />
       </figure>
 
+      <figure className="collage-tile col-span-6 row-span-3 sm:col-span-2">
+        <img src={replacePhoto} alt="Team of mentors at HATAEC TECH" loading="lazy" width={1024} height={700} />
+      </figure>
+
       <figure className="collage-tile col-span-6 row-span-3 sm:col-span-4">
         <img
           src={teach}
@@ -30,10 +35,6 @@ export function AboutCollage() {
           loading="lazy"
           className="h-full w-full object-cover object-[15%_35%]"
         />
-      </figure>
-
-      <figure className="collage-tile col-span-6 row-span-3 sm:col-span-2">
-        <img src={group} alt="Team of mentors at HATAEC TECH" loading="lazy" width={1024} height={700} />
       </figure>
     </div>
   );
