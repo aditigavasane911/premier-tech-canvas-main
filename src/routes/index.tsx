@@ -1325,8 +1325,8 @@ function Home() {
 
       {/* CONTACT / FOOTER */}
       <footer id="contact" className="relative overflow-hidden bg-blue-50/80 border-t border-blue-100/50">
-        {/* Large faint logo watermark in bottom-right background */}
-        <div className="absolute right-[-4%] bottom-[-10%] sm:right-[-2%] sm:bottom-[-8%] lg:right-[1%] lg:bottom-[-5%] pointer-events-none z-0 opacity-[0.05] select-none w-[360px] sm:w-[460px] md:w-[520px] lg:w-[580px]">
+        {/* Logo watermark centered in contact section background with higher opacity */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0 opacity-[0.14] select-none w-[340px] sm:w-[480px] md:w-[560px] lg:w-[640px]">
           <img
             src={watermarkLogo}
             alt=""
