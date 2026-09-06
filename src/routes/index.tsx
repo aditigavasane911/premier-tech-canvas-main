@@ -21,6 +21,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import heroImage from "@/assets/group-photo.png";
+import watermarkLogo from "@/assets/softtech-watermark.png";
 import { TechMarquee } from "@/components/site/Marquee";
 import { WhyUsGallery } from "@/components/site/WhyUsGallery";
 import { AboutCollage } from "@/components/site/AboutCollage";
@@ -1323,8 +1324,17 @@ function Home() {
       )}
 
       {/* CONTACT / FOOTER */}
-      <footer id="contact" className="bg-blue-50/80 border-t border-blue-100/50">
-        <div className="mx-auto grid w-full max-w-screen-2xl gap-10 px-5 py-24 lg:grid-cols-3 lg:px-12 lg:py-32">
+      <footer id="contact" className="relative overflow-hidden bg-blue-50/80 border-t border-blue-100/50">
+        {/* Large faint logo watermark in bottom-right background */}
+        <div className="absolute right-[-4%] bottom-[-10%] sm:right-[-2%] sm:bottom-[-8%] lg:right-[1%] lg:bottom-[-5%] pointer-events-none z-0 opacity-[0.05] select-none w-[360px] sm:w-[460px] md:w-[520px] lg:w-[580px]">
+          <img
+            src={watermarkLogo}
+            alt=""
+            className="h-auto w-full object-contain"
+          />
+        </div>
+
+        <div className="relative z-10 mx-auto grid w-full max-w-screen-2xl gap-10 px-5 py-24 lg:grid-cols-3 lg:px-12 lg:py-32">
           <div>
             <h2 className="font-display text-2xl text-primary">Contact</h2>
             <ul className="mt-5 space-y-4 text-sm text-muted-foreground">
@@ -1388,7 +1398,7 @@ function Home() {
             </form>
           </div>
         </div>
-        <div className="border-t border-border py-6 text-center text-xs text-muted-foreground">
+        <div className="relative z-10 border-t border-border py-6 text-center text-xs text-muted-foreground">
           © 2026 HATAEC TECH. All rights reserved.
         </div>
       </footer>
