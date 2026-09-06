@@ -31,6 +31,8 @@ import { Typewriter } from "@/components/site/Typewriter";
 import sveriLogo from "@/assets/colleges/sveri.png";
 import fabtechLogo from "@/assets/colleges/fabtech.png";
 import mitcrerLogo from "@/assets/colleges/mitcrer.png";
+import { WORKSHOPS } from "@/routes/workshops";
+
 
 const DiscordIcon = ({ className }: { className?: string }) => (
   <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className={className}>
@@ -1153,49 +1155,35 @@ function Home() {
               </p>
             </div>
 
-            <div className="mt-16 grid gap-8 sm:grid-cols-3">
-              {[
-                { name: "SVERIS COLLEGE OF ENGINEERING", loc: "Pandharpur", tech: "Java Development", img: sveriLogo, isLogo: true },
-                { name: "MIT College of Railway Engineering & Research", loc: "Barshi", tech: "Python Programming", img: mitcrerLogo, isLogo: true },
-                { name: "FABTECH COLLEGE", loc: "Sangola", tech: "AWS Cloud Services", img: fabtechLogo, isLogo: true },
-              ].map((college, i) => (
-                <div 
-                  key={college.name} 
-                  className="group relative overflow-hidden rounded-2xl bg-white shadow-lg shadow-blue-900/5 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:shadow-blue-900/10"
-                  style={{ animation: `stat-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${i * 0.15}s both` }}
-                >
-                  <div className={`aspect-video overflow-hidden ${college.isLogo ? 'bg-white p-6' : ''}`}>
-                    <img 
-                      src={college.img} 
-                      alt={college.name} 
-                      className={`h-full w-full transition-transform duration-700 group-hover:scale-110 ${college.isLogo ? 'object-contain' : 'object-cover'}`} 
-                    />
-                  </div>
-                  <div className="p-6">
-                    <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#3B82F6]">
-                      <MapPin className="h-4 w-4" />
-                      {college.loc}
+            <style>{`
+              @keyframes marquee {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+              }
+              .animate-marquee {
+                animation: marquee 40s linear infinite;
+              }
+            `}</style>
+            <div className="mt-16 w-full overflow-hidden">
+              <div className="flex w-max gap-10 sm:gap-16 animate-marquee hover:[animation-play-state:paused] py-4">
+                {[...WORKSHOPS, ...WORKSHOPS].map((workshop, i) => (
+                  <div 
+                    key={`${workshop.id}-${i}`} 
+                    className="group relative flex flex-col items-center w-36 sm:w-44 transition-all duration-300"
+                  >
+                    <div className="relative h-24 w-24 sm:h-28 sm:w-28 flex items-center justify-center bg-white rounded-2xl shadow-sm border border-blue-900/5 p-4 transition-transform duration-300 group-hover:scale-110 group-hover:shadow-md">
+                      <img 
+                        src={workshop.image} 
+                        alt={workshop.college} 
+                        className="h-full w-full object-contain" 
+                      />
                     </div>
-                    <h3 className="mt-3 font-display text-xl font-bold leading-tight text-[#0B2559] group-hover:text-[#2A75D3] transition-colors">
-                      {college.name}
+                    <h3 className="mt-4 font-display text-sm font-bold text-center leading-snug text-[#0B2559]">
+                      {workshop.college}
                     </h3>
-                    <div className="mt-5 border-t border-blue-900/10 pt-4">
-                      <p className="text-sm font-semibold text-[#4A5568]">Workshop Technology:</p>
-                      <p className="mt-1 font-display text-lg font-bold text-[#0B2559]">{college.tech}</p>
-                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-16 flex justify-center">
-              <a
-                href="/workshops"
-                className="inline-flex items-center gap-2 rounded-xl bg-[#0B2559] px-8 py-4 text-[15px] font-semibold text-white shadow-lg shadow-blue-900/20 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-900/30"
-              >
-                VIEW ALL WORKSHOPS
-                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </a>
+                ))}
+              </div>
             </div>
           </div>
         </section>

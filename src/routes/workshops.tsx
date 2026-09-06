@@ -29,8 +29,8 @@ export const WORKSHOPS = [
     date: "August 2024",
     image: sveriLogo,
     isLogo: true,
+    workshopsCount: 5,
   },
-
   {
     id: "fabtech",
     college: "FABTECH COLLEGE",
@@ -39,6 +39,7 @@ export const WORKSHOPS = [
     date: "June 2024",
     image: fabtechLogo,
     isLogo: true,
+    workshopsCount: 8,
   },
   {
     id: "plgie",
@@ -48,6 +49,7 @@ export const WORKSHOPS = [
     date: "2024",
     image: plgieLogo,
     isLogo: true,
+    workshopsCount: 4,
   },
   {
     id: "grwp",
@@ -57,6 +59,7 @@ export const WORKSHOPS = [
     date: "2024",
     image: grwpLogo,
     isLogo: true,
+    workshopsCount: 3,
   },
   {
     id: "msbec",
@@ -66,6 +69,7 @@ export const WORKSHOPS = [
     date: "2024",
     image: msbecLogo,
     isLogo: true,
+    workshopsCount: 6,
   },
   {
     id: "hncc",
@@ -75,6 +79,7 @@ export const WORKSHOPS = [
     date: "2024",
     image: hnccLogo,
     isLogo: true,
+    workshopsCount: 5,
   },
   {
     id: "rit",
@@ -84,6 +89,7 @@ export const WORKSHOPS = [
     date: "2024",
     image: ritLogo,
     isLogo: true,
+    workshopsCount: 7,
   },
   {
     id: "vvp",
@@ -93,6 +99,7 @@ export const WORKSHOPS = [
     date: "2024",
     image: vvpLogo,
     isLogo: true,
+    workshopsCount: 4,
   },
   {
     id: "mitcrer",
@@ -102,6 +109,7 @@ export const WORKSHOPS = [
     date: "2024",
     image: mitcrerLogo,
     isLogo: true,
+    workshopsCount: 3,
   },
 ];
 
@@ -133,35 +141,35 @@ function WorkshopsPage() {
             </p>
           </div>
 
-          <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {WORKSHOPS.map((workshop, i) => (
-              <div 
-                key={workshop.id} 
-                className="group animate-fade-in relative overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-900/10"
-                style={{ animationDelay: `${i * 100}ms` }}
-              >
-                <div className={`aspect-[4/3] overflow-hidden ${workshop.isLogo ? 'bg-white p-6' : 'bg-muted'}`}>
-                  <img 
-                    src={workshop.image} 
-                    alt={`${workshop.college} Workshop`}
-                    className={`h-full w-full transition-transform duration-700 group-hover:scale-105 ${workshop.isLogo ? 'object-contain' : 'object-cover'}`}
-                  />
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#3B82F6]">
-                    <MapPin className="h-3.5 w-3.5" />
-                    {workshop.location}
+          <style>{`
+            @keyframes marquee {
+              0% { transform: translateX(0); }
+              100% { transform: translateX(-50%); }
+            }
+            .animate-marquee {
+              animation: marquee 40s linear infinite;
+            }
+          `}</style>
+          <div className="mt-16 w-full overflow-hidden">
+            <div className="flex w-max gap-10 sm:gap-16 animate-marquee hover:[animation-play-state:paused] py-4">
+              {[...WORKSHOPS, ...WORKSHOPS].map((workshop, i) => (
+                <div 
+                  key={`${workshop.id}-${i}`} 
+                  className="group relative flex flex-col items-center w-36 sm:w-44 transition-all duration-300"
+                >
+                  <div className="relative h-24 w-24 sm:h-28 sm:w-28 flex items-center justify-center bg-white rounded-2xl shadow-sm border border-blue-900/5 p-4 transition-transform duration-300 group-hover:scale-110 group-hover:shadow-md">
+                    <img 
+                      src={workshop.image} 
+                      alt={workshop.college} 
+                      className="h-full w-full object-contain" 
+                    />
                   </div>
-                  <h3 className="mt-3 font-display text-xl font-bold leading-tight text-[#0B2559] group-hover:text-[#2A75D3] transition-colors">
+                  <h3 className="mt-4 font-display text-sm font-bold text-center leading-snug text-[#0B2559]">
                     {workshop.college}
                   </h3>
-                  <div className="mt-5 flex items-center justify-between border-t border-border/60 pt-4">
-                    <span className="text-sm font-semibold text-foreground">{workshop.tech}</span>
-                    <span className="text-xs font-medium text-muted-foreground">{workshop.date}</span>
-                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </main>
