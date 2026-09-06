@@ -23,7 +23,8 @@ import {
   Instagram,
   type LucideIcon,
 } from "lucide-react";
-import heroImage from "@/assets/home page image.png";
+import heroImage1 from "@/assets/group-photo.png";
+import heroImage2 from "@/assets/hero-teaching.jpg";
 import { TechMarquee } from "@/components/site/Marquee";
 import { WhyUsGallery } from "@/components/site/WhyUsGallery";
 import { AboutCollage } from "@/components/site/AboutCollage";
@@ -755,6 +756,16 @@ function CourseModal({
 }
 
 function Home() {
+  const heroImages = [heroImage1, heroImage2];
+  const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentHeroIndex((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [heroImages.length]);
+
   const TESTIMONIALS_PER_PAGE = 5;
   const totalPages = Math.ceil(TESTIMONIALS.length / TESTIMONIALS_PER_PAGE);
   const [testimonialPage, setTestimonialPage] = useState(0);
@@ -876,15 +887,37 @@ function Home() {
       <main>
         {/* HERO */}
         <section id="home" className="relative min-h-[85vh] lg:min-h-[90vh] w-full flex items-center overflow-hidden bg-slate-100">
-          {/* Background image — Focused on projector code & classroom */}
-          <img
-            src={heroImage}
-            alt="Workshop teaching session showing Java code on projector"
-            className="absolute inset-0 h-full w-full object-cover object-[55%_20%] animate-fade-in"
-          />
+          {/* Background image carousel with smooth 5-second cross-fade */}
+          {heroImages.map((img, idx) => (
+            <img
+              key={img}
+              src={img}
+              alt="Softtech Solutions workshop training session"
+              className={`absolute inset-0 h-full w-full object-cover ${
+                idx === 1 ? "object-[65%_25%]" : "object-center"
+              } transition-opacity duration-1000 ease-in-out ${
+                idx === currentHeroIndex ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          ))}
 
-          {/* Left-side fade ONLY — leaves projector screen & code 100% crystal clear */}
-          <div className="absolute left-0 top-0 bottom-0 w-full sm:w-[65%] lg:w-[52%] bg-gradient-to-r from-white via-white/95 via-80% to-transparent pointer-events-none z-10" />
+          {/* Slide indicators */}
+          <div className="absolute bottom-6 right-6 z-20 flex gap-2">
+            {heroImages.map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                aria-label={`Go to slide ${idx + 1}`}
+                onClick={() => setCurrentHeroIndex(idx)}
+                className={`h-2.5 rounded-full transition-all duration-500 ${
+                  idx === currentHeroIndex ? "w-8 bg-[#2A75D3]" : "w-2.5 bg-white/70 hover:bg-white"
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Left-side soft fade — keeps image on left visible while text remains readable */}
+          <div className="absolute left-0 top-0 bottom-0 w-full sm:w-[60%] lg:w-[48%] bg-gradient-to-r from-white/85 via-white/45 via-60% to-transparent pointer-events-none z-10 backdrop-blur-[1px]" />
 
           {/* Foreground text content */}
           <div className="relative z-20 mx-auto w-full max-w-screen-2xl px-6 py-20 lg:px-16 lg:py-28">
@@ -915,13 +948,6 @@ function Home() {
                   <Calendar className="h-5 w-5" />
                   Book a Workshop
                 </button>
-                <a
-                  href="#courses"
-                  className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white/90 px-7 py-4 text-base font-semibold text-slate-800 shadow-sm transition-all hover:bg-white hover:-translate-y-0.5"
-                >
-                  Explore Courses
-                  <ArrowRight className="h-4 w-4" />
-                </a>
               </div>
             </div>
           </div>
