@@ -808,6 +808,44 @@ function Home() {
   const [coursesTriggered, setCoursesTriggered] = useState(false);
   const coursesRef = useRef<HTMLDivElement>(null);
 
+  const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("Home");
+  const [hiddenNav, setHiddenNav] = useState(false);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      if (currentScrollY > 100 && currentScrollY > lastScrollY.current) {
+        setHiddenNav(true);
+      } else if (currentScrollY < lastScrollY.current) {
+        setHiddenNav(false);
+      }
+      lastScrollY.current = currentScrollY;
+
+      setScrolled(currentScrollY > 20);
+      
+      const sections = NAV.map(n => n.href.substring(1)).filter(Boolean);
+      let current = "Home";
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element && currentScrollY >= (element.offsetTop - 150)) {
+          const navItem = NAV.find(n => n.href === `#${section}`);
+          if (navItem) current = navItem.label;
+        }
+      }
+      if ((window.innerHeight + Math.round(currentScrollY)) >= document.body.offsetHeight - 100) {
+        current = "Contact";
+      }
+      setActiveSection(current);
+    };
+    
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
 
   useEffect(() => {
     const el = coursesRef.current;
@@ -827,37 +865,60 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-50 border-b border-border/70 bg-background/80 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 lg:h-20 w-full items-center justify-between gap-6 px-5 lg:px-12">
+      <header 
+        className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ease-in-out pt-4 lg:pt-5 ${
+          hiddenNav ? "-translate-y-full" : "translate-y-0"
+        }`}
+      >
+        <div 
+          className="mx-auto flex h-14 lg:h-16 items-center justify-between bg-white rounded-full border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.06)] w-full max-w-[95%] lg:max-w-[1300px] px-4 lg:px-8"
+        >
           <a href="#home" className="flex shrink-0 items-center gap-3">
-            <img src="/softtech-logo.png" alt="Softtech Solutions &amp; Training Logo" className="h-12 lg:h-16 w-auto object-contain" />
-            <div className="hidden sm:block leading-tight">
-              <span className="font-display text-sm font-semibold tracking-wide text-primary">
+            <div className="rounded-full bg-white p-1 shadow-sm border border-gray-50 flex items-center justify-center">
+              <img src="/softtech-logo.png" alt="Softtech Solutions &amp; Training Logo" className="h-10 lg:h-12 w-10 lg:w-12 object-contain rounded-full" />
+            </div>
+            <div className="hidden sm:flex flex-col justify-center leading-none">
+              <span className="font-display text-sm lg:text-[15px] font-bold text-[#0A1B3F]">
                 Softtech Solutions and Trainings
               </span>
-              <span className="block text-[10px] font-medium tracking-[0.18em] text-muted-foreground">
+              <span className="mt-1 block text-[9px] lg:text-[10px] font-semibold tracking-[0.2em] text-gray-500">
                 INNOVATE. EDUCATE. ELEVATE.
               </span>
             </div>
           </a>
 
-          <div className="hidden items-center gap-8 lg:flex">
-            <nav className="flex items-center gap-8">
-              {NAV.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-                >
-                  {item.label}
-                </a>
-              ))}
+          <div className="hidden items-center lg:flex ml-auto mr-10">
+            <nav className="flex items-center gap-8 xl:gap-12">
+              {NAV.map((item) => {
+                const isActive = activeSection === item.label;
+                const hasDropdown = item.label === "Courses" || item.label === "Workshops";
+                return (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    onClick={() => setActiveSection(item.label)}
+                    className={`relative flex items-center gap-1 text-sm font-semibold transition-colors duration-200 py-2 ${
+                      isActive ? "text-blue-600" : "text-gray-600 hover:text-blue-600"
+                    }`}
+                  >
+                    {item.label}
+                    {hasDropdown && <ChevronDown className="h-3.5 w-3.5 opacity-70" />}
+                    {isActive && (
+                      <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 rounded-full" />
+                    )}
+                  </a>
+                );
+              })}
             </nav>
+          </div>
+
+          <div className="hidden lg:block shrink-0">
             <button
               type="button"
               onClick={() => setShowCallbackModal(true)}
-              className="rounded-xl bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-soft)] transition-transform hover:-translate-y-0.5"
+              className="flex items-center gap-2 rounded-full bg-[#0044CC] px-6 py-2.5 text-sm font-bold text-white shadow-md shadow-blue-500/20 transition-all hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/30 hover:-translate-y-0.5"
             >
+              <Phone className="h-4 w-4" />
               Request Call
             </button>
           </div>
@@ -866,32 +927,45 @@ function Home() {
             type="button"
             aria-label="Toggle menu"
             onClick={() => setMenuOpen((v) => !v)}
-            className="grid h-10 w-10 place-items-center rounded-xl border border-border lg:hidden"
+            className="grid h-10 w-10 place-items-center rounded-full bg-gray-50 text-gray-700 transition-colors hover:bg-gray-100 lg:hidden"
           >
             {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
 
         {menuOpen && (
-          <nav className="animate-fade-in border-t border-border bg-card px-5 py-4 lg:hidden">
-            {NAV.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                onClick={() => setMenuOpen(false)}
-                className="block py-2.5 text-sm font-medium text-muted-foreground"
-              >
-                {item.label}
-              </a>
-            ))}
-            <button
-              type="button"
-              onClick={() => { setMenuOpen(false); setShowCallbackModal(true); }}
-              className="mt-2 block w-full rounded-xl bg-primary px-5 py-2.5 text-center text-sm font-semibold text-primary-foreground"
-            >
-              Request Call
-            </button>
-          </nav>
+          <div className="absolute left-4 right-4 top-full mt-2 animate-fade-in rounded-2xl border border-gray-100 bg-white p-4 shadow-xl lg:hidden">
+            <nav className="flex flex-col gap-1">
+              {NAV.map((item) => {
+                const isActive = activeSection === item.label;
+                return (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    onClick={() => {
+                      setMenuOpen(false);
+                      setActiveSection(item.label);
+                    }}
+                    className={`block rounded-xl px-4 py-3 text-sm font-semibold transition-colors ${
+                      isActive ? "bg-blue-50 text-blue-600" : "text-gray-600 hover:bg-gray-50 hover:text-blue-600"
+                    }`}
+                  >
+                    {item.label}
+                  </a>
+                );
+              })}
+              <div className="mt-2 pt-2 border-t border-gray-100">
+                <button
+                  type="button"
+                  onClick={() => { setMenuOpen(false); setShowCallbackModal(true); }}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#0044CC] px-5 py-3 text-sm font-bold text-white shadow-md"
+                >
+                  <Phone className="h-4 w-4" />
+                  Request Call
+                </button>
+              </div>
+            </nav>
+          </div>
         )}
       </header>
 
