@@ -806,9 +806,9 @@ function Home() {
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 border-b border-border/70 bg-background/80 backdrop-blur-xl">
-        <div className="mx-auto flex h-14 w-full items-center justify-between gap-6 px-5 lg:px-12">
+        <div className="mx-auto flex h-16 lg:h-20 w-full items-center justify-between gap-6 px-5 lg:px-12">
           <a href="#home" className="flex shrink-0 items-center gap-3">
-            <img src="/softtech-logo.png" alt="Softtech Solutions &amp; Training Logo" className="h-10 w-auto object-contain" />
+            <img src="/softtech-logo.png" alt="Softtech Solutions &amp; Training Logo" className="h-12 lg:h-16 w-auto object-contain" />
             <div className="hidden sm:block leading-tight">
               <span className="font-display text-sm font-semibold tracking-wide text-primary">
                 Softtech Solutions and Trainings
@@ -1336,9 +1336,9 @@ function Home() {
       <footer id="contact" className="bg-white">
         <div className="mx-auto grid w-full max-w-screen-2xl gap-10 px-5 py-16 lg:grid-cols-3 lg:px-12">
           <div className="flex flex-col gap-6 items-start">
-            <div className="flex items-center gap-3">
-              <img src="/softtech-logo.png" alt="Softtech Logo" className="h-14 sm:h-16 w-auto object-contain" />
-              <h2 className="font-display text-xl font-bold text-primary leading-tight">Softtech Solutions and Training</h2>
+            <div className="flex items-center gap-4">
+              <img src="/softtech-logo.png" alt="Softtech Logo" className="h-24 sm:h-32 w-auto object-contain" />
+              <h2 className="font-display text-2xl font-bold text-primary leading-tight">Softtech Solutions <br/>and Training</h2>
             </div>
             
             <div className="flex items-center gap-5 mt-2">
@@ -1393,8 +1393,7 @@ function Home() {
             </ul>
           </div>
         </div>
-        
-        <div className="border-t border-border py-6 text-center text-xs text-muted-foreground">
+        <div className="border-t border-border py-6 text-center text-xs text-blue-900 font-medium">
           © 2026@SOFTTECH SOLUTIONS AND TRAINING.All Rights Reserved.
         </div>
       </footer>
