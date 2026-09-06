@@ -866,8 +866,8 @@ function Home() {
             className="absolute inset-0 h-full w-full object-cover object-center animate-fade-in"
           />
 
-          {/* Left-side fade ONLY — leaves projector screen & code 100% crystal clear */}
-          <div className="absolute left-0 top-0 bottom-0 w-full sm:w-[65%] lg:w-[52%] bg-gradient-to-r from-white via-white/95 via-80% to-transparent pointer-events-none z-10" />
+          {/* Left-side soft fade — keeps image on left visible while text remains readable */}
+          <div className="absolute left-0 top-0 bottom-0 w-full sm:w-[60%] lg:w-[48%] bg-gradient-to-r from-white/85 via-white/45 via-60% to-transparent pointer-events-none z-10 backdrop-blur-[1px]" />
 
           {/* Foreground text content */}
           <div className="relative z-20 mx-auto w-full max-w-screen-2xl px-6 py-20 lg:px-16 lg:py-28">
