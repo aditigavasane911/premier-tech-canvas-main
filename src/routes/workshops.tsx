@@ -189,6 +189,10 @@ function WorkshopsPage() {
                   <h3 className="mt-4 font-display text-sm font-bold text-center leading-snug text-[#0B2559]">
                     {workshop.college}
                   </h3>
+                  <div className="mt-1.5 flex items-center justify-center gap-1 text-xs text-[#4A5568] font-medium">
+                    <MapPin className="h-3.5 w-3.5" />
+                    {workshop.location}
+                  </div>
                 </div>
               ))}
             </div>
