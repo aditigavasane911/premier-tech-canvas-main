@@ -1,5 +1,5 @@
 import group from "@/assets/about-group.jpeg";
-import portrait from "@/assets/about-portrait.jpeg";
+import portrait from "@/assets/layout-training.png";
 import pair from "@/assets/about-pair.jpeg";
 import teach from "@/assets/about-teach.jpeg";
 import replacePhoto from "@/assets/replace-photo.png";
@@ -8,7 +8,7 @@ export function AboutCollage() {
   return (
     <div className="grid auto-rows-[62px] grid-cols-6 gap-3 sm:auto-rows-[76px]">
       <figure className="collage-tile col-span-3 row-span-5 sm:col-span-2">
-        <img src={portrait} alt="HATAEC TECH student developer" loading="lazy" width={700} height={1024} />
+        <img src={portrait} alt="Team Group Photo" loading="lazy" width={1024} height={700} className="h-full w-full object-cover" />
       </figure>
 
       <figure className="collage-tile col-span-3 row-span-3 sm:col-span-4">

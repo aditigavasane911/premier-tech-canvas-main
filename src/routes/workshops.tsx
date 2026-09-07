@@ -9,6 +9,8 @@ import ritLogo from "@/assets/colleges/rit.png";
 import vvpLogo from "@/assets/colleges/vvp.png";
 import hnccLogo from "@/assets/colleges/hncc.png";
 import grwpLogo from "@/assets/colleges/grwp.jpg";
+import smsmpitrLogo from "@/assets/colleges/smsmpitr.png";
+import svitLogo from "@/assets/colleges/svit.png";
 
 export const Route = createFileRoute("/workshops")({
   head: () => ({
@@ -110,6 +112,26 @@ export const WORKSHOPS = [
     image: mitcrerLogo,
     isLogo: true,
     workshopsCount: 3,
+  },
+  {
+    id: "smsmpitr",
+    college: "Sahakar Maharshi Shankarrao Mohite Patil Institute of Technology & Research (SMSMPITR)",
+    location: "Akluj",
+    tech: "Tech Workshop",
+    date: "2024",
+    image: smsmpitrLogo,
+    isLogo: true,
+    workshopsCount: 1,
+  },
+  {
+    id: "svit",
+    college: "Swami Vivekanand Institute Of Technology",
+    location: "Solapur",
+    tech: "Tech Workshop",
+    date: "2024",
+    image: svitLogo,
+    isLogo: true,
+    workshopsCount: 1,
   },
 ];
 
