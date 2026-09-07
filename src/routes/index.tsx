@@ -1582,16 +1582,43 @@ function Home() {
 
             <form
               className="mt-6 space-y-5"
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
-                setShowCallbackModal(false);
-                (e.currentTarget as HTMLFormElement).reset();
+                const form = e.currentTarget as HTMLFormElement;
+                const formData = new FormData(form);
+                
+                const data = {
+                  name: formData.get('name'),
+                  email: formData.get('email'),
+                  phone: formData.get('phone'),
+                  enquiryFor: formData.get('enquiryFor'),
+                  message: formData.get('message')
+                };
+
+                try {
+                  const res = await fetch('http://localhost:5000/api/callback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                  });
+                  if (res.ok) {
+                    alert('Callback request submitted successfully!');
+                    setShowCallbackModal(false);
+                    form.reset();
+                  } else {
+                    alert('Failed to submit request. Please try again.');
+                  }
+                } catch (err) {
+                  console.error(err);
+                  alert('Error submitting request. Is the server running?');
+                }
               }}
             >
               {/* Name */}
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-foreground">Name</label>
                 <input
+                  name="name"
                   required
                   type="text"
                   placeholder="Enter your Name here"
@@ -1603,6 +1630,7 @@ function Home() {
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-foreground">Email</label>
                 <input
+                  name="email"
                   required
                   type="email"
                   placeholder="Enter your Email here"
@@ -1618,6 +1646,7 @@ function Home() {
                     🇮🇳 +91
                   </span>
                   <input
+                    name="phone"
                     required
                     type="tel"
                     placeholder="Enter your number here"
@@ -1631,6 +1660,7 @@ function Home() {
                 <label className="mb-1.5 block text-sm font-medium text-foreground">Enquiry For</label>
                 <div className="relative">
                   <select
+                    name="enquiryFor"
                     required
                     defaultValue="Online Course (Website)"
                     className="w-full appearance-none rounded-xl border border-input bg-white px-4 py-3 pr-10 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
@@ -1647,6 +1677,7 @@ function Home() {
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-foreground">How can we help you?</label>
                 <textarea
+                  name="message"
                   rows={3}
                   placeholder="E.g. I want details about the offline course, fees, and schedule..."
                   className="w-full resize-none rounded-xl border border-input bg-white px-4 py-3 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
