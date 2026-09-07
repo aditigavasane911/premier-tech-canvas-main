@@ -1346,7 +1346,7 @@ function Home() {
             <div className="flex flex-col md:flex-row items-center gap-8 lg:gap-12">
               <div className="w-full md:w-1/2 flex flex-col items-center">
                 <ImageStack 
-                  images={['/news1.png', '/news2.png']} 
+                  images={['/news1.png', '/news2.png', '/news3.png']} 
                   className="w-72 h-56 sm:w-[400px] sm:h-[300px] mt-10" 
                 />
                 <h3 className="mt-12 font-display text-2xl font-bold text-primary">
@@ -1367,7 +1367,7 @@ function Home() {
             <div className="flex flex-col md:flex-row-reverse items-center gap-8 lg:gap-12">
               <div className="w-full md:w-1/2 flex flex-col items-center">
                 <ImageStack 
-                  images={['/award1.jpg', '/award2.png']} 
+                  images={['/award1.jpg', '/award2.png', '/award3.jpg', '/award4.jpg']} 
                   className="w-72 h-48 sm:w-[400px] sm:h-[260px] mt-10" 
                   reverse
                 />

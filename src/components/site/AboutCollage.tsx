@@ -1,7 +1,7 @@
 import group from "@/assets/about-group.jpeg";
 import portrait from "@/assets/layout-training.png";
 import pair from "@/assets/about-pair.jpeg";
-import teach from "@/assets/about-teach.jpeg";
+import student from "@/assets/student-photo.jpg";
 import replacePhoto from "@/assets/replace-photo.png";
 
 export function AboutCollage() {
@@ -30,8 +30,8 @@ export function AboutCollage() {
 
       <figure className="collage-tile col-span-6 row-span-3 sm:col-span-4">
         <img
-          src={teach}
-          alt="Mentor teaching a live session"
+          src={student}
+          alt="Students in a lab session"
           loading="lazy"
           className="h-full w-full object-cover object-[15%_35%]"
         />
