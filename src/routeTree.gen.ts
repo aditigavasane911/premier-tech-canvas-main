@@ -10,11 +10,23 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SstadminRouteImport } from './routes/sstadmin'
+import { Route as Sstadmin_dashboardRouteImport } from './routes/sstadmin_dashboard'
 import { Route as WorkshopsRouteImport } from './routes/workshops'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SstadminRoute = SstadminRouteImport.update({
+  id: '/sstadmin',
+  path: '/sstadmin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Sstadmin_dashboardRoute = Sstadmin_dashboardRouteImport.update({
+  id: '/sstadmin_dashboard',
+  path: '/sstadmin_dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WorkshopsRoute = WorkshopsRouteImport.update({
@@ -25,27 +37,35 @@ const WorkshopsRoute = WorkshopsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/sstadmin': typeof SstadminRoute
+  '/sstadmin_dashboard': typeof Sstadmin_dashboardRoute
   '/workshops': typeof WorkshopsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/sstadmin': typeof SstadminRoute
+  '/sstadmin_dashboard': typeof Sstadmin_dashboardRoute
   '/workshops': typeof WorkshopsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/sstadmin': typeof SstadminRoute
+  '/sstadmin_dashboard': typeof Sstadmin_dashboardRoute
   '/workshops': typeof WorkshopsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/workshops'
+  fullPaths: '/' | '/sstadmin' | '/sstadmin_dashboard' | '/workshops'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/workshops'
-  id: '__root__' | '/' | '/workshops'
+  to: '/' | '/sstadmin' | '/sstadmin_dashboard' | '/workshops'
+  id: '__root__' | '/' | '/sstadmin' | '/sstadmin_dashboard' | '/workshops'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SstadminRoute: typeof SstadminRoute
+  Sstadmin_dashboardRoute: typeof Sstadmin_dashboardRoute
   WorkshopsRoute: typeof WorkshopsRoute
 }
 
@@ -56,6 +76,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sstadmin': {
+      id: '/sstadmin'
+      path: '/sstadmin'
+      fullPath: '/sstadmin'
+      preLoaderRoute: typeof SstadminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sstadmin_dashboard': {
+      id: '/sstadmin_dashboard'
+      path: '/sstadmin_dashboard'
+      fullPath: '/sstadmin_dashboard'
+      preLoaderRoute: typeof Sstadmin_dashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/workshops': {
@@ -70,6 +104,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SstadminRoute: SstadminRoute,
+  Sstadmin_dashboardRoute: Sstadmin_dashboardRoute,
   WorkshopsRoute: WorkshopsRoute,
 }
 export const routeTree = rootRouteImport
