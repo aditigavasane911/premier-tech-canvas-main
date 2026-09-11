@@ -1,4 +1,4 @@
-const Enquiry = require('../models/enquiry.model');
+const Enquiry = require("../models/enquiry.model");
 
 exports.submitEnquiry = async (req, res, next) => {
   try {
@@ -9,12 +9,12 @@ exports.submitEnquiry = async (req, res, next) => {
       email,
       phone,
       enquiryFor,
-      message
+      message,
     });
 
     await newEnquiry.save();
-    
-    res.status(201).json({ message: 'Callback request submitted successfully!' });
+
+    res.status(201).json({ message: "Callback request submitted successfully!" });
   } catch (error) {
     next(error);
   }
@@ -33,7 +33,7 @@ exports.deleteEnquiry = async (req, res, next) => {
   try {
     const { id } = req.params;
     await Enquiry.findByIdAndDelete(id);
-    res.status(200).json({ message: 'Enquiry deleted successfully' });
+    res.status(200).json({ message: "Enquiry deleted successfully" });
   } catch (error) {
     next(error);
   }
@@ -43,13 +43,9 @@ exports.updateEnquiryStatus = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
-    const updatedEnquiry = await Enquiry.findByIdAndUpdate(
-      id,
-      { status },
-      { new: true }
-    );
+    const updatedEnquiry = await Enquiry.findByIdAndUpdate(id, { status }, { new: true });
     if (!updatedEnquiry) {
-      return res.status(404).json({ message: 'Enquiry not found' });
+      return res.status(404).json({ message: "Enquiry not found" });
     }
     res.status(200).json(updatedEnquiry);
   } catch (error) {
