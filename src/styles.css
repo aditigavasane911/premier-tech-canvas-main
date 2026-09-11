@@ -250,7 +250,6 @@
     box-shadow: 0 30px 60px -25px rgba(0, 0, 0, 0.65);
     z-index: 5;
   }
-
 }
 
 .whyus-card-img {
@@ -562,7 +561,13 @@
   isolation: isolate;
   overflow: hidden;
   mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 5%,
+    black 95%,
+    transparent 100%
+  );
 }
 
 /* The scrollable flex track — hides scrollbar across all browsers */

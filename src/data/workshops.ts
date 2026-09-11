@@ -1,13 +1,13 @@
-import plgieLogo from "@/assets/colleges/plgie.png";
-import mitcrerLogo from "@/assets/colleges/mitcrer.png";
-import sveriLogo from "@/assets/colleges/sveri.png";
+import plgieLogo from "@/assets/colleges/plgie.webp";
+import mitcrerLogo from "@/assets/colleges/mitcrer.webp";
+import sveriLogo from "@/assets/colleges/sveri.webp";
 import fabtechLogo from "@/assets/colleges/fabtech.png";
-import msbecLogo from "@/assets/colleges/msbec.png";
-import ritLogo from "@/assets/colleges/rit.png";
-import vvpLogo from "@/assets/colleges/vvp.png";
-import hnccLogo from "@/assets/colleges/hncc.png";
+import msbecLogo from "@/assets/colleges/msbec.webp";
+import ritLogo from "@/assets/colleges/rit.webp";
+import vvpLogo from "@/assets/colleges/vvp.webp";
+import hnccLogo from "@/assets/colleges/hncc.webp";
 import grwpLogo from "@/assets/colleges/grwp.jpg";
-import smsmpitrLogo from "@/assets/colleges/smsmpitr.png";
+import smsmpitrLogo from "@/assets/colleges/smsmpitr.webp";
 import svitLogo from "@/assets/colleges/svit.png";
 
 export type Workshop = (typeof WORKSHOPS)[number];

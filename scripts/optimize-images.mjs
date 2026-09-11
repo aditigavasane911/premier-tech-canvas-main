@@ -10,8 +10,11 @@ const root = process.cwd();
 const KB = (b) => (b / 1024).toFixed(1) + "KB";
 
 function report(srcPath, to) {
-  const b = fs.statSync(srcPath).size, a = to.length;
-  console.log(`${path.basename(srcPath)}  ${KB(b)} -> ${KB(a)}  (${Math.round((1 - a / b) * 100)}% smaller)`);
+  const b = fs.statSync(srcPath).size,
+    a = to.length;
+  console.log(
+    `${path.basename(srcPath)}  ${KB(b)} -> ${KB(a)}  (${Math.round((1 - a / b) * 100)}% smaller)`,
+  );
 }
 
 async function convWebp(src, dst, { width = 800, quality = 80 } = {}) {
@@ -32,8 +35,13 @@ async function convWebp(src, dst, { width = 800, quality = 80 } = {}) {
 async function main() {
   console.log("=== public/award + news -> webp (800w, q80) ===");
   const publicImgs = [
-    ["public/award1.jpg"], ["public/award2.png"], ["public/award3.jpg"],
-    ["public/award4.jpg"], ["public/news1.png"], ["public/news2.png"], ["public/news3.png"],
+    ["public/award1.jpg"],
+    ["public/award2.png"],
+    ["public/award3.jpg"],
+    ["public/award4.jpg"],
+    ["public/news1.png"],
+    ["public/news2.png"],
+    ["public/news3.png"],
   ];
   for (const [src] of publicImgs) {
     const base = src.replace(/\.(png|jpg|jpeg)$/i, "");
@@ -42,8 +50,14 @@ async function main() {
 
   console.log("=== src/assets/colleges (oversized 8) -> webp (160w, q85) ===");
   const bigLogos = [
-    "plgie.png", "mitcrer.png", "vvp.png", "hncc.png",
-    "smsmpitr.png", "msbec.png", "sveri.png", "rit.png",
+    "plgie.png",
+    "mitcrer.png",
+    "vvp.png",
+    "hncc.png",
+    "smsmpitr.png",
+    "msbec.png",
+    "sveri.png",
+    "rit.png",
   ];
   for (const f of bigLogos) {
     const src = `src/assets/colleges/${f}`;
@@ -66,4 +80,7 @@ async function main() {
   console.log("Done. Run the reference-update step next.");
 }
 
-main().catch((e) => { console.error(e); process.exit(1); });
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
