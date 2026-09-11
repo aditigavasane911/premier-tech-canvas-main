@@ -1,8 +1,9 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { useState, useEffect } from 'react';
-import { Trash2, Search } from 'lucide-react';
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
+import { Trash2, Search } from "lucide-react";
+import { API_BASE } from "@/lib/constants";
 
-export const Route = createFileRoute('/sstadmin_dashboard')({
+export const Route = createFileRoute("/sstadmin_dashboard")({
   component: AdminDashboard,
 });
 
@@ -20,28 +21,30 @@ interface CallbackRequest {
 function AdminDashboard() {
   const [callbacks, setCallbacks] = useState<CallbackRequest[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [confirmingId, setConfirmingId] = useState<string | null>(null);
+  const [notice, setNotice] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('adminToken');
+    const token = localStorage.getItem("adminToken");
     if (!token) {
-      navigate({ to: '/sstadmin' });
+      navigate({ to: "/sstadmin" });
       return;
     }
 
     const fetchCallbacks = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/admin/callbacks', {
+        const res = await fetch(`${API_BASE}/api/admin/callbacks`, {
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
 
         if (res.status === 401) {
-          localStorage.removeItem('adminToken');
-          navigate({ to: '/sstadmin' });
+          localStorage.removeItem("adminToken");
+          navigate({ to: "/sstadmin" });
           return;
         }
 
@@ -49,10 +52,10 @@ function AdminDashboard() {
         if (res.ok) {
           setCallbacks(data);
         } else {
-          setError(data.message || 'Failed to fetch callbacks');
+          setError(data.message || "Failed to fetch callbacks");
         }
-      } catch (err) {
-        setError('Cannot connect to server');
+      } catch {
+        setError("Cannot connect to server");
       } finally {
         setLoading(false);
       }
@@ -62,50 +65,58 @@ function AdminDashboard() {
   }, [navigate]);
 
   const handleDelete = async (id: string) => {
-    if (!window.confirm('Are you sure you want to delete this callback?')) return;
-    
-    const token = localStorage.getItem('adminToken');
+    // Inline two-step confirm — click once to arm ("Delete?"), again to confirm.
+    if (confirmingId !== id) {
+      setConfirmingId(id);
+      setTimeout(() => setConfirmingId((cur) => (cur === id ? null : cur)), 3000);
+      return;
+    }
+    setConfirmingId(null);
+
+    const token = localStorage.getItem("adminToken");
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/callbacks/${id}`, {
-        method: 'DELETE',
+      const res = await fetch(`${API_BASE}/api/admin/callbacks/${id}`, {
+        method: "DELETE",
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
-      
+
       if (res.ok) {
-        setCallbacks(callbacks.filter(cb => cb._id !== id));
+        setCallbacks(callbacks.filter((cb) => cb._id !== id));
+        setNotice("Callback request deleted.");
       } else {
         const data = await res.json();
-        alert(data.message || 'Failed to delete');
+        setNotice(data.message || "Failed to delete");
       }
-    } catch (err) {
-      alert('Error connecting to server');
+    } catch {
+      setNotice("Error connecting to server");
     }
   };
 
   const handleStatusChange = async (id: string, newStatus: string) => {
-    const token = localStorage.getItem('adminToken');
+    const token = localStorage.getItem("adminToken");
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/callbacks/${id}/status`, {
-        method: 'PATCH',
+      const res = await fetch(`${API_BASE}/api/admin/callbacks/${id}/status`, {
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ status: newStatus })
+        body: JSON.stringify({ status: newStatus }),
       });
       if (res.ok) {
-        setCallbacks(callbacks.map(cb => cb._id === id ? { ...cb, status: newStatus } : cb));
+        setCallbacks(callbacks.map((cb) => (cb._id === id ? { ...cb, status: newStatus } : cb)));
+        setNotice(`Status updated to ${newStatus}.`);
       } else {
-        alert('Failed to update status');
+        setNotice("Failed to update status");
       }
-    } catch (err) {
-      alert('Error updating status');
+    } catch {
+      setNotice("Error updating status");
     }
   };
 
-  const filteredCallbacks = callbacks.filter(cb => {
+  const filteredCallbacks = callbacks.filter((cb) => {
     const term = searchTerm.toLowerCase();
     return (
       cb.name.toLowerCase().includes(term) ||
@@ -116,8 +127,8 @@ function AdminDashboard() {
   });
 
   const handleLogout = () => {
-    localStorage.removeItem('adminToken');
-    navigate({ to: '/sstadmin' });
+    localStorage.removeItem("adminToken");
+    navigate({ to: "/sstadmin" });
   };
 
   if (loading) return <div className="p-10 text-center">Loading dashboard...</div>;
@@ -136,17 +147,21 @@ function AdminDashboard() {
         </div>
       </header>
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {error && (
-          <div className="bg-red-50 text-red-500 p-4 rounded-md mb-6">
-            {error}
+        {error && <div className="bg-red-50 text-red-500 p-4 rounded-md mb-6">{error}</div>}
+
+        {notice && (
+          <div className="bg-blue-50 text-blue-700 p-4 rounded-md mb-6" role="status">
+            {notice}
           </div>
         )}
-        
+
         <div className="bg-white shadow rounded-lg overflow-hidden">
           <div className="px-4 py-5 sm:px-6 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
               <h3 className="text-lg leading-6 font-medium text-gray-900">Callback Requests</h3>
-              <p className="mt-1 text-sm text-gray-500">List of all callback inquiries from the website.</p>
+              <p className="mt-1 text-sm text-gray-500">
+                List of all callback inquiries from the website.
+              </p>
             </div>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -165,13 +180,48 @@ function AdminDashboard() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Enquiry For</th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Message</th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Date
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Name
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Contact
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Enquiry For
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Message
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Status
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -192,17 +242,22 @@ function AdminDashboard() {
                         {cb.enquiryFor}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-500 max-w-md whitespace-pre-wrap break-words" title={cb.message}>
-                      {cb.message || '-'}
+                    <td
+                      className="px-6 py-4 text-sm text-gray-500 max-w-md whitespace-pre-wrap break-words"
+                      title={cb.message}
+                    >
+                      {cb.message || "-"}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       <select
-                        value={cb.status || 'Pending'}
+                        value={cb.status || "Pending"}
                         onChange={(e) => handleStatusChange(cb._id, e.target.value)}
                         className={`text-xs font-semibold rounded-full px-2 py-1 border-0 focus:ring-2 focus:ring-blue-500 ${
-                          cb.status === 'Approval' ? 'bg-green-100 text-green-800' :
-                          cb.status === 'Resolved' ? 'bg-gray-100 text-gray-800' :
-                          'bg-yellow-100 text-yellow-800'
+                          cb.status === "Approval"
+                            ? "bg-green-100 text-green-800"
+                            : cb.status === "Resolved"
+                              ? "bg-gray-100 text-gray-800"
+                              : "bg-yellow-100 text-yellow-800"
                         }`}
                       >
                         <option value="Pending">Pending</option>
@@ -213,10 +268,22 @@ function AdminDashboard() {
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <button
                         onClick={() => handleDelete(cb._id)}
-                        className="text-red-600 hover:text-red-900 transition-colors"
-                        title="Delete Request"
+                        className={`rounded-md px-2 py-1 text-xs font-semibold transition-colors ${
+                          confirmingId === cb._id
+                            ? "bg-red-600 text-white hover:bg-red-700"
+                            : "text-red-600 hover:text-red-900"
+                        }`}
+                        title={
+                          confirmingId === cb._id
+                            ? "Click again to confirm delete"
+                            : "Delete Request"
+                        }
                       >
-                        <Trash2 className="h-5 w-5" />
+                        {confirmingId === cb._id ? (
+                          "Confirm delete?"
+                        ) : (
+                          <Trash2 className="h-5 w-5" />
+                        )}
                       </button>
                     </td>
                   </tr>

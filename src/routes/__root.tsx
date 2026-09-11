@@ -4,13 +4,13 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useLocation,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode, useLayoutEffect, useRef } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
   return (
@@ -37,9 +37,6 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -78,10 +75,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "author", content: "HATAEC TECH" },
+      {
+        name: "description",
+        content:
+          "Softtech Solutions and Trainings trains students in Java, MERN, Python and Cloud with real projects, mentorship and placement support. 1200+ students trained since 2024.",
+      },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Softtech Solutions and Trainings" },
+      { property: "og:image", content: "/softtech-logo.png" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "/softtech-logo.png" },
     ],
     links: [
+      { rel: "canonical", href: "/" },
       {
         rel: "stylesheet",
         href: appCss,
@@ -90,7 +96,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap",
       },
       { rel: "icon", href: "/softtech-logo.png", type: "image/png" },
       { rel: "apple-touch-icon", href: "/softtech-logo.png" },
@@ -123,7 +129,33 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+      <ScrollToTopOnNavigate />
       <Outlet />
     </QueryClientProvider>
   );
+}
+
+/**
+ * Deterministic "back to top" on route change.
+ *
+ * The global `html { scroll-behavior: smooth }` style makes *every* programmatic
+ * scroll glide — including TanStack Start's scroll restoration on navigation —
+ * which lands you mid-scroll and makes the next page look "cut" at the top.
+ * We snap to the top instantly whenever the route PATH changes, so each page
+ * opens from its true top. In-page `#anchor` links on the single-page home
+ * keep their pathname unchanged, so they still glide smoothly as intended.
+ */
+function ScrollToTopOnNavigate() {
+  const { pathname } = useLocation();
+  const prevPath = useRef(pathname);
+
+  useLayoutEffect(() => {
+    if (prevPath.current === pathname) return;
+    prevPath.current = pathname;
+    // `scrollTo({ behavior: "instant" })` overrides the global smooth scroll
+    // for this same-tick jump, so the new page appears without a flicker.
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+  }, [pathname]);
+
+  return null;
 }

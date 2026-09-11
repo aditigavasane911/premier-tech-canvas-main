@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 
-export function Typewriter({ 
-  words, 
-  speed = 100, 
+export function Typewriter({
+  words,
+  speed = 100,
   delay = 0,
   deleteSpeed = 50,
-  pause = 1500
-}: { 
-  words: string[]; 
-  speed?: number; 
+  pause = 1500,
+}: {
+  words: string[];
+  speed?: number;
   delay?: number;
   deleteSpeed?: number;
   pause?: number;
@@ -30,8 +30,8 @@ export function Typewriter({
     if (!started) return;
 
     let timeout: ReturnType<typeof setTimeout>;
-    
-    const currentWord = words[wordIndex % words.length];
+
+    const currentWord = words[wordIndex % words.length] ?? "";
 
     if (isDeleting) {
       if (displayedText.length > 0) {

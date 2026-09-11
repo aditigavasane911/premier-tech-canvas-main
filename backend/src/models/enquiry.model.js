@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const EnquirySchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -6,8 +6,8 @@ const EnquirySchema = new mongoose.Schema({
   phone: { type: String, required: true },
   enquiryFor: { type: String, required: true },
   message: { type: String },
-  status: { type: String, default: 'Pending' },
-  submittedAt: { type: Date, default: Date.now }
+  status: { type: String, default: "Pending" },
+  submittedAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model('Enquiry', EnquirySchema);
+module.exports = mongoose.model("Enquiry", EnquirySchema);

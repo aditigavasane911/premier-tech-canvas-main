@@ -1,3 +1,5 @@
+import { DEVICON_BASE } from "@/lib/constants";
+
 const TECH = [
   { name: "React", icon: "react/react-original.svg" },
   { name: "Node.js", icon: "nodejs/nodejs-original.svg" },
@@ -17,8 +19,6 @@ const TECH = [
   { name: "PHP", icon: "php/php-original.svg" },
 ];
 
-const BASE = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/";
-
 function Row({ reverse = false }: { reverse?: boolean }) {
   const items = [...TECH, ...TECH];
   return (
@@ -26,9 +26,10 @@ function Row({ reverse = false }: { reverse?: boolean }) {
       {items.map((t, i) => (
         <div key={`${t.name}-${i}`} className="tech-chip">
           <img
-            src={`${BASE}${t.icon}`}
+            src={`${DEVICON_BASE}${t.icon}`}
             alt={`${t.name} logo`}
             loading="lazy"
+            decoding="async"
             className="h-9 w-9 object-contain"
           />
           <span className="text-sm font-medium text-foreground/80">{t.name}</span>

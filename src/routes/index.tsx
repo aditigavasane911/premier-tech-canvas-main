@@ -1,14 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useEffect, useRef, Fragment } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
-  Users,
-  Star,
-  BookOpen,
-  Trophy,
   ArrowRight,
   Plus,
   Minus,
-  ShieldCheck,
   MapPin,
   Phone,
   Mail,
@@ -19,44 +14,21 @@ import {
   ChevronDown,
   Calendar,
   Linkedin,
-  Twitter,
   Instagram,
-  type LucideIcon,
-  ChevronRight,
-  Play,
-  Code,
-  Briefcase,
-  Zap,
-  Cpu,
-  Database,
-  Layout,
-  GraduationCap,
 } from "lucide-react";
-import { Link } from "@tanstack/react-router";
 import { ImageStack } from "@/components/site/ImageStack";
-import heroImage1 from "@/assets/group-photo.png";
-import heroImage2 from "@/assets/hero-teaching.jpg";
+import heroImage1 from "@/assets/group-photo.webp";
+import heroImage2 from "@/assets/hero-teaching.webp";
 import { TechMarquee } from "@/components/site/Marquee";
 import { WhyUsGallery } from "@/components/site/WhyUsGallery";
 import { AboutCollage } from "@/components/site/AboutCollage";
 import { Typewriter } from "@/components/site/Typewriter";
-import sveriLogo from "@/assets/colleges/sveri.png";
-import fabtechLogo from "@/assets/colleges/fabtech.png";
-import mitcrerLogo from "@/assets/colleges/mitcrer.png";
-import { WORKSHOPS } from "@/routes/workshops";
-
-
-const DiscordIcon = ({ className }: { className?: string }) => (
-  <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z" />
-  </svg>
-);
-
-const XIcon = ({ className }: { className?: string }) => (
-  <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
-  </svg>
-);
+import { WORKSHOPS } from "@/data/workshops";
+import { API_BASE, DEVICON_BASE } from "@/lib/constants";
+import { CourseCard } from "@/components/site/CourseCard";
+import { WorkshopMarquee } from "@/components/site/WorkshopMarquee";
+import { DiscordIcon, XIcon } from "@/components/site/icons";
+import type { FormEvent } from "react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -67,7 +39,10 @@ export const Route = createFileRoute("/")({
         content:
           "Softtech Solutions and Trainings trains students in Java, MERN, Python and Cloud with real projects, mentorship and placement support. 1200+ students trained since 2024.",
       },
-      { property: "og:title", content: "Softtech Solutions and Trainings | IT Training & Placement" },
+      {
+        property: "og:title",
+        content: "Softtech Solutions and Trainings | IT Training & Placement",
+      },
       {
         property: "og:description",
         content:
@@ -78,532 +53,8 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const NAV = [
-  { label: "Home", href: "#home" },
-  { label: "About Us", href: "#about" },
-  { label: "Courses", href: "#courses" },
-  { label: "Workshops", href: "#workshops" },
-  { label: "FAQs", href: "#faqs" },
-  { label: "Contact", href: "#contact" },
-];
-
-const ENQUIRY_OPTIONS = [
-  "Online Course (Website)",
-  "Offline Course (Classroom)",
-  "Internship Program",
-  "Placement Assistance",
-  "Corporate Training",
-  "Other",
-];
-
-const DENIM_GRAD = "linear-gradient(145deg, #3a8bbf 0%, #5aaee0 40%, #79BAEC 75%, #93ccf5 100%)";
-const DENIM_ORB = "rgba(180,220,255,0.45)";
-
-const STATS = [
-  {
-    icon: Users,
-    end: 15000,
-    suffix: "+",
-    title: "Student",
-    label: "Taught",
-    grad: DENIM_GRAD,
-    orb: DENIM_ORB,
-  },
-  {
-    icon: Star,
-    end: 48,
-    suffix: "+",
-    title: "Course",
-    label: "Categories",
-    grad: DENIM_GRAD,
-    orb: DENIM_ORB,
-  },
-  {
-    icon: BookOpen,
-    end: 150,
-    suffix: "+",
-    title: "Place",
-    label: "Mentored",
-    grad: DENIM_GRAD,
-    orb: DENIM_ORB,
-  },
-  {
-    icon: Trophy,
-    end: 200,
-    suffix: "+",
-    title: "Projects",
-    label: "Completed",
-    grad: DENIM_GRAD,
-    orb: DENIM_ORB,
-  },
-];
-
-function useCountUp({
-  end,
-  duration = 1800,
-  pauseDuration = 1000,
-  delay = 0,
-  isHovered = false,
-}: {
-  end: number;
-  duration?: number;
-  pauseDuration?: number;
-  delay?: number;
-  isHovered: boolean;
-}) {
-  const [count, setCount] = useState(end);
-
-  useEffect(() => {
-    if (!isHovered) {
-      setCount(end);
-      return;
-    }
-
-    let animFrameId: number;
-    let timerId: ReturnType<typeof setTimeout>;
-    let delayTimerId: ReturnType<typeof setTimeout>;
-    let active = true;
-
-    const runCycle = () => {
-      setCount(0);
-      let startTime: number | null = null;
-
-      const step = (timestamp: number) => {
-        if (!active) return;
-        if (!startTime) startTime = timestamp;
-        const progress = Math.min((timestamp - startTime) / duration, 1);
-        // easeOutExpo
-        const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-        setCount(Math.floor(eased * end));
-
-        if (progress < 1) {
-          animFrameId = requestAnimationFrame(step);
-        } else {
-          // Pause briefly at max value before restarting next cycle
-          timerId = setTimeout(() => {
-            if (active) {
-              runCycle();
-            }
-          }, pauseDuration);
-        }
-      };
-
-      animFrameId = requestAnimationFrame(step);
-    };
-
-    delayTimerId = setTimeout(() => {
-      if (active) {
-        runCycle();
-      }
-    }, delay);
-
-    return () => {
-      active = false;
-      cancelAnimationFrame(animFrameId);
-      clearTimeout(timerId);
-      clearTimeout(delayTimerId);
-    };
-  }, [end, duration, pauseDuration, delay, isHovered]);
-
-  return count;
-}
-
-function StatItem({
-  end,
-  suffix,
-  title,
-  label,
-  index,
-  isHovered,
-}: {
-  end: number;
-  suffix: string;
-  title: string;
-  label: string;
-  index: number;
-  isHovered: boolean;
-}) {
-  const count = useCountUp({
-    end,
-    duration: 1800,
-    pauseDuration: 1000,
-    delay: index * 180,
-    isHovered,
-  });
-
-  return (
-    <div
-      className="stat-item transition-transform duration-300"
-      style={{ animationDelay: `${index * 120}ms`, animationFillMode: "both" }}
-    >
-      {/* Count */}
-      <p className="stat-number">
-        {end >= 1000
-          ? count >= 1000
-            ? `${(count / 1000).toFixed(count % 1000 === 0 ? 0 : 1)}k`
-            : count.toString()
-          : count.toString()}
-        {suffix}
-      </p>
-      {/* Labels */}
-      <p className="stat-title">{title}</p>
-      <p className="stat-label">{label}</p>
-    </div>
-  );
-}
-
-function StatsSection() {
-  const [isSectionHovered, setIsSectionHovered] = useState(false);
-
-  return (
-    <section
-      className="stat-section cursor-pointer transition-all duration-300"
-      onMouseEnter={() => setIsSectionHovered(true)}
-      onMouseLeave={() => setIsSectionHovered(false)}
-    >
-      <div className="stat-section-inner">
-        <div className="stat-row">
-          {STATS.map((s, i) => (
-            <Fragment key={s.title}>
-              <StatItem {...s} index={i} isHovered={isSectionHovered} />
-              {i < STATS.length - 1 && <div className="stat-divider" />}
-            </Fragment>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-const DEVICON = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/";
-
-const COURSE_LIST = [
-  {
-    name: "C Fundamentals",
-    level: "Beginner",
-    icon: "c/c-original.svg",
-    bg: "linear-gradient(145deg,#0d2137 0%,#0e3460 60%,#1a5276 100%)",
-    teaches: ["Basics", "Pointers", "Arrays", "File I/O"],
-    duration: "4–6 weeks",
-    description:
-      "Build a rock-solid programming foundation with C — the language behind operating systems, embedded systems and high-performance software. You'll learn procedural programming, pointers and memory management from the ground up.",
-    topicsFull: ["Variables & Data Types", "Operators & Control Flow", "Functions & Recursion", "Pointers & Memory Addresses", "Arrays & Strings", "Structures & Unions", "File I/O Operations"],
-    skills: ["Procedural Programming", "Memory Management", "Low-Level Thinking", "Debugging with GCC"],
-    prerequisites: "None — suitable for absolute beginners",
-    mode: "Online & Offline",
-    fee: "Contact Us",
-  },
-  {
-    name: "DSA using C++",
-    level: "Intermediate",
-    icon: "cplusplus/cplusplus-original.svg",
-    bg: "linear-gradient(145deg,#1a0533 0%,#3b0764 60%,#5b21b6 100%)",
-    teaches: ["OOP", "STL", "Inheritance", "Templates"],
-    duration: "8–10 weeks",
-    description:
-      "Master data structures and algorithms using C++ — the language favoured in competitive programming and system design interviews. Covers STL, OOP and template programming.",
-    topicsFull: ["OOP Concepts", "STL Containers & Algorithms", "Sorting & Searching", "Linked Lists, Trees, Graphs", "Inheritance & Polymorphism", "Templates & Generic Programming", "Time & Space Complexity"],
-    skills: ["OOP Design", "Problem Solving", "Competitive Programming", "STL Proficiency"],
-    prerequisites: "Basic programming knowledge (C or equivalent)",
-    mode: "Online & Offline",
-    fee: "Contact Us",
-  },
-  {
-    name: "Core Java Fundamentals",
-    level: "Beginner",
-    icon: "java/java-original.svg",
-    bg: "linear-gradient(145deg,#7c2400 0%,#b93e00 60%,#f97316 100%)",
-    teaches: ["OOP", "Collections", "Multithreading", "JDBC"],
-    duration: "8 weeks",
-    description:
-      "Start your Java journey with solid fundamentals — OOP principles, Collections, exception handling, multithreading and JDBC database connectivity. Build real console and GUI-based applications.",
-    topicsFull: ["OOP Principles (Encapsulation, Inheritance, Polymorphism, Abstraction)", "Collections Framework", "Exception Handling", "Multithreading & Concurrency", "JDBC & Database Connectivity", "Java I/O Streams", "Generics & Lambda Expressions"],
-    skills: ["Object-Oriented Design", "Database Integration", "Concurrent Programming", "Java SE"],
-    prerequisites: "None — beginners welcome",
-    mode: "Online & Offline",
-    fee: "Contact Us",
-  },
-  {
-    name: "Advanced Java for Enterprise",
-    level: "Advanced",
-    icon: "java/java-original.svg",
-    bg: "linear-gradient(145deg,#431407 0%,#7c2d12 55%,#c2410c 100%)",
-    teaches: ["Servlets", "JSP", "Hibernate", "Spring Core"],
-    duration: "10 weeks",
-    description:
-      "Move into enterprise-grade Java development with Servlets, JSP, Hibernate ORM and Spring Core. Build multi-tier web applications with proper MVC architecture and database persistence.",
-    topicsFull: ["Servlets & JSP", "MVC Architecture", "Hibernate ORM", "Spring Core & DI", "Spring MVC", "JPA & Entity Mapping", "Connection Pooling"],
-    skills: ["Enterprise Java Development", "ORM & Database Persistence", "Spring Framework", "Web Application Architecture"],
-    prerequisites: "Core Java Fundamentals",
-    mode: "Online & Offline",
-    fee: "Contact Us",
-  },
-  {
-    name: "Spring Boot Microservices",
-    level: "Advanced",
-    icon: "spring/spring-original.svg",
-    bg: "linear-gradient(145deg,#052e16 0%,#14532d 55%,#15803d 100%)",
-    teaches: ["REST APIs", "JPA", "Security", "Microservices"],
-    duration: "12 weeks",
-    description:
-      "Build production-ready microservices with Spring Boot — the most in-demand Java framework. Learn REST API design, JPA data access, Spring Security and cloud-native microservice patterns.",
-    topicsFull: ["Spring Boot Setup & Auto-Configuration", "RESTful API Design", "Spring Data JPA", "Spring Security & JWT", "Microservices Architecture", "Service Discovery & API Gateway", "Docker & Deployment"],
-    skills: ["REST API Development", "Microservices Design", "Spring Security", "Cloud Deployment"],
-    prerequisites: "Advanced Java or equivalent experience",
-    mode: "Online & Offline",
-    fee: "Contact Us",
-  },
-  {
-    name: "Frontend with React",
-    level: "Intermediate",
-    icon: "react/react-original.svg",
-    bg: "linear-gradient(145deg,#082f49 0%,#075985 55%,#0ea5e9 100%)",
-    teaches: ["Components", "Hooks", "Redux", "Routing"],
-    duration: "10 weeks",
-    description:
-      "Build modern, dynamic user interfaces with React — the most widely used front-end library. From components and hooks to Redux state management and React Router, you'll ship real-world SPAs.",
-    topicsFull: ["JSX & Component Architecture", "Props, State & Lifecycle", "React Hooks (useState, useEffect, useContext)", "React Router", "Redux & Redux Toolkit", "API Integration & Fetch", "Performance Optimisation"],
-    skills: ["SPA Development", "State Management", "Component Design", "API Integration"],
-    prerequisites: "HTML, CSS and JavaScript basics",
-    mode: "Online & Offline",
-    fee: "Contact Us",
-  },
-  {
-    name: "Python for Backend",
-    level: "Beginner to Intermediate",
-    icon: "python/python-original.svg",
-    bg: "linear-gradient(145deg,#1e3a5f 0%,#1d4ed8 55%,#f59e0b 100%)",
-    teaches: ["Basics", "OOP", "NumPy", "Pandas"],
-    duration: "8 weeks",
-    description:
-      "Learn Python from scratch and progress to backend development, data manipulation with NumPy & Pandas, and building web APIs. An excellent first language that scales to professional use.",
-    topicsFull: ["Python Syntax & Data Types", "Control Flow & Functions", "OOP in Python", "File Handling & Modules", "NumPy & Pandas", "REST APIs with Flask / FastAPI", "Database Integration"],
-    skills: ["Python Programming", "Data Manipulation", "Backend API Development", "OOP"],
-    prerequisites: "None — beginners welcome",
-    mode: "Online & Offline",
-    fee: "Contact Us",
-  },
-  {
-    name: "Cloud Computing with AWS",
-    level: "Intermediate",
-    icon: "amazonwebservices/amazonwebservices-original-wordmark.svg",
-    bg: "linear-gradient(145deg,#1c1917 0%,#292524 55%,#ff9900 100%)",
-    teaches: ["EC2", "S3", "Lambda", "RDS"],
-    duration: "8 weeks",
-    description:
-      "Learn to design, deploy and manage cloud infrastructure on AWS — the world's leading cloud platform. Covers core services, serverless architecture and managed databases for real-world workloads.",
-    topicsFull: ["AWS Core Services (EC2, S3, VPC)", "IAM & Security", "RDS & DynamoDB", "Lambda & Serverless", "Load Balancing & Auto Scaling", "CloudFront & Route 53", "Deployment Pipelines"],
-    skills: ["Cloud Architecture", "AWS Core Services", "Serverless Development", "Cloud Security"],
-    prerequisites: "Basic networking and Linux knowledge recommended",
-    mode: "Online & Offline",
-    fee: "Contact Us",
-  },
-  {
-    name: "Web Design (HTML5 & CSS3)",
-    level: "Beginner",
-    icon: "html5/html5-original.svg",
-    bg: "linear-gradient(145deg,#7c1d1d 0%,#b91c1c 55%,#e4713a 100%)",
-    teaches: ["Semantic HTML", "Flexbox", "Grid", "Responsive"],
-    duration: "4 weeks",
-    description:
-      "Master HTML5 and CSS3 to build beautiful, responsive websites from scratch. You'll learn semantic markup, Flexbox, CSS Grid, animations and mobile-first design principles.",
-    topicsFull: ["HTML5 Semantic Elements", "CSS Selectors & Box Model", "Flexbox Layout", "CSS Grid", "Responsive Design & Media Queries", "CSS Animations & Transitions", "Forms & Accessibility"],
-    skills: ["Responsive Web Design", "CSS Layouts", "HTML5 Semantics", "Accessibility"],
-    prerequisites: "None — suitable for absolute beginners",
-    mode: "Online & Offline",
-    fee: "Contact Us",
-  },
-  {
-    name: "Modern JavaScript (ES6+)",
-    level: "Intermediate",
-    icon: "javascript/javascript-original.svg",
-    bg: "linear-gradient(145deg,#1c1400 0%,#3d2e00 55%,#ca8a04 100%)",
-    teaches: ["ES6+", "DOM", "Async", "Events"],
-    duration: "6 weeks",
-    description:
-      "Go beyond basics and master modern JavaScript — arrow functions, destructuring, async/await, Promises and DOM manipulation. Build interactive web applications with vanilla JS.",
-    topicsFull: ["ES6+ Syntax (Arrow Functions, Destructuring, Spread)", "DOM Manipulation", "Events & Event Loop", "Promises & Async/Await", "Fetch API & AJAX", "Modules & Bundlers", "Error Handling"],
-    skills: ["Modern JS Syntax", "Async Programming", "DOM Manipulation", "API Consumption"],
-    prerequisites: "HTML & CSS basics",
-    mode: "Online & Offline",
-    fee: "Contact Us",
-  },
-  {
-    name: "Responsive UI with Bootstrap",
-    level: "Beginner",
-    icon: "bootstrap/bootstrap-original.svg",
-    bg: "linear-gradient(145deg,#2e0068 0%,#5a0096 55%,#7c3aed 100%)",
-    teaches: ["Grid", "Components", "Utilities", "Theming"],
-    duration: "4 weeks",
-    description:
-      "Build mobile-first, responsive websites quickly with Bootstrap 5 — the world's most popular CSS framework. Learn the grid system, components, utilities and custom theming.",
-    topicsFull: ["Bootstrap Grid System", "Navbar & Navigation", "Cards, Modals & Alerts", "Forms & Validation", "Utility Classes", "Custom Theming with SASS", "JavaScript Plugins"],
-    skills: ["Bootstrap 5", "Rapid UI Development", "Responsive Design", "Component Usage"],
-    prerequisites: "HTML & CSS basics",
-    mode: "Online & Offline",
-    fee: "Contact Us",
-  },
-  {
-    name: "Backend with PHP & MySQL",
-    level: "Intermediate",
-    icon: "php/php-original.svg",
-    bg: "linear-gradient(145deg,#1e1b4b 0%,#312e81 55%,#6366f1 100%)",
-    teaches: ["PHP Basics", "SQL", "CRUD", "Sessions"],
-    duration: "8 weeks",
-    description:
-      "Build dynamic, database-driven websites with PHP and MySQL — the classic combination powering millions of websites. Covers server-side scripting, CRUD operations and session management.",
-    topicsFull: ["PHP Syntax & Functions", "MySQL Database Design", "CRUD Operations", "Sessions & Cookies", "Form Handling & Validation", "PDO & Prepared Statements", "MVC Pattern"],
-    skills: ["Server-Side Scripting", "Database Design", "Web Security Basics", "CRUD Operations"],
-    prerequisites: "HTML & CSS basics",
-    mode: "Online & Offline",
-    fee: "Contact Us",
-  },
-  {
-    name: "Backend with Node.js",
-    level: "Intermediate",
-    icon: "nodejs/nodejs-original.svg",
-    bg: "linear-gradient(145deg,#052e16 0%,#166534 55%,#4ade80 100%)",
-    teaches: ["Express", "APIs", "Middleware", "MongoDB"],
-    duration: "10 weeks",
-    description:
-      "Build fast, scalable backend services with Node.js and Express. Develop RESTful APIs, middleware systems and connect to MongoDB for full-stack JavaScript development.",
-    topicsFull: ["Node.js Runtime & Event Loop", "Express.js & Routing", "Middleware & Error Handling", "RESTful API Design", "MongoDB & Mongoose", "Authentication & JWT", "File Uploads & Streaming"],
-    skills: ["Node.js Backend Development", "REST API Design", "MongoDB Integration", "Authentication"],
-    prerequisites: "JavaScript fundamentals",
-    mode: "Online & Offline",
-    fee: "Contact Us",
-  },
-  {
-    name: "Database Design with MongoDB",
-    level: "Intermediate",
-    icon: "mongodb/mongodb-original.svg",
-    bg: "linear-gradient(145deg,#052e16 0%,#134e1a 55%,#00ed64 100%)",
-    teaches: ["Documents", "Aggregation", "Indexing", "Atlas"],
-    duration: "6 weeks",
-    description:
-      "Master NoSQL database design with MongoDB — from document modelling and CRUD operations to aggregation pipelines, indexing strategies and cloud deployment with MongoDB Atlas.",
-    topicsFull: ["Document Model & BSON", "CRUD Operations", "Query Operators & Filtering", "Aggregation Pipeline", "Indexing & Performance", "Schema Design Patterns", "MongoDB Atlas & Cloud"],
-    skills: ["NoSQL Database Design", "Aggregation Pipelines", "Performance Tuning", "Cloud Databases"],
-    prerequisites: "Basic database knowledge recommended",
-    mode: "Online & Offline",
-    fee: "Contact Us",
-  },
-  {
-    name: "Type-Safe Code with TypeScript",
-    level: "Advanced",
-    icon: "typescript/typescript-original.svg",
-    bg: "linear-gradient(145deg,#172554 0%,#1e3a8a 55%,#2563eb 100%)",
-    teaches: ["Types", "Interfaces", "Generics", "Decorators"],
-    duration: "6 weeks",
-    description:
-      "Eliminate runtime bugs with TypeScript — the typed superset of JavaScript adopted by every major framework. Learn interfaces, generics, decorators and advanced type patterns for enterprise code.",
-    topicsFull: ["Types & Type Inference", "Interfaces & Type Aliases", "Generics & Constraints", "Enums & Utility Types", "Decorators & Metadata", "TypeScript with React", "Configuration & Build Tools"],
-    skills: ["Static Typing", "Generics & Advanced Types", "TypeScript with React", "Code Safety"],
-    prerequisites: "Solid JavaScript experience",
-    mode: "Online & Offline",
-    fee: "Contact Us",
-  },
-  {
-    name: "DevOps Basics with Docker",
-    level: "Advanced",
-    icon: "docker/docker-original.svg",
-    bg: "linear-gradient(145deg,#0c2a4a 0%,#0d3a6e 55%,#2496ed 100%)",
-    teaches: ["Containers", "Images", "Compose", "Volumes"],
-    duration: "6 weeks",
-    description:
-      "Containerise and ship applications with Docker — the cornerstone of modern DevOps. Learn to build images, orchestrate services with Docker Compose, manage volumes and integrate CI/CD pipelines.",
-    topicsFull: ["Docker Architecture & Concepts", "Building Custom Images", "Docker Compose", "Networking & Volumes", "CI/CD Integration", "Container Registry", "Best Practices & Security"],
-    skills: ["Containerisation", "Docker Compose", "DevOps Workflow", "CI/CD Pipelines"],
-    prerequisites: "Linux command line basics",
-    mode: "Online & Offline",
-    fee: "Contact Us",
-  },
-];
-
-const FAQS = [
-  {
-    q: "What does Softtech Solutions & Training do?",
-    a: "We work across two areas — building Manufacturing Execution Systems (MES) for manufacturing companies, and training students and developers in programming languages and modern frameworks.",
-  },
-  {
-    q: "What is a Manufacturing Execution System, and why does a company need one?",
-    a: "An MES connects the shop floor to the rest of the business — tracking production, quality, and traceability in real time. It helps manufacturers catch problems early, reduce downtime, and keep accurate records instead of relying on manual processes.",
-  },
-  {
-    q: "Which industries do you have experience in?",
-    a: "Our MES work comes primarily from the automotive sector, including projects for companies like Fiat India and Volvo-Eicher. The same design principles apply to most other manufacturing environments as well.",
-  },
-  {
-    q: "Do you build custom MES solutions, or only work with existing systems?",
-    a: "Both. We design systems from the ground up where needed, and we also customize, extend, or integrate existing MES, ERP, SCADA, and PLC setups.",
-  },
-  {
-    q: "What courses do you offer?",
-    a: "We teach Core and Advanced Java, Python, C, C++, AWS, Vaadin, Spring, and full-stack web development, along with the tools and practices used alongside them in real projects.",
-  },
-  {
-    q: "Do I need prior coding experience to join a course?",
-    a: "No. Courses are structured for different starting points — some build fundamentals from scratch, others are meant for developers adding a specific skill.",
-  },
-  {
-    q: "Are the sessions hands-on, or mostly lectures?",
-    a: "Hands-on. Each course is built around practical exercises and real project work, not theory alone.",
-  },
-  {
-    q: "Who conducts the training?",
-    a: "Training is led by our founder, Ravindra Swami, who brings both industry and classroom experience — years as a working software engineer, alongside time as a lecturer and Head of Department, teaching at engineering colleges across Pandharpur, Solapur, Akluj, and Barshi.",
-  },
-  {
-    q: "Do you provide support after an MES project is delivered?",
-    a: "Yes. Support continues after go-live — including production support, maintenance, troubleshooting, and training for the client's own staff.",
-  },
-  {
-    q: "How can I get in touch to learn more or enroll?",
-    a: "You can reach us using the contact details on this website, and we'll help you find the right course or service for what you need.",
-  },
-];
-
-const AWARDS = [
-  "Best IT Training Institute 2024",
-  "Excellence in Placements",
-  "Top Rated Java Academy",
-  "Student Choice Award",
-  "Skill Partner of the Year",
-];
-
-const TESTIMONIALS = [
-  { quote: "Before this C workshop, pointers haunted my dreams. But the instructor's simple, clear examples turned that fear into confidence—I was coding on my own by day two!", name: "Rohit Sable", role: "TE Computer Engineering", rating: 5.0 },
-  { quote: "I always found ES6 features confusing until we saw side-by-side code comparisons. It instantly clicked, and now I write modern JavaScript with ease.", name: "Snehal Rane", role: "TE IT", rating: 4.8 },
-  { quote: "Teaching Java collections with patience and answering every question without judgment made this session truly stand out for our beginners.", name: "Prof. Anil Deshpande", role: "Java Faculty", rating: 4.6 },
-  { quote: "The Spring Boot microservices workshop was a game-changer. Breaking down the architecture into digestible pieces helped students grasp JPA queries in no time.", name: "Ms. Meera Joshi", role: "Backend Trainer", rating: 5.0 },
-  { quote: "I had zero Python knowledge coming in but left able to build backend logic. That kind of transformation speaks volumes about the workshop's quality.", name: "Suraj Gaikwad", role: "First Year, E&TC", rating: 4.5 },
-  { quote: "Seeing how OOP concepts map directly onto real-world DSA problems made this C++ session memorable. It’s not just syntax; it’s thinking like a programmer.", name: "Sanika Kulkarni", role: "TE IT", rating: 4.8 },
-  { quote: "As a non-CS student, I worried I'd fall behind, but the step-by-step pace and immediate hands-on tasks kept me engaged throughout.", name: "Ankita Ghorpade", role: "First Year, IT", rating: 4.4 },
-  { quote: "Students often get overwhelmed by Servlets and JSP in textbooks, but this workshop made those topics practical and approachable.", name: "Nikhil Pawar", role: "BE Computer Engineering", rating: 5.0 },
-  { quote: "The way the React hooks were demystified here completely changed my approach. I now understand what’s going on under the hood instead of copy-pasting blindly.", name: "Aditya Shinde", role: "SE Computer", rating: 4.3 },
-  { quote: "I’ve seen many PHP sessions, but this one clarified SQL joins with real examples that stuck with me. Very practical and useful for our projects.", name: "Komal Deshpande", role: "TE Computer Engineering", rating: 4.3 },
-  { quote: "Breaking down Docker and containers into simple, relatable steps transformed my understanding from mystery to clarity. This session sparked my interest in DevOps careers.", name: "Rahul Bansode", role: "BE Computer Engineering", rating: 4.4 },
-  { quote: "The workshop on Cloud Computing didn’t just show slides—it gave us hands-on experience with EC2 and S3, which is exactly what the industry demands today.", name: "Tejas Kale", role: "BE Computer Engineering", rating: 5.0 },
-  { quote: "The hands-on approach during the responsive Bootstrap session helped me build attractive, functional pages quickly without drowning in CSS.", name: "Rutuja Salunkhe", role: "First Year Computer Engineering", rating: 4.4 },
-  { quote: "I always thought MongoDB was a completely different beast compared to SQL, but this workshop made NoSQL accessible and even enjoyable.", name: "Ruchita Kadam", role: "BE IT", rating: 4.5 },
-  { quote: "One of the best workshops I've experienced—REST APIs finally made sense, not just in theory but through clear, practical examples.", name: "Yash Kadam", role: "BE Computer Engineering", rating: 4.4 },
-  { quote: "The DOM manipulation exercises were super practical—we didn’t just watch slides; we built things on the spot, which made learning stick.", name: "Aniket Shelar", role: "SE Computer Engineering", rating: 4.9 },
-  { quote: "Our instructor’s ability to connect OOP principles to solving real DSA problems makes complex concepts feel natural and intuitive.", name: "Prof. Kavita Sharma", role: "Computer Science Faculty", rating: 4.8 },
-  { quote: "This workshop was a perfect introduction for beginners who thought CSS and Flexbox were puzzles. By the end, I was confident in making layouts.", name: "Kiran Bhagat", role: "First Year Mechanical Engineering", rating: 4.9 },
-  { quote: "Explaining TypeScript’s interfaces and types using everyday analogies helped me grasp this advanced topic without feeling overwhelmed.", name: "Ishwari Kolhe", role: "BE Computer Engineering", rating: 4.8 },
-  { quote: "It’s rare to find a cloud session that’s both relevant and practical. After this, I updated my resume with AWS skills I actually understand.", name: "Sakshi Jagtap", role: "TE Computer", rating: 4.6 },
-  { quote: "The Node.js backend workshop broke down Express step-by-step, which cleared up all the confusion I had from online tutorials.", name: "Pallavi Yadav", role: "SE Computer Engineering", rating: 4.7 },
-  { quote: "Hands-on, no fluff—this Java session made collections click for me, and the patient teaching helped everyone feel comfortable asking questions.", name: "Omkar Deshmukh", role: "SE Computer", rating: 4.3 },
-  { quote: "I never thought a CSS session could be so engaging and fun—this completely changed my mindset about frontend design.", name: "Vaishnavi Thorat", role: "First Year IT", rating: 4.3 },
-  { quote: "API request-response flows were brought to life with clear diagrams, making the entire concept easy to understand and apply.", name: "Devendra More", role: "TE Computer", rating: 4.9 },
-  { quote: "The workshop’s practical approach to backend with PHP and MySQL had immediate impact—we applied concepts directly to our mini-projects.", name: "Akash Bhoir", role: "BE IT", rating: 5.0 },
-  { quote: "This was hands down the most useful DSA session I’ve attended. The STL used to be a black box, but now I actually enjoy solving problems with it.", name: "Prathamesh Jadhav", role: "SE Computer Engineering", rating: 4.6 },
-  { quote: "I’ve attended many Java sessions before, but this one’s focus on practical enterprise applications made it invaluable for placements.", name: "Shraddha More", role: "TE IT", rating: 4.3 },
-  { quote: "This workshop was the perfect entry point for absolute beginners like me, making coding feel approachable and exciting.", name: "Kiran Bhagat", role: "First Year Mechanical Engineering", rating: 4.3 },
-  { quote: "The instructor’s interactive style kept energy high and made a three-hour React workshop fly by without losing attention.", name: "Pooja Chavan", role: "TE Computer Engineering", rating: 4.5 },
-  { quote: "Aggregation pipelines in MongoDB felt intimidating until this session made them approachable through clear examples and patient teaching.", name: "Vedant Pisal", role: "SE Computer Engineering", rating: 4.3 }
-];
+import { NAV, ENQUIRY_OPTIONS, COURSE_LIST, FAQS, TESTIMONIALS } from "@/data/siteData";
+import { StatsSection } from "@/components/site/StatsSection";
 
 const LEVEL_COLOR: Record<string, string> = {
   Beginner: "bg-emerald-50 text-emerald-700 border-emerald-200",
@@ -648,7 +99,7 @@ function CourseModal({
           <div className="flex items-start gap-4 pr-10">
             <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-muted border border-border shadow-sm">
               <img
-                src={`${DEVICON}${course.icon}`}
+                src={`${DEVICON_BASE}${course.icon}`}
                 alt={`${course.name} logo`}
                 className="h-8 w-8 object-contain"
               />
@@ -658,8 +109,9 @@ function CourseModal({
                 {course.name}
               </h2>
               <span
-                className={`mt-1.5 inline-block rounded-md border px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider ${LEVEL_COLOR[course.level] ?? "bg-muted text-muted-foreground border-border"
-                  }`}
+                className={`mt-1.5 inline-block rounded-md border px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider ${
+                  LEVEL_COLOR[course.level] ?? "bg-muted text-muted-foreground border-border"
+                }`}
               >
                 {course.level}
               </span>
@@ -669,14 +121,26 @@ function CourseModal({
           {/* Meta chips */}
           <div className="mt-5 flex flex-wrap gap-2.5">
             <div className="flex items-center gap-1.5 rounded-xl border border-border bg-muted/60 px-3.5 py-1.5 text-sm text-foreground">
-              <svg className="h-4 w-4 text-secondary" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <svg
+                className="h-4 w-4 text-secondary"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+              >
                 <circle cx="12" cy="12" r="10" />
                 <polyline points="12 6 12 12 16 14" />
               </svg>
               <span className="font-medium">{course.duration}</span>
             </div>
             <div className="flex items-center gap-1.5 rounded-xl border border-border bg-muted/60 px-3.5 py-1.5 text-sm text-foreground">
-              <svg className="h-4 w-4 text-secondary" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <svg
+                className="h-4 w-4 text-secondary"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+              >
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
                 <circle cx="9" cy="7" r="4" />
                 <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
@@ -685,7 +149,13 @@ function CourseModal({
               <span className="font-medium">{course.mode}</span>
             </div>
             <div className="flex items-center gap-1.5 rounded-xl border border-border bg-muted/60 px-3.5 py-1.5 text-sm text-foreground">
-              <svg className="h-4 w-4 text-secondary" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <svg
+                className="h-4 w-4 text-secondary"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+              >
                 <line x1="12" y1="1" x2="12" y2="23" />
                 <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
               </svg>
@@ -694,9 +164,7 @@ function CourseModal({
           </div>
 
           {/* Description */}
-          <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
-            {course.description}
-          </p>
+          <p className="mt-5 text-sm leading-relaxed text-muted-foreground">{course.description}</p>
 
           {/* Topics */}
           <div className="mt-6">
@@ -721,7 +189,9 @@ function CourseModal({
 
           {/* Skills */}
           <div className="mt-6">
-            <h3 className="font-display text-base font-semibold text-foreground">Skills You'll Learn</h3>
+            <h3 className="font-display text-base font-semibold text-foreground">
+              Skills You'll Learn
+            </h3>
             <div className="mt-3 flex flex-wrap gap-2">
               {course.skills.map((skill) => (
                 <span
@@ -736,7 +206,9 @@ function CourseModal({
 
           {/* Prerequisites */}
           <div className="mt-6 rounded-2xl border border-border bg-muted/40 p-4">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Prerequisites</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Prerequisites
+            </p>
             <p className="mt-1.5 text-sm text-foreground">{course.prerequisites}</p>
           </div>
 
@@ -746,7 +218,13 @@ function CourseModal({
               type="button"
               onClick={() => {
                 onClose();
-                setTimeout(() => document.querySelector<HTMLElement>("#contact")?.scrollIntoView({ behavior: "smooth" }), 100);
+                setTimeout(
+                  () =>
+                    document
+                      .querySelector<HTMLElement>("#contact")
+                      ?.scrollIntoView({ behavior: "smooth" }),
+                  100,
+                );
               }}
               className="flex-1 rounded-xl bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground shadow-[var(--shadow-soft)] transition-all hover:-translate-y-0.5 hover:shadow-[var(--shadow-lift)]"
             >
@@ -791,13 +269,12 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    if (testimonialPage === totalPages) {
-      const timeout = setTimeout(() => {
-        setIsTransitioning(false);
-        setTestimonialPage(0);
-      }, 700);
-      return () => clearTimeout(timeout);
-    }
+    if (testimonialPage !== totalPages) return;
+    const timeout = setTimeout(() => {
+      setIsTransitioning(false);
+      setTestimonialPage(0);
+    }, 700);
+    return () => clearTimeout(timeout);
   }, [testimonialPage, totalPages]);
 
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -808,44 +285,50 @@ function Home() {
   const [coursesTriggered, setCoursesTriggered] = useState(false);
   const coursesRef = useRef<HTMLDivElement>(null);
 
-  const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("Home");
   const [hiddenNav, setHiddenNav] = useState(false);
   const lastScrollY = useRef(0);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      if (currentScrollY > 100 && currentScrollY > lastScrollY.current) {
-        setHiddenNav(true);
-      } else if (currentScrollY < lastScrollY.current) {
-        setHiddenNav(false);
-      }
-      lastScrollY.current = currentScrollY;
+    let frameId: number | null = null;
 
-      setScrolled(currentScrollY > 20);
-      
-      const sections = NAV.map(n => n.href.substring(1)).filter(Boolean);
-      let current = "Home";
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element && currentScrollY >= (element.offsetTop - 150)) {
-          const navItem = NAV.find(n => n.href === `#${section}`);
-          if (navItem) current = navItem.label;
+    const handleScroll = () => {
+      if (frameId !== null) return;
+
+      frameId = requestAnimationFrame(() => {
+        frameId = null;
+        const currentScrollY = window.scrollY;
+
+        if (currentScrollY > 100 && currentScrollY > lastScrollY.current) {
+          setHiddenNav(true);
+        } else if (currentScrollY < lastScrollY.current) {
+          setHiddenNav(false);
         }
-      }
-      if ((window.innerHeight + Math.round(currentScrollY)) >= document.body.offsetHeight - 100) {
-        current = "Contact";
-      }
-      setActiveSection(current);
+        lastScrollY.current = currentScrollY;
+
+        const sections = NAV.map((n) => n.href.substring(1)).filter(Boolean);
+        let current = "Home";
+        for (const section of sections) {
+          const element = document.getElementById(section);
+          if (element && currentScrollY >= element.offsetTop - 150) {
+            const navItem = NAV.find((n) => n.href === `#${section}`);
+            if (navItem) current = navItem.label;
+          }
+        }
+        if (window.innerHeight + Math.round(currentScrollY) >= document.body.offsetHeight - 100) {
+          current = "Contact";
+        }
+        setActiveSection((active) => (active === current ? active : current));
+      });
     };
-    
+
     window.addEventListener("scroll", handleScroll);
     handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (frameId !== null) cancelAnimationFrame(frameId);
+    };
   }, []);
-
 
   useEffect(() => {
     const el = coursesRef.current;
@@ -857,25 +340,73 @@ function Home() {
           observer.disconnect();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
+  const [callbackStatus, setCallbackStatus] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
+
+  const handleCallbackSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setCallbackStatus(null);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const data = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+      enquiryFor: formData.get("enquiryFor"),
+      message: formData.get("message"),
+    };
+
+    try {
+      const res = await fetch(`${API_BASE}/api/callback`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (res.ok) {
+        setCallbackStatus({
+          type: "success",
+          text: "Callback request submitted! Our team will reach out shortly.",
+        });
+        form.reset();
+        setTimeout(() => setShowCallbackModal(false), 1500);
+      } else {
+        setCallbackStatus({ type: "error", text: "Failed to submit request. Please try again." });
+      }
+    } catch (err) {
+      console.error(err);
+      setCallbackStatus({
+        type: "error",
+        text: "Error submitting request. Please check your connection and try again.",
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
-      <header 
+      <header
         className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ease-in-out pt-4 lg:pt-5 ${
           hiddenNav ? "-translate-y-full" : "translate-y-0"
         }`}
       >
-        <div 
-          className="mx-auto flex h-14 lg:h-16 items-center justify-between bg-white rounded-full border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.06)] w-full max-w-[95%] lg:max-w-[1300px] px-4 lg:px-8"
-        >
+        <div className="mx-auto flex h-14 lg:h-16 items-center justify-between bg-white rounded-full border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.06)] w-full max-w-[95%] lg:max-w-[1300px] px-4 lg:px-8">
           <a href="#home" className="flex shrink-0 items-center gap-3">
             <div className="rounded-full bg-white p-1 shadow-sm border border-gray-50 flex items-center justify-center">
-              <img src="/softtech-logo.png" alt="Softtech Solutions &amp; Training Logo" className="h-10 lg:h-12 w-10 lg:w-12 object-contain rounded-full" />
+              <img
+                src="/softtech-logo.png"
+                alt="Softtech Solutions &amp; Training Logo"
+                loading="eager"
+                decoding="async"
+                className="h-10 lg:h-12 w-10 lg:w-12 object-contain rounded-full"
+              />
             </div>
             <div className="hidden sm:flex flex-col justify-center leading-none">
               <span className="font-display text-sm lg:text-[15px] font-bold text-[#0A1B3F]">
@@ -947,7 +478,9 @@ function Home() {
                       setActiveSection(item.label);
                     }}
                     className={`block rounded-xl px-4 py-3 text-sm font-semibold transition-colors ${
-                      isActive ? "bg-blue-50 text-blue-600" : "text-gray-600 hover:bg-gray-50 hover:text-blue-600"
+                      isActive
+                        ? "bg-blue-50 text-blue-600"
+                        : "text-gray-600 hover:bg-gray-50 hover:text-blue-600"
                     }`}
                   >
                     {item.label}
@@ -957,7 +490,10 @@ function Home() {
               <div className="mt-2 pt-2 border-t border-gray-100">
                 <button
                   type="button"
-                  onClick={() => { setMenuOpen(false); setShowCallbackModal(true); }}
+                  onClick={() => {
+                    setMenuOpen(false);
+                    setShowCallbackModal(true);
+                  }}
                   className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#0044CC] px-5 py-3 text-sm font-bold text-white shadow-md"
                 >
                   <Phone className="h-4 w-4" />
@@ -971,13 +507,19 @@ function Home() {
 
       <main>
         {/* HERO */}
-        <section id="home" className="relative min-h-[85vh] lg:min-h-[90vh] w-full flex items-center overflow-hidden bg-slate-100">
+        <section
+          id="home"
+          className="relative min-h-[85vh] lg:min-h-[90vh] w-full flex items-center overflow-hidden bg-slate-100"
+        >
           {/* Background image carousel with smooth 5-second cross-fade */}
           {heroImages.map((img, idx) => (
             <img
               key={img}
               src={img}
               alt="Softtech Solutions workshop training session"
+              loading={idx === 0 ? "eager" : "lazy"}
+              fetchPriority={idx === 0 ? "high" : "low"}
+              decoding="async"
               className={`absolute inset-0 h-full w-full object-cover ${
                 idx === 1 ? "object-[65%_25%]" : "object-center"
               } transition-opacity duration-1000 ease-in-out ${
@@ -1002,7 +544,13 @@ function Home() {
           </div>
 
           {/* Left-side soft fade — keeps image on left visible while text remains readable */}
-          <div className="absolute left-0 top-0 bottom-0 w-full sm:w-[60%] lg:w-[48%] bg-gradient-to-r from-white/85 via-white/45 via-60% to-transparent pointer-events-none z-10 backdrop-blur-[1px]" />
+          <div
+            className="absolute left-0 top-0 bottom-0 w-full sm:w-[60%] lg:w-[52%] bg-gradient-to-r from-white via-white/55 via-45% to-transparent pointer-events-none z-10"
+            style={{
+              WebkitMaskImage: "linear-gradient(to right, black 88%, transparent 100%)",
+              maskImage: "linear-gradient(to right, black 88%, transparent 100%)",
+            }}
+          />
 
           {/* Foreground text content */}
           <div className="relative z-20 mx-auto w-full max-w-screen-2xl px-6 py-12 lg:px-16 lg:py-16">
@@ -1016,12 +564,19 @@ function Home() {
 
               <h1 className="font-display text-5xl font-black leading-[1.1] text-[#0B2559] sm:text-6xl lg:text-[72px] min-h-[2.5em] sm:min-h-0">
                 <span className="text-[#3B82F6]">
-                  <Typewriter words={["INNOVATE.", "EDUCATE.", "ELEVATE."]} delay={300} speed={100} pause={1500} deleteSpeed={60} />
+                  <Typewriter
+                    words={["INNOVATE.", "EDUCATE.", "ELEVATE."]}
+                    delay={300}
+                    speed={100}
+                    pause={1500}
+                    deleteSpeed={60}
+                  />
                 </span>
               </h1>
 
               <p className="max-w-lg text-lg sm:text-xl leading-relaxed text-[#4A5568] font-medium">
-                Empowering students with real-world technology skills through hands-on workshops, mentorship and innovation.
+                Empowering students with real-world technology skills through hands-on workshops,
+                mentorship and innovation.
               </p>
 
               <div className="pt-4 flex flex-wrap items-center gap-4">
@@ -1042,7 +597,10 @@ function Home() {
         <StatsSection />
 
         {/* ABOUT */}
-        <section id="about" className="border-y border-border bg-[#F8FAFC] pt-8 pb-16 sm:pt-10 sm:pb-20 lg:pt-10 lg:pb-24">
+        <section
+          id="about"
+          className="border-y border-border bg-[#F8FAFC] pt-8 pb-16 sm:pt-10 sm:pb-20 lg:pt-10 lg:pb-24"
+        >
           <div className="mx-auto grid w-full max-w-screen-2xl items-center gap-12 px-5 lg:grid-cols-2 lg:gap-16 lg:px-12">
             <div className="animate-fade-in">
               <AboutCollage />
@@ -1058,13 +616,23 @@ function Home() {
 
               {/* Paragraph 1 */}
               <p className="text-center text-base sm:text-lg italic leading-relaxed text-slate-700 font-normal max-w-2xl mx-auto">
-                <span className="text-primary font-serif font-bold text-2xl leading-none inline-block mr-0.5">“</span>
-                <span className="font-semibold text-slate-800">Softtech</span> Solutions &amp; Training, based in Pune, builds Manufacturing Execution Systems (MES) for manufacturing environments, including automotive production lines, and trains students and developers in Java, Python, AWS, Vaadin, Spring, and full-stack web development.
+                <span className="text-primary font-serif font-bold text-2xl leading-none inline-block mr-0.5">
+                  “
+                </span>
+                <span className="font-semibold text-slate-800">Softtech</span> Solutions &amp;
+                Training, based in Pune, builds Manufacturing Execution Systems (MES) for
+                manufacturing environments, including automotive production lines, and trains
+                students and developers in Java, Python, AWS, Vaadin, Spring, and full-stack web
+                development.
               </p>
 
               {/* Paragraph 2 */}
               <p className="text-center text-base sm:text-lg italic leading-relaxed text-slate-700 font-normal max-w-2xl mx-auto">
-                Ravindra Swami, whose background spans MES engineering at companies like <strong className="font-semibold text-slate-900">Fiat India</strong> and <strong className="font-semibold text-slate-900">Volvo-Eicher</strong>, and academic teaching as a lecturer and Head of Department, the company brings both worlds into every project and course.
+                Ravindra Swami, whose background spans MES engineering at companies like{" "}
+                <strong className="font-semibold text-slate-900">Fiat India</strong> and{" "}
+                <strong className="font-semibold text-slate-900">Volvo-Eicher</strong>, and academic
+                teaching as a lecturer and Head of Department, the company brings both worlds into
+                every project and course.
               </p>
 
               {/* Founder Signature */}
@@ -1073,9 +641,7 @@ function Home() {
                   <span className="text-primary text-3xl font-serif">“</span>
                   Ravindra Swami
                 </p>
-                <p className="mt-0.5 text-sm font-medium text-slate-500 mr-1">
-                  Founder
-                </p>
+                <p className="mt-0.5 text-sm font-medium text-slate-500 mr-1">Founder</p>
               </div>
             </div>
           </div>
@@ -1088,78 +654,24 @@ function Home() {
               The Courses We Provide
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-center text-sm text-muted-foreground">
-              48+ tracks across beginner, intermediate and advanced levels — click any card to explore.
+              48+ tracks across beginner, intermediate and advanced levels — click any card to
+              explore.
             </p>
           </div>
 
           {/* Horizontal scroll row with fade masks on edges (hidden when full grid is open) */}
           {!showAllCourses && (
             <div className="courses-scroll-wrapper mt-10">
-              <div
-                ref={coursesRef}
-                className="courses-scroll-track"
-              >
+              <div ref={coursesRef} className="courses-scroll-track">
                 {COURSE_LIST.map((c, i) => (
-                  <div
+                  <CourseCard
                     key={c.name}
-                    className={`courses-card surface-card group relative flex flex-col p-0 overflow-hidden cursor-pointer course-card-enter${coursesTriggered ? " course-card-visible" : ""}`}
-                    style={coursesTriggered ? { animationDelay: `${i * 60}ms` } : undefined}
+                    course={c}
+                    animated
+                    visible={coursesTriggered}
+                    index={i}
                     onClick={() => setSelectedCourse(c)}
-                    onAnimationEnd={(e) => {
-                      e.currentTarget.style.animation = "none";
-                      e.currentTarget.style.opacity = "1";
-                      e.currentTarget.style.transform = "none";
-                    }}
-                  >
-                    {/* Colored Top Section */}
-                    <div className="relative h-24 w-full p-3.5 sm:p-4 shrink-0 overflow-hidden" style={{ background: c.bg }}>
-                      {/* Subtle light burst */}
-                      <div className="absolute right-0 top-0 h-full w-full opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 100% 0%, white 0%, transparent 60%)' }} />
-                      
-                      {/* Large technology logo watermark */}
-                      <img 
-                        src={`${DEVICON}${c.icon}`} 
-                        alt="" 
-                        className="absolute -right-3 -bottom-3 h-24 w-24 object-contain opacity-[0.15] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-6"
-                        style={{ filter: 'grayscale(100%) brightness(200%)' }}
-                      />
-
-                      {/* Small icon box */}
-                      <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white shadow-sm relative z-10 transition-transform duration-500 group-hover:scale-110">
-                        <img
-                          src={`${DEVICON}${c.icon}`}
-                          alt={`${c.name} logo`}
-                          loading="lazy"
-                          className="h-4.5 w-4.5 object-contain"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Content Bottom Section */}
-                    <div className="flex flex-1 flex-col items-start gap-2 p-3.5 sm:p-4 bg-card relative z-10 w-full">
-                      <div className="flex flex-col gap-0.5 w-full">
-                        <p className="font-display text-base font-semibold leading-snug text-foreground group-hover:text-primary transition-colors">{c.name}</p>
-                        <p className="text-[10px] font-bold uppercase tracking-wider text-secondary">{c.level}</p>
-                      </div>
-                      <div className="flex flex-wrap gap-1.5 w-full">
-                        {c.teaches.slice(0, 2).map((t) => (
-                          <span key={t} className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{t}</span>
-                        ))}
-                        {c.teaches.length > 2 && (
-                          <span className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-                            +{c.teaches.length - 2} more
-                          </span>
-                        )}
-                      </div>
-                      {/* Open Course CTA */}
-                      <div className="mt-auto pt-1.5 w-full border-t border-border/60">
-                        <span className="inline-flex items-center gap-2 text-base font-bold text-primary group-hover:text-secondary transition-colors">
-                          Open Course
-                          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                  />
                 ))}
               </div>
             </div>
@@ -1170,60 +682,7 @@ function Home() {
             {showAllCourses && (
               <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
                 {COURSE_LIST.map((c) => (
-                  <div
-                    key={`grid-${c.name}`}
-                    className="surface-card h-full group relative flex flex-col p-0 overflow-hidden cursor-pointer"
-                    onClick={() => setSelectedCourse(c)}
-                  >
-                    {/* Colored Top Section */}
-                    <div className="relative h-24 w-full p-3.5 sm:p-4 shrink-0 overflow-hidden" style={{ background: c.bg }}>
-                      {/* Subtle light burst */}
-                      <div className="absolute right-0 top-0 h-full w-full opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 100% 0%, white 0%, transparent 60%)' }} />
-                      
-                      {/* Large technology logo watermark */}
-                      <img 
-                        src={`${DEVICON}${c.icon}`} 
-                        alt="" 
-                        className="absolute -right-3 -bottom-3 h-24 w-24 object-contain opacity-[0.15] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-6"
-                        style={{ filter: 'grayscale(100%) brightness(200%)' }}
-                      />
-
-                      {/* Small icon box */}
-                      <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white shadow-sm relative z-10 transition-transform duration-500 group-hover:scale-110">
-                        <img
-                          src={`${DEVICON}${c.icon}`}
-                          alt={`${c.name} logo`}
-                          loading="lazy"
-                          className="h-4.5 w-4.5 object-contain"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Content Bottom Section */}
-                    <div className="flex flex-1 flex-col items-start gap-2 p-3.5 sm:p-4 bg-card relative z-10 w-full">
-                      <div className="flex flex-col gap-0.5 w-full">
-                        <p className="font-display text-base font-semibold leading-snug text-foreground group-hover:text-primary transition-colors">{c.name}</p>
-                        <p className="text-[10px] font-bold uppercase tracking-wider text-secondary">{c.level}</p>
-                      </div>
-                      <div className="flex flex-wrap gap-1.5 w-full">
-                        {c.teaches.slice(0, 2).map((t) => (
-                          <span key={t} className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{t}</span>
-                        ))}
-                        {c.teaches.length > 2 && (
-                          <span className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-                            +{c.teaches.length - 2} more
-                          </span>
-                        )}
-                      </div>
-                      {/* Open Course CTA */}
-                      <div className="mt-auto pt-1.5 w-full border-t border-border/60">
-                        <span className="inline-flex items-center gap-2 text-base font-bold text-primary group-hover:text-secondary transition-colors">
-                          Open Course
-                          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                  <CourseCard key={c.name} course={c} onClick={() => setSelectedCourse(c)} />
                 ))}
               </div>
             )}
@@ -1252,7 +711,10 @@ function Home() {
         </section>
 
         {/* WORKSHOPS & CAMPUS ENGAGEMENT */}
-        <section id="workshops" className="border-y border-border bg-[#F4F9FF] py-12 lg:py-16 overflow-hidden">
+        <section
+          id="workshops"
+          className="border-y border-border bg-[#F4F9FF] py-12 lg:py-16 overflow-hidden"
+        >
           <div className="mx-auto w-full max-w-screen-2xl px-5 lg:px-12">
             <div className="text-center animate-fade-in">
               <span className="text-sm font-bold tracking-wider text-[#2A75D3] uppercase">
@@ -1262,43 +724,13 @@ function Home() {
                 Workshops & Campus Engagement
               </h2>
               <p className="mx-auto mt-6 max-w-2xl text-[17px] leading-relaxed text-[#4A5568] font-medium">
-                We bring industry-grade training directly to college campuses, providing students with hands-on experience in the latest technologies.
+                We bring industry-grade training directly to college campuses, providing students
+                with hands-on experience in the latest technologies.
               </p>
             </div>
 
-            <style>{`
-              @keyframes marquee {
-                0% { transform: translateX(0); }
-                100% { transform: translateX(-50%); }
-              }
-              .animate-marquee {
-                animation: marquee 40s linear infinite;
-              }
-            `}</style>
             <div className="mt-16 w-full overflow-hidden">
-              <div className="flex w-max gap-10 sm:gap-16 animate-marquee hover:[animation-play-state:paused] py-4">
-                {[...WORKSHOPS, ...WORKSHOPS].map((workshop, i) => (
-                  <div 
-                    key={`${workshop.id}-${i}`} 
-                    className="group relative flex flex-col items-center w-36 sm:w-44 transition-all duration-300"
-                  >
-                    <div className="relative h-24 w-24 sm:h-28 sm:w-28 flex items-center justify-center bg-white rounded-2xl shadow-sm border border-blue-900/5 p-4 transition-transform duration-300 group-hover:scale-110 group-hover:shadow-md">
-                      <img 
-                        src={workshop.image} 
-                        alt={workshop.college} 
-                        className="h-full w-full object-contain" 
-                      />
-                    </div>
-                    <h3 className="mt-4 font-display text-sm font-bold text-center leading-snug text-[#0B2559]">
-                      {workshop.college}
-                    </h3>
-                    <div className="mt-1.5 flex items-center justify-center gap-1 text-xs text-[#4A5568] font-medium">
-                      <MapPin className="h-3.5 w-3.5" />
-                      {workshop.location}
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <WorkshopMarquee workshops={WORKSHOPS} />
             </div>
           </div>
         </section>
@@ -1306,7 +738,9 @@ function Home() {
         {/* TECH STACK MARQUEE */}
         <section className="border-y border-border bg-muted/40 py-12 lg:py-16">
           <div className="mx-auto w-full max-w-screen-2xl px-5 lg:px-12">
-            <h2 className="text-center font-display text-3xl text-primary sm:text-4xl">Tech Stack We Teach</h2>
+            <h2 className="text-center font-display text-3xl text-primary sm:text-4xl">
+              Tech Stack We Teach
+            </h2>
             <p className="mx-auto mt-3 max-w-xl text-center text-sm text-muted-foreground">
               The exact tools, frameworks and platforms used inside our project labs.
             </p>
@@ -1334,97 +768,126 @@ function Home() {
           </div>
         </section>
 
-
-
         {/* News & Recognition */}
         <section className="bg-background py-12 lg:py-16 overflow-hidden">
           <div className="mx-auto w-full max-w-screen-2xl px-5 lg:px-12">
-            <h2 className="text-center font-display text-3xl text-primary sm:text-4xl mb-8 sm:mb-12 lg:mb-16">Awards and Rewards</h2>
+            <h2 className="text-center font-display text-3xl text-primary sm:text-4xl mb-8 sm:mb-12 lg:mb-16">
+              Awards and Rewards
+            </h2>
             <div className="space-y-8 lg:space-y-12">
-            
-            {/* We in News */}
-            <div className="flex flex-col md:flex-row items-center gap-8 lg:gap-12">
-              <div className="w-full md:w-1/2 flex flex-col items-center">
-                <ImageStack 
-                  images={['/news1.png', '/news2.png', '/news3.png']} 
-                  className="w-72 h-56 sm:w-[400px] sm:h-[300px] mt-10" 
-                />
-                <h3 className="mt-12 font-display text-2xl font-bold text-primary">
-                  We in <span className="text-[#3b82f6]">News</span>
-                </h3>
+              {/* We in News */}
+              <div className="flex flex-col md:flex-row items-center gap-8 lg:gap-12">
+                <div className="w-full md:w-1/2 flex flex-col items-center">
+                  <ImageStack
+                    images={["/news1.webp", "/news2.webp", "/news3.webp"]}
+                    className="w-72 h-56 sm:w-[400px] sm:h-[300px] mt-10"
+                  />
+                  <h3 className="mt-12 font-display text-2xl font-bold text-primary">
+                    We in <span className="text-[#3b82f6]">News</span>
+                  </h3>
+                </div>
+                <div className="w-full md:w-1/2 mt-12 md:mt-0">
+                  <h2 className="font-display text-3xl font-bold text-foreground sm:text-[2.5rem] leading-tight">
+                    From the classroom to the headlines.
+                  </h2>
+                  <p className="mt-6 text-[1.1rem] leading-relaxed text-muted-foreground">
+                    Our work, ideas, and impact have been recognized by leading media platforms,
+                    helping us share our journey, innovations, and the people behind them with a
+                    wider audience.
+                  </p>
+                </div>
               </div>
-              <div className="w-full md:w-1/2 mt-12 md:mt-0">
-                <h2 className="font-display text-3xl font-bold text-foreground sm:text-[2.5rem] leading-tight">
-                  From the classroom to the headlines.
-                </h2>
-                <p className="mt-6 text-[1.1rem] leading-relaxed text-muted-foreground">
-                  Our work, ideas, and impact have been recognized by leading media platforms, helping us share our journey, innovations, and the people behind them with a wider audience.
-                </p>
-              </div>
-            </div>
 
-            {/* Awards and Rewards */}
-            <div className="flex flex-col md:flex-row-reverse items-center gap-8 lg:gap-12">
-              <div className="w-full md:w-1/2 flex flex-col items-center">
-                <ImageStack 
-                  images={['/award1.jpg', '/award2.png', '/award3.jpg', '/award4.jpg']} 
-                  className="w-72 h-48 sm:w-[400px] sm:h-[260px] mt-10" 
-                  reverse
-                />
-                <h3 className="mt-12 font-display text-2xl font-bold text-primary">
-                  Awards and <span className="text-[#3b82f6]">Rewards</span>
-                </h3>
+              {/* Awards and Rewards */}
+              <div className="flex flex-col md:flex-row-reverse items-center gap-8 lg:gap-12">
+                <div className="w-full md:w-1/2 flex flex-col items-center">
+                  <ImageStack
+                    images={["/award1.webp", "/award2.webp", "/award3.webp", "/award4.webp"]}
+                    className="w-72 h-48 sm:w-[400px] sm:h-[260px] mt-10"
+                    reverse
+                  />
+                  <h3 className="mt-12 font-display text-2xl font-bold text-primary">
+                    Awards and <span className="text-[#3b82f6]">Rewards</span>
+                  </h3>
+                </div>
+                <div className="w-full md:w-1/2 mt-12 md:mt-0">
+                  <h2 className="font-display text-3xl font-bold text-foreground sm:text-[2.5rem] leading-tight">
+                    Recognized for the work that creates impact.
+                  </h2>
+                  <p className="mt-6 text-[1.1rem] leading-relaxed text-muted-foreground">
+                    Every award represents a milestone in our journey ; celebrating innovation,
+                    meaningful contributions, and the commitment to turning ideas into real-world
+                    change.
+                  </p>
+                </div>
               </div>
-              <div className="w-full md:w-1/2 mt-12 md:mt-0">
-                <h2 className="font-display text-3xl font-bold text-foreground sm:text-[2.5rem] leading-tight">
-                  Recognized for the work that creates impact.
-                </h2>
-                <p className="mt-6 text-[1.1rem] leading-relaxed text-muted-foreground">
-                  Every award represents a milestone in our journey ; celebrating innovation, meaningful contributions, and the commitment to turning ideas into real-world change.
-                </p>
-              </div>
-            </div>
             </div>
           </div>
         </section>
 
         <section id="feedback" className="border-y border-border bg-muted/40 py-12 lg:py-16">
           <div className="mx-auto w-full max-w-screen-2xl px-5 lg:px-12">
-            <h2 className="text-center font-display text-3xl text-primary sm:text-4xl">Student Feedback</h2>
+            <h2 className="text-center font-display text-3xl text-primary sm:text-4xl">
+              Student Feedback
+            </h2>
             <div className="mt-9 overflow-hidden relative">
-              <div 
+              <div
                 className={`flex ${isTransitioning ? "transition-transform duration-700 ease-in-out" : ""}`}
                 style={{ transform: `translateX(-${testimonialPage * 100}%)` }}
               >
                 {Array.from({ length: totalPages + 1 }).map((_, pageIndex) => {
                   const actualPageIndex = pageIndex % totalPages;
                   return (
-                    <div key={pageIndex} className="w-full shrink-0 flex flex-wrap justify-center gap-5">
-                      {TESTIMONIALS.slice(actualPageIndex * TESTIMONIALS_PER_PAGE, (actualPageIndex + 1) * TESTIMONIALS_PER_PAGE).map((t) => (
-                      <figure key={t.name} className="surface-card p-5 w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)] flex flex-col">
-                        <Quote className="h-5 w-5 text-secondary mx-auto" />
-                        <blockquote className="mt-3 text-[13px] leading-relaxed text-muted-foreground text-center flex-1">{t.quote}</blockquote>
-                        
-                        <div className="mt-3 flex items-center justify-center gap-1" aria-label={`${t.rating} out of 5 stars`}>
-                          <span className="font-semibold text-xs text-foreground mr-1">{t.rating}</span>
-                          {[1, 2, 3, 4, 5].map((s) => (
-                            <svg key={s} className={`h-3.5 w-3.5 ${s <= Math.round(t.rating) ? 'fill-amber-400 text-amber-400' : 'fill-muted text-muted'}`} viewBox="0 0 20 20">
-                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                            </svg>
-                          ))}
-                        </div>
+                    <div
+                      key={pageIndex}
+                      className="w-full shrink-0 flex flex-wrap justify-center gap-5"
+                    >
+                      {TESTIMONIALS.slice(
+                        actualPageIndex * TESTIMONIALS_PER_PAGE,
+                        (actualPageIndex + 1) * TESTIMONIALS_PER_PAGE,
+                      ).map((t) => (
+                        <figure
+                          key={t.name}
+                          className="surface-card p-5 w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)] flex flex-col"
+                        >
+                          <Quote className="h-5 w-5 text-secondary mx-auto" />
+                          <blockquote className="mt-3 text-[13px] leading-relaxed text-muted-foreground text-center flex-1">
+                            {t.quote}
+                          </blockquote>
 
-                        <figcaption className="mt-4 flex items-center justify-center gap-2">
-                          <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-xs font-semibold text-primary-foreground shrink-0">
-                            {t.name.charAt(0)}
-                          </span>
-                          <span className="text-left">
-                            <span className="block text-[13px] font-semibold text-foreground">{t.name}</span>
-                            <span className="block text-[11px] text-muted-foreground">{t.role}</span>
-                          </span>
-                        </figcaption>
-                      </figure>
-                    ))}
+                          <div
+                            className="mt-3 flex items-center justify-center gap-1"
+                            aria-label={`${t.rating} out of 5 stars`}
+                          >
+                            <span className="font-semibold text-xs text-foreground mr-1">
+                              {t.rating}
+                            </span>
+                            {[1, 2, 3, 4, 5].map((s) => (
+                              <svg
+                                key={s}
+                                className={`h-3.5 w-3.5 ${s <= Math.round(t.rating) ? "fill-amber-400 text-amber-400" : "fill-muted text-muted"}`}
+                                viewBox="0 0 20 20"
+                              >
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                              </svg>
+                            ))}
+                          </div>
+
+                          <figcaption className="mt-4 flex items-center justify-center gap-2">
+                            <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-xs font-semibold text-primary-foreground shrink-0">
+                              {t.name.charAt(0)}
+                            </span>
+                            <span className="text-left">
+                              <span className="block text-[13px] font-semibold text-foreground">
+                                {t.name}
+                              </span>
+                              <span className="block text-[11px] text-muted-foreground">
+                                {t.role}
+                              </span>
+                            </span>
+                          </figcaption>
+                        </figure>
+                      ))}
                     </div>
                   );
                 })}
@@ -1441,7 +904,9 @@ function Home() {
                     setTestimonialPage(i);
                   }}
                   className={`h-2.5 rounded-full transition-all duration-300 ${
-                    (testimonialPage === totalPages ? 0 : testimonialPage) === i ? "w-8 bg-secondary" : "w-2.5 bg-border hover:bg-muted-foreground"
+                    (testimonialPage === totalPages ? 0 : testimonialPage) === i
+                      ? "w-8 bg-secondary"
+                      : "w-2.5 bg-border hover:bg-muted-foreground"
                   }`}
                   aria-label={`Go to page ${i + 1}`}
                 />
@@ -1457,7 +922,10 @@ function Home() {
             {FAQS.map((f, i) => {
               const open = openFaq === i;
               return (
-                <div key={f.q} className="overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)]">
+                <div
+                  key={f.q}
+                  className="overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)]"
+                >
                   <button
                     type="button"
                     onClick={() => setOpenFaq(open ? null : i)}
@@ -1471,7 +939,9 @@ function Home() {
                     )}
                   </button>
                   {open && (
-                    <p className="animate-fade-in px-5 pb-5 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
+                    <p className="animate-fade-in px-5 pb-5 text-sm leading-relaxed text-muted-foreground">
+                      {f.a}
+                    </p>
                   )}
                 </div>
               );
@@ -1482,10 +952,7 @@ function Home() {
 
       {/* COURSE DETAIL MODAL */}
       {selectedCourse && (
-        <CourseModal
-          course={selectedCourse}
-          onClose={() => setSelectedCourse(null)}
-        />
+        <CourseModal course={selectedCourse} onClose={() => setSelectedCourse(null)} />
       )}
 
       {/* CONTACT / FOOTER */}
@@ -1493,28 +960,57 @@ function Home() {
         <div className="mx-auto grid w-full max-w-screen-2xl gap-10 px-5 py-10 lg:grid-cols-3 lg:px-12">
           <div className="flex flex-col gap-6 items-start">
             <div className="flex items-center gap-4">
-              <img src="/softtech-logo.png" alt="Softtech Logo" className="h-24 sm:h-32 w-auto object-contain" />
-              <h2 className="font-display text-2xl font-bold text-primary leading-tight">Softtech Solutions <br/>and Training</h2>
+              <img
+                src="/softtech-logo.png"
+                alt="Softtech Logo"
+                loading="lazy"
+                decoding="async"
+                className="h-24 sm:h-32 w-auto object-contain"
+              />
+              <h2 className="font-display text-2xl font-bold text-primary leading-tight">
+                Softtech Solutions <br />
+                and Training
+              </h2>
             </div>
-            
+
             <div className="flex items-center gap-5 mt-2">
-              <a href="#" className="text-muted-foreground hover:text-black transition-colors" aria-label="Instagram">
+              <a
+                href="#"
+                className="text-muted-foreground hover:text-black transition-colors"
+                aria-label="Instagram"
+              >
                 <Instagram className="h-6 w-6" />
               </a>
-              <a href="https://www.linkedin.com/company/softtech-solutions-and-training/posts/?feedView=all" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-[#0A66C2] transition-colors" aria-label="LinkedIn">
+              <a
+                href="https://www.linkedin.com/company/softtech-solutions-and-training/posts/?feedView=all"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-[#0A66C2] transition-colors"
+                aria-label="LinkedIn"
+              >
                 <Linkedin className="h-6 w-6" />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-[#5865F2] transition-colors" aria-label="Discord">
+              <a
+                href="#"
+                className="text-muted-foreground hover:text-[#5865F2] transition-colors"
+                aria-label="Discord"
+              >
                 <DiscordIcon className="h-6 w-6" />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-black transition-colors" aria-label="X (Twitter)">
+              <a
+                href="#"
+                className="text-muted-foreground hover:text-black transition-colors"
+                aria-label="X (Twitter)"
+              >
                 <XIcon className="h-5 w-5" />
               </a>
             </div>
           </div>
 
           <div>
-            <h3 className="font-display text-lg font-semibold text-primary uppercase">QUICK LINKS</h3>
+            <h3 className="font-display text-lg font-semibold text-primary uppercase">
+              QUICK LINKS
+            </h3>
             <ul className="mt-5 space-y-3 text-sm text-muted-foreground">
               {NAV.map((n) => (
                 <li key={n.label}>
@@ -1527,24 +1023,36 @@ function Home() {
           </div>
 
           <div className="bg-[#eff6ff] p-8 rounded-3xl lg:-mr-4">
-            <h3 className="font-display text-lg font-semibold text-primary uppercase mb-5">CONTACT</h3>
+            <h3 className="font-display text-lg font-semibold text-primary uppercase mb-5">
+              CONTACT
+            </h3>
             <ul className="space-y-4 text-sm text-muted-foreground">
               <li className="flex gap-3">
                 <MapPin className="h-5 w-5 shrink-0 text-secondary" />
                 <span>
-                  623/6/6, Shree Swamikrupa Sprash, Bafna Property Backside, Bibavewadi, Pune, Maharashtra 411037, IN
+                  623/6/6, Shree Swamikrupa Sprash, Bafna Property Backside, Bibavewadi, Pune,
+                  Maharashtra 411037, IN
                 </span>
               </li>
               <li className="flex items-start gap-3">
                 <Phone className="h-5 w-5 shrink-0 text-secondary" />
                 <div className="flex flex-col gap-1">
-                  <a href="tel:8275265361" className="hover:text-secondary transition-colors">8275265361</a>
-                  <a href="tel:7020370236" className="hover:text-secondary transition-colors">7020370236</a>
+                  <a href="tel:8275265361" className="hover:text-secondary transition-colors">
+                    8275265361
+                  </a>
+                  <a href="tel:7020370236" className="hover:text-secondary transition-colors">
+                    7020370236
+                  </a>
                 </div>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="h-5 w-5 shrink-0 text-secondary" />
-                <a href="mailto:info@softtechsolutionsandtraining.com" className="hover:text-secondary transition-colors">info@softtechsolutionsandtraining.com</a>
+                <a
+                  href="mailto:info@softtechsolutionsandtraining.com"
+                  className="hover:text-secondary transition-colors"
+                >
+                  info@softtechsolutionsandtraining.com
+                </a>
               </li>
             </ul>
           </div>
@@ -1558,7 +1066,9 @@ function Home() {
       {showCallbackModal && (
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm px-4"
-          onClick={(e) => { if (e.target === e.currentTarget) setShowCallbackModal(false); }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowCallbackModal(false);
+          }}
         >
           <div
             className="animate-fade-in relative w-full max-w-md rounded-3xl bg-white p-8 shadow-2xl"
@@ -1580,40 +1090,20 @@ function Home() {
               Fill the form below to request a callback from our team.
             </p>
 
-            <form
-              className="mt-6 space-y-5"
-              onSubmit={async (e) => {
-                e.preventDefault();
-                const form = e.currentTarget as HTMLFormElement;
-                const formData = new FormData(form);
-                
-                const data = {
-                  name: formData.get('name'),
-                  email: formData.get('email'),
-                  phone: formData.get('phone'),
-                  enquiryFor: formData.get('enquiryFor'),
-                  message: formData.get('message')
-                };
+            {callbackStatus && (
+              <p
+                role="status"
+                className={`mt-4 rounded-xl px-4 py-3 text-center text-sm font-medium ${
+                  callbackStatus.type === "success"
+                    ? "bg-green-50 text-green-700"
+                    : "bg-red-50 text-red-600"
+                }`}
+              >
+                {callbackStatus.text}
+              </p>
+            )}
 
-                try {
-                  const res = await fetch('http://localhost:5000/api/callback', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                  });
-                  if (res.ok) {
-                    alert('Callback request submitted successfully!');
-                    setShowCallbackModal(false);
-                    form.reset();
-                  } else {
-                    alert('Failed to submit request. Please try again.');
-                  }
-                } catch (err) {
-                  console.error(err);
-                  alert('Error submitting request. Is the server running?');
-                }
-              }}
-            >
+            <form className="mt-6 space-y-5" onSubmit={handleCallbackSubmit}>
               {/* Name */}
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-foreground">Name</label>
@@ -1640,7 +1130,9 @@ function Home() {
 
               {/* Phone */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-foreground">Phone no.</label>
+                <label className="mb-1.5 block text-sm font-medium text-foreground">
+                  Phone no.
+                </label>
                 <div className="flex items-center gap-0 rounded-xl border border-input bg-white transition-colors focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200">
                   <span className="flex shrink-0 items-center gap-1.5 border-r border-input px-3 py-3 text-sm text-muted-foreground">
                     🇮🇳 +91
@@ -1657,7 +1149,9 @@ function Home() {
 
               {/* Enquiry For */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-foreground">Enquiry For</label>
+                <label className="mb-1.5 block text-sm font-medium text-foreground">
+                  Enquiry For
+                </label>
                 <div className="relative">
                   <select
                     name="enquiryFor"
@@ -1666,7 +1160,9 @@ function Home() {
                     className="w-full appearance-none rounded-xl border border-input bg-white px-4 py-3 pr-10 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                   >
                     {ENQUIRY_OPTIONS.map((opt) => (
-                      <option key={opt} value={opt}>{opt}</option>
+                      <option key={opt} value={opt}>
+                        {opt}
+                      </option>
                     ))}
                   </select>
                   <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -1675,7 +1171,9 @@ function Home() {
 
               {/* Message */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-foreground">How can we help you?</label>
+                <label className="mb-1.5 block text-sm font-medium text-foreground">
+                  How can we help you?
+                </label>
                 <textarea
                   name="message"
                   rows={3}

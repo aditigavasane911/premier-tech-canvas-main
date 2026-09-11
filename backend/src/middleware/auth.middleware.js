@@ -1,17 +1,17 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 exports.protect = (req, res, next) => {
   try {
-    const token = req.headers.authorization?.split(' ')[1];
-    
+    const token = req.headers.authorization?.split(" ")[1];
+
     if (!token) {
-      return res.status(401).json({ message: 'Not authorized, no token' });
+      return res.status(401).json({ message: "Not authorized, no token" });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret_key');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "fallback_secret_key");
     req.adminData = { adminId: decoded.adminId };
     next();
   } catch (error) {
-    res.status(401).json({ message: 'Not authorized, invalid token' });
+    res.status(401).json({ message: "Not authorized, invalid token" });
   }
 };
