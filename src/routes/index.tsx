@@ -777,19 +777,51 @@ function Home() {
         </section>
 
         {/* WHY US — cinematic gallery */}
-        <section className="border-y border-border bg-primary py-12 lg:py-16">
-          <div className="mx-auto w-full max-w-screen-2xl px-5 text-center lg:px-12">
-            <span className="text-xs font-semibold uppercase tracking-[0.24em] text-primary-foreground/60">
+        <section
+          id="why-us"
+          className="relative overflow-hidden border-y border-[#9ed0f8] bg-gradient-to-b from-[#cae5fc] via-[#b6dcf9] to-[#9eccf5] py-14 lg:py-18 select-none"
+        >
+          {/* Ambient decorative background elements matching user design */}
+          {/* Top-right soft orb */}
+          <div
+            className="pointer-events-none absolute -top-20 -right-20 h-96 w-96 rounded-full bg-[#7ec0f8] opacity-90 blur-3xl"
+            aria-hidden="true"
+          />
+          {/* Left curved orb */}
+          <div
+            className="pointer-events-none absolute top-1/2 -left-28 -translate-y-1/2 h-[480px] w-[480px] rounded-full bg-[#82c5fa] opacity-90 blur-3xl"
+            aria-hidden="true"
+          />
+          {/* Subtle bottom ambient glow */}
+          <div
+            className="pointer-events-none absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-[#6bb4f6]/50 to-transparent"
+            aria-hidden="true"
+          />
+
+          <div className="relative mx-auto w-full max-w-screen-2xl px-5 text-center lg:px-12">
+            {/* Top-right 4x5 dot matrix */}
+            <div
+              className="pointer-events-none absolute top-1 right-6 sm:right-12 lg:right-20 hidden sm:grid grid-cols-4 gap-2.5 opacity-90"
+              aria-hidden="true"
+            >
+              {Array.from({ length: 20 }).map((_, i) => (
+                <span key={i} className="h-1.5 w-1.5 rounded-full bg-[#2563eb]" />
+              ))}
+            </div>
+
+            <span className="text-xs font-bold uppercase tracking-[0.24em] text-[#1e3a66]">
               The HATAEC difference
             </span>
-            <h2 className="mt-3 font-display text-3xl text-primary-foreground sm:text-4xl">
-              Why choose <span className="text-accent">us</span>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#031533] sm:text-4xl">
+              Why choose <span className="text-[#0284c7]">us</span>
             </h2>
-            <p className="mx-auto mt-3 max-w-xl text-sm text-primary-foreground/70">
+            <p className="mx-auto mt-3 max-w-xl text-sm font-medium text-[#1e3a66]">
               Five promises, delivered in every batch — hover a card to read the story.
             </p>
+            {/* Blue accent indicator bar below subtitle */}
+            <div className="mx-auto mt-3 h-1 w-10 rounded-full bg-[#0284c7]" />
           </div>
-          <div className="mt-10">
+          <div className="relative mt-10">
             <WhyUsGallery />
           </div>
         </section>
