@@ -531,7 +531,7 @@ function Home() {
         {/* HERO */}
         <section
           id="home"
-          className="relative min-h-[85vh] lg:min-h-[90vh] w-full flex items-center overflow-hidden bg-slate-100"
+          className="relative min-h-screen min-h-[100dvh] w-full flex items-center overflow-hidden bg-slate-100"
         >
           {/* Background image carousel with smooth 5-second cross-fade */}
           {heroImages.map((img, idx) => (
@@ -659,12 +659,15 @@ function Home() {
                 <strong className="font-semibold text-slate-900">Volvo-Eicher</strong>, and academic
                 teaching as a lecturer and Head of Department, the company brings both worlds into
                 every project and course.
+                <span className="text-primary font-serif font-bold text-2xl leading-none inline-block ml-0.5">
+                  ”
+                </span>
               </p>
 
               {/* Founder Signature */}
               <div className="pt-4 flex flex-col items-end pr-4">
                 <p className="text-2xl sm:text-3xl font-bold tracking-tight text-[#0B2559] font-serif flex items-center gap-1.5">
-                  <span className="text-primary text-3xl font-serif">“</span>
+                  <span className="text-primary text-2xl sm:text-3xl font-serif font-medium">—</span>
                   Ravindra Swami
                 </p>
                 <p className="mt-0.5 text-sm font-medium text-slate-500 mr-1">Founder</p>
