@@ -22,6 +22,7 @@ import heroImage2 from "@/assets/hero-teaching.webp";
 import { TechMarquee } from "@/components/site/Marquee";
 import { WhyUsGallery } from "@/components/site/WhyUsGallery";
 import { AboutCollage } from "@/components/site/AboutCollage";
+import { AboutTheoryReveal } from "@/components/site/AboutTheoryReveal";
 import { Typewriter } from "@/components/site/Typewriter";
 import { WORKSHOPS } from "@/data/workshops";
 import { API_BASE, DEVICON_BASE } from "@/lib/constants";
@@ -632,7 +633,7 @@ function Home() {
               <AboutCollage />
             </div>
 
-            <div className="animate-fade-in flex flex-col justify-center space-y-8 lg:pl-6">
+            <div className="flex flex-col justify-center space-y-8 lg:pl-6">
               {/* Category Tag */}
               <div>
                 <span className="text-xs sm:text-sm font-bold tracking-[0.2em] text-[#2A75D3] uppercase">
@@ -640,34 +641,15 @@ function Home() {
                 </span>
               </div>
 
-              {/* Paragraph 1 */}
-              <p className="text-center text-base sm:text-lg italic leading-relaxed text-slate-700 font-normal max-w-2xl mx-auto">
-                <span className="text-primary font-serif font-bold text-2xl leading-none inline-block mr-0.5">
-                  “
-                </span>
-                <span className="font-semibold text-slate-800">Softtech</span> Solutions &amp;
-                Training, based in Pune, builds Manufacturing Execution Systems (MES) for
-                manufacturing environments, including automotive production lines, and trains
-                students and developers in Java, Python, AWS, Vaadin, Spring, and full-stack web
-                development.
-              </p>
-
-              {/* Paragraph 2 */}
-              <p className="text-center text-base sm:text-lg italic leading-relaxed text-slate-700 font-normal max-w-2xl mx-auto">
-                Ravindra Swami, whose background spans MES engineering at companies like{" "}
-                <strong className="font-semibold text-slate-900">Fiat India</strong> and{" "}
-                <strong className="font-semibold text-slate-900">Volvo-Eicher</strong>, and academic
-                teaching as a lecturer and Head of Department, the company brings both worlds into
-                every project and course.
-                <span className="text-primary font-serif font-bold text-2xl leading-none inline-block ml-0.5">
-                  ”
-                </span>
-              </p>
+              {/* Progressive Line-by-Line Reveal Paragraph */}
+              <AboutTheoryReveal />
 
               {/* Founder Signature */}
               <div className="pt-4 flex flex-col items-end pr-4">
                 <p className="text-2xl sm:text-3xl font-bold tracking-tight text-[#0B2559] font-serif flex items-center gap-1.5">
-                  <span className="text-primary text-2xl sm:text-3xl font-serif font-medium">—</span>
+                  <span className="text-primary text-2xl sm:text-3xl font-serif font-medium">
+                    —
+                  </span>
                   Ravindra Swami
                 </p>
                 <p className="mt-0.5 text-sm font-medium text-slate-500 mr-1">Founder</p>
@@ -1219,9 +1201,7 @@ function Home() {
 
               {/* Phone */}
               <div>
-                <label className="mb-1 block text-xs font-medium text-foreground">
-                  Phone no.
-                </label>
+                <label className="mb-1 block text-xs font-medium text-foreground">Phone no.</label>
                 <div className="flex items-center gap-0 rounded-xl border border-input bg-white transition-colors focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200">
                   <span className="flex shrink-0 items-center gap-1.5 border-r border-input px-3 py-2 text-xs sm:text-sm text-muted-foreground">
                     🇮🇳 +91

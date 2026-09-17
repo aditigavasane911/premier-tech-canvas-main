@@ -1,4 +1,4 @@
-@import "tailwindcss" source(none); 
+@import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
 
@@ -248,7 +248,9 @@
   &[data-active="true"] {
     transform: scale(1.045) translateY(-8px);
     filter: saturate(1.05) brightness(1);
-    box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.42), 0 0 35px -5px rgba(14, 165, 233, 0.25);
+    box-shadow:
+      0 25px 50px -12px rgba(15, 23, 42, 0.42),
+      0 0 35px -5px rgba(14, 165, 233, 0.25);
     z-index: 5;
   }
 }
@@ -627,4 +629,39 @@
 
 .animate-fade-in-up {
   animation: fade-in-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ─── ABOUT US PROGRESSIVE TEXT REVEAL ANIMATION ──────────────── */
+.about-reveal-container {
+  contain: layout style;
+}
+
+.about-reveal-word {
+  display: inline;
+  opacity: 0;
+  /* Strictly stationary — no sliding, moving, scaling, or vertical shift */
+  transform: none !important;
+  transition: opacity 300ms cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: opacity;
+}
+
+/* While revealing, lines appear sequentially in reading order via line-delay */
+.about-reveal-container[data-state="revealing"] .about-reveal-word {
+  opacity: 1;
+  transition-delay: var(--line-delay, 0ms);
+}
+
+/* Once fully revealed, paragraph remains permanently visible and unchanged */
+.about-reveal-container[data-state="complete"] .about-reveal-word {
+  opacity: 1;
+  transition: none !important;
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-reveal-word {
+    transition-duration: 0ms !important;
+    transition-delay: 0ms !important;
+    opacity: 1 !important;
+  }
 }
