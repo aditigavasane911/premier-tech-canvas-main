@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { login } = require("../controllers/admin.controller");
+const { login, refreshToken, logout } = require("../controllers/admin.controller");
 const {
   getEnquiries,
   deleteEnquiry,
@@ -10,6 +10,12 @@ const { protect } = require("../middleware/auth.middleware");
 
 // Public route for login
 router.post("/login", login);
+
+// Public route for refreshing token
+router.post("/refresh", refreshToken);
+
+// Protected route for logout
+router.post("/logout", protect, logout);
 
 // Protected route for fetching callbacks/enquiries
 router.get("/callbacks", protect, getEnquiries);
