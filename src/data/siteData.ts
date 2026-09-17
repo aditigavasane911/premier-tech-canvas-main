@@ -10,6 +10,7 @@ export const NAV = [
 export const ENQUIRY_OPTIONS = [
   "Online Course",
   "Offline Course",
+  "Workshop",
   "Other",
 ];
 

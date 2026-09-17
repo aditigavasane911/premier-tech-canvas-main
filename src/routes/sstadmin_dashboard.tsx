@@ -23,6 +23,7 @@ function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [activeTab, setActiveTab] = useState<"courses" | "workshops">("courses");
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
   const navigate = useNavigate();
@@ -117,6 +118,10 @@ function AdminDashboard() {
   };
 
   const filteredCallbacks = callbacks.filter((cb) => {
+    const isWorkshop = cb.enquiryFor === "Workshop";
+    if (activeTab === "workshops" && !isWorkshop) return false;
+    if (activeTab === "courses" && isWorkshop) return false;
+
     const term = searchTerm.toLowerCase();
     return (
       cb.name.toLowerCase().includes(term) ||
@@ -156,24 +161,52 @@ function AdminDashboard() {
         )}
 
         <div className="bg-white shadow rounded-lg overflow-hidden">
-          <div className="px-4 py-5 sm:px-6 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <h3 className="text-lg leading-6 font-medium text-gray-900">Callback Requests</h3>
-              <p className="mt-1 text-sm text-gray-500">
-                List of all callback inquiries from the website.
-              </p>
-            </div>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-gray-400" />
+          <div className="px-4 py-5 sm:px-6 border-b border-gray-200">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+              <div>
+                <h3 className="text-lg leading-6 font-medium text-gray-900">Callback Requests</h3>
+                <p className="mt-1 text-sm text-gray-500">
+                  List of all callback inquiries from the website.
+                </p>
               </div>
-              <input
-                type="text"
-                placeholder="Search callbacks..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              />
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Search className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search callbacks..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+              </div>
+            </div>
+            
+            {/* Tabs */}
+            <div className="border-b border-gray-200">
+              <nav className="-mb-px flex space-x-8" aria-label="Tabs">
+                <button
+                  onClick={() => setActiveTab("courses")}
+                  className={`${
+                    activeTab === "courses"
+                      ? "border-blue-500 text-blue-600"
+                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+                >
+                  Course Enquiries
+                </button>
+                <button
+                  onClick={() => setActiveTab("workshops")}
+                  className={`${
+                    activeTab === "workshops"
+                      ? "border-blue-500 text-blue-600"
+                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+                >
+                  Workshop Enquiries
+                </button>
+              </nav>
             </div>
           </div>
           <div className="overflow-x-auto">
