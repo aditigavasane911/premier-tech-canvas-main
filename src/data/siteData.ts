@@ -8,11 +8,8 @@ export const NAV = [
 ];
 
 export const ENQUIRY_OPTIONS = [
-  "Online Course (Website)",
-  "Offline Course (Classroom)",
-  "Internship Program",
-  "Placement Assistance",
-  "Corporate Training",
+  "Online Course",
+  "Offline Course",
   "Other",
 ];
 

@@ -66,9 +66,11 @@ const LEVEL_COLOR: Record<string, string> = {
 function CourseModal({
   course,
   onClose,
+  onEnroll,
 }: {
   course: (typeof COURSE_LIST)[0];
   onClose: () => void;
+  onEnroll: (course: (typeof COURSE_LIST)[0]) => void;
 }) {
   return (
     <div
@@ -218,13 +220,7 @@ function CourseModal({
               type="button"
               onClick={() => {
                 onClose();
-                setTimeout(
-                  () =>
-                    document
-                      .querySelector<HTMLElement>("#contact")
-                      ?.scrollIntoView({ behavior: "smooth" }),
-                  100,
-                );
+                onEnroll(course);
               }}
               className="flex-1 rounded-xl bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground shadow-[var(--shadow-soft)] transition-all hover:-translate-y-0.5 hover:shadow-[var(--shadow-lift)]"
             >
@@ -281,6 +277,7 @@ function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showAllCourses, setShowAllCourses] = useState(false);
   const [showCallbackModal, setShowCallbackModal] = useState(false);
+  const [enquiryCourse, setEnquiryCourse] = useState<(typeof COURSE_LIST)[0] | null>(null);
   const [selectedCourse, setSelectedCourse] = useState<(typeof COURSE_LIST)[0] | null>(null);
   const [coursesTriggered, setCoursesTriggered] = useState(false);
   const coursesRef = useRef<HTMLDivElement>(null);
@@ -357,12 +354,19 @@ function Home() {
     const form = e.currentTarget;
     const formData = new FormData(form);
 
+    const userMessage = ((formData.get("message") as string) || "").trim();
+    const finalMessage = enquiryCourse
+      ? userMessage
+        ? `[Course: ${enquiryCourse.name}] ${userMessage}`
+        : `[Course: ${enquiryCourse.name}]`
+      : userMessage;
+
     const data = {
       name: formData.get("name"),
       email: formData.get("email"),
       phone: formData.get("phone"),
       enquiryFor: formData.get("enquiryFor"),
-      message: formData.get("message"),
+      message: finalMessage,
     };
 
     try {
@@ -377,7 +381,10 @@ function Home() {
           text: "Callback request submitted! Our team will reach out shortly.",
         });
         form.reset();
-        setTimeout(() => setShowCallbackModal(false), 1500);
+        setTimeout(() => {
+          setShowCallbackModal(false);
+          setEnquiryCourse(null);
+        }, 1500);
       } else {
         setCallbackStatus({ type: "error", text: "Failed to submit request. Please try again." });
       }
@@ -446,7 +453,10 @@ function Home() {
           <div className="hidden lg:block shrink-0">
             <button
               type="button"
-              onClick={() => setShowCallbackModal(true)}
+              onClick={() => {
+                setEnquiryCourse(null);
+                setShowCallbackModal(true);
+              }}
               className="flex items-center gap-2 rounded-full bg-[#0044CC] px-6 py-2.5 text-sm font-bold text-white shadow-md shadow-blue-500/20 transition-all hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/30 hover:-translate-y-0.5"
             >
               <Phone className="h-4 w-4" />
@@ -492,6 +502,7 @@ function Home() {
                   type="button"
                   onClick={() => {
                     setMenuOpen(false);
+                    setEnquiryCourse(null);
                     setShowCallbackModal(true);
                   }}
                   className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#0044CC] px-5 py-3 text-sm font-bold text-white shadow-md"
@@ -582,7 +593,10 @@ function Home() {
               <div className="pt-4 flex flex-wrap items-center gap-4">
                 <button
                   type="button"
-                  onClick={() => setShowCallbackModal(true)}
+                  onClick={() => {
+                    setEnquiryCourse(null);
+                    setShowCallbackModal(true);
+                  }}
                   className="inline-flex items-center gap-2.5 rounded-xl bg-[#0B2559] px-8 py-4 text-base font-semibold text-white shadow-lg shadow-blue-900/25 transition-all hover:bg-[#13377a] hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-900/35 active:translate-y-0"
                 >
                   <Calendar className="h-5 w-5" />
@@ -952,7 +966,15 @@ function Home() {
 
       {/* COURSE DETAIL MODAL */}
       {selectedCourse && (
-        <CourseModal course={selectedCourse} onClose={() => setSelectedCourse(null)} />
+        <CourseModal
+          course={selectedCourse}
+          onClose={() => setSelectedCourse(null)}
+          onEnroll={(course) => {
+            setSelectedCourse(null);
+            setEnquiryCourse(course);
+            setShowCallbackModal(true);
+          }}
+        />
       )}
 
       {/* CONTACT / FOOTER */}
@@ -1065,35 +1087,51 @@ function Home() {
       {/* CALLBACK MODAL */}
       {showCallbackModal && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm px-4"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 sm:p-6 overflow-y-auto"
           onClick={(e) => {
-            if (e.target === e.currentTarget) setShowCallbackModal(false);
+            if (e.target === e.currentTarget) {
+              setShowCallbackModal(false);
+              setEnquiryCourse(null);
+            }
           }}
         >
           <div
-            className="animate-fade-in relative w-full max-w-md rounded-3xl bg-white p-8 shadow-2xl"
+            className="animate-fade-in relative my-auto w-full max-w-[425px] rounded-[32px] bg-white p-5 sm:p-6 shadow-2xl border border-white/60 overflow-hidden"
             style={{ background: "linear-gradient(160deg, #fff 60%, #fef3e2 100%)" }}
           >
             <button
               type="button"
               aria-label="Close"
-              onClick={() => setShowCallbackModal(false)}
-              className="absolute right-5 top-5 grid h-8 w-8 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              onClick={() => {
+                setShowCallbackModal(false);
+                setEnquiryCourse(null);
+              }}
+              className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               <X className="h-5 w-5" />
             </button>
 
-            <h2 className="text-center font-display text-2xl font-bold text-foreground sm:text-3xl">
-              Request a Callback
+            <h2 className="text-center font-display text-xl sm:text-2xl font-bold text-foreground leading-snug px-6">
+              {enquiryCourse ? `Enrol in ${enquiryCourse.name}` : "Request a Callback"}
             </h2>
-            <p className="mt-2 text-center text-sm text-muted-foreground">
-              Fill the form below to request a callback from our team.
+            <p className="mt-1 text-center text-xs text-muted-foreground">
+              {enquiryCourse
+                ? `Fill the form below to enquire and enrol in ${enquiryCourse.name}.`
+                : "Fill the form below to request a callback from our team."}
             </p>
+
+            {enquiryCourse && (
+              <div className="mt-2 flex items-center justify-center">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 border border-blue-200/70 px-3 py-0.5 text-[11px] font-semibold text-blue-700">
+                  Course: {enquiryCourse.name} • {enquiryCourse.level} • {enquiryCourse.duration}
+                </span>
+              </div>
+            )}
 
             {callbackStatus && (
               <p
                 role="status"
-                className={`mt-4 rounded-xl px-4 py-3 text-center text-sm font-medium ${
+                className={`mt-2.5 rounded-xl px-3.5 py-2 text-center text-xs font-medium ${
                   callbackStatus.type === "success"
                     ? "bg-green-50 text-green-700"
                     : "bg-red-50 text-red-600"
@@ -1103,38 +1141,42 @@ function Home() {
               </p>
             )}
 
-            <form className="mt-6 space-y-5" onSubmit={handleCallbackSubmit}>
+            <form
+              key={enquiryCourse ? enquiryCourse.name : "general"}
+              className="mt-3.5 space-y-3"
+              onSubmit={handleCallbackSubmit}
+            >
               {/* Name */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-foreground">Name</label>
+                <label className="mb-1 block text-xs font-medium text-foreground">Name</label>
                 <input
                   name="name"
                   required
                   type="text"
                   placeholder="Enter your Name here"
-                  className="w-full rounded-xl border border-input bg-white px-4 py-3 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                  className="w-full rounded-xl border border-input bg-white px-3.5 py-2 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                 />
               </div>
 
               {/* Email */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-foreground">Email</label>
+                <label className="mb-1 block text-xs font-medium text-foreground">Email</label>
                 <input
                   name="email"
                   required
                   type="email"
                   placeholder="Enter your Email here"
-                  className="w-full rounded-xl border border-input bg-white px-4 py-3 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                  className="w-full rounded-xl border border-input bg-white px-3.5 py-2 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                 />
               </div>
 
               {/* Phone */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-foreground">
+                <label className="mb-1 block text-xs font-medium text-foreground">
                   Phone no.
                 </label>
                 <div className="flex items-center gap-0 rounded-xl border border-input bg-white transition-colors focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200">
-                  <span className="flex shrink-0 items-center gap-1.5 border-r border-input px-3 py-3 text-sm text-muted-foreground">
+                  <span className="flex shrink-0 items-center gap-1.5 border-r border-input px-3 py-2 text-xs sm:text-sm text-muted-foreground">
                     🇮🇳 +91
                   </span>
                   <input
@@ -1142,22 +1184,28 @@ function Home() {
                     required
                     type="tel"
                     placeholder="Enter your number here"
-                    className="w-full bg-transparent px-3 py-3 text-sm outline-none"
+                    className="w-full bg-transparent px-3 py-2 text-sm outline-none"
                   />
                 </div>
               </div>
 
               {/* Enquiry For */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-foreground">
+                <label className="mb-1 block text-xs font-medium text-foreground">
                   Enquiry For
                 </label>
                 <div className="relative">
                   <select
                     name="enquiryFor"
                     required
-                    defaultValue="Online Course (Website)"
-                    className="w-full appearance-none rounded-xl border border-input bg-white px-4 py-3 pr-10 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                    defaultValue={
+                      enquiryCourse
+                        ? enquiryCourse.mode.toLowerCase().includes("offline")
+                          ? "Offline Course"
+                          : "Online Course"
+                        : "Online Course"
+                    }
+                    className="w-full appearance-none rounded-xl border border-input bg-white px-3.5 py-2 pr-10 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                   >
                     {ENQUIRY_OPTIONS.map((opt) => (
                       <option key={opt} value={opt}>
@@ -1171,24 +1219,24 @@ function Home() {
 
               {/* Message */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-foreground">
+                <label className="mb-1 block text-xs font-medium text-foreground">
                   How can we help you?
                 </label>
                 <textarea
                   name="message"
-                  rows={3}
+                  rows={2}
                   placeholder="E.g. I want details about the offline course, fees, and schedule..."
-                  className="w-full resize-none rounded-xl border border-input bg-white px-4 py-3 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                  className="w-full resize-none rounded-xl border border-input bg-white px-3.5 py-2 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                 />
               </div>
 
               {/* Submit */}
               <button
                 type="submit"
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-500/25 transition-all hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-500/35 hover:-translate-y-0.5 active:translate-y-0"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-2.5 text-sm font-bold text-white shadow-lg shadow-blue-500/25 transition-all hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-500/35 hover:-translate-y-0.5 active:translate-y-0"
               >
                 <Send className="h-4 w-4" />
-                Book My Callback
+                {enquiryCourse ? "Submit Course Enquiry" : "Book My Callback"}
               </button>
             </form>
           </div>

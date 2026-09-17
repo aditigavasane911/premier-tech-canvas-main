@@ -146,7 +146,7 @@ export function WhyUsGallery() {
         ? null
         : new IntersectionObserver(
             ([entry]) => {
-              isInView = entry.isIntersecting;
+              isInView = Boolean(entry?.isIntersecting);
               if (isInView) startMeasuring();
               else stopMeasuring();
             },
