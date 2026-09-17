@@ -278,6 +278,7 @@ function Home() {
   const [showAllCourses, setShowAllCourses] = useState(false);
   const [showCallbackModal, setShowCallbackModal] = useState(false);
   const [enquiryCourse, setEnquiryCourse] = useState<(typeof COURSE_LIST)[0] | null>(null);
+  const [defaultEnquiryFor, setDefaultEnquiryFor] = useState<string>("Online Course");
   const [selectedCourse, setSelectedCourse] = useState<(typeof COURSE_LIST)[0] | null>(null);
   const [coursesTriggered, setCoursesTriggered] = useState(false);
   const coursesRef = useRef<HTMLDivElement>(null);
@@ -595,6 +596,7 @@ function Home() {
                   type="button"
                   onClick={() => {
                     setEnquiryCourse(null);
+                    setDefaultEnquiryFor("Workshop");
                     setShowCallbackModal(true);
                   }}
                   className="inline-flex items-center gap-2.5 rounded-xl bg-[#0B2559] px-8 py-4 text-base font-semibold text-white shadow-lg shadow-blue-900/25 transition-all hover:bg-[#13377a] hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-900/35 active:translate-y-0"
@@ -1203,7 +1205,7 @@ function Home() {
                         ? enquiryCourse.mode.toLowerCase().includes("offline")
                           ? "Offline Course"
                           : "Online Course"
-                        : "Online Course"
+                        : defaultEnquiryFor
                     }
                     className="w-full appearance-none rounded-xl border border-input bg-white px-3.5 py-2 pr-10 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                   >
