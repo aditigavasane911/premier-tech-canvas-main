@@ -20,10 +20,27 @@ export function ImageStack({
   }, [images]);
 
   useEffect(() => {
+    if (images.length <= 1) return;
+
+    const intervalId = setInterval(() => {
+      setAnimating(true);
+
+      timeoutRef.current = setTimeout(() => {
+        setOrderedImages((prev) => {
+          const next = [...prev];
+          const first = next.shift();
+          if (first) next.push(first);
+          return next;
+        });
+        setAnimating(false);
+      }, 450);
+    }, 4000);
+
     return () => {
+      clearInterval(intervalId);
       if (timeoutRef.current !== null) clearTimeout(timeoutRef.current);
     };
-  }, []);
+  }, [images.length]);
 
   const handleClick = () => {
     if (animating || orderedImages.length <= 1) return;
@@ -38,7 +55,7 @@ export function ImageStack({
         return next;
       });
       setAnimating(false);
-    }, 300);
+    }, 450);
   };
 
   return (
@@ -60,37 +77,37 @@ export function ImageStack({
         const isAnimatingOut = animating && isFront;
 
         let styleClasses =
-          "absolute inset-0 w-full h-full object-cover rounded-xl border-[4px] border-white shadow-[0_4px_20px_rgb(0,0,0,0.12)] transition-all duration-400 ease-in-out ";
+          "absolute inset-0 w-full h-full object-cover rounded-xl border-[4px] border-white shadow-[0_4px_20px_rgb(0,0,0,0.12)] transition-all ease-in-out ";
 
         if (isAnimatingOut) {
           styleClasses += reverse
-            ? " z-50 -translate-x-[110%] -rotate-6 opacity-0 "
-            : " z-50 translate-x-[110%] rotate-6 opacity-0 ";
+            ? " z-50 translate-x-[110%] rotate-12 "
+            : " z-50 -translate-x-[110%] -rotate-12 ";
         } else if (i === 0) {
-          styleClasses += " z-40 translate-x-0 translate-y-0 rotate-0 scale-100 ";
+          styleClasses += " z-40 translate-x-0 translate-y-0 rotate-0 scale-100 opacity-100 ";
         } else if (i === 1) {
           styleClasses += reverse
-            ? " z-30 -translate-x-3 -translate-y-2 -rotate-3 scale-[0.96] "
-            : " z-30 translate-x-3 -translate-y-2 rotate-3 scale-[0.96] ";
+            ? " z-30 -translate-x-3 -translate-y-2 -rotate-3 scale-[0.96] opacity-100 "
+            : " z-30 translate-x-3 -translate-y-2 rotate-3 scale-[0.96] opacity-100 ";
         } else if (i === 2) {
           styleClasses += reverse
-            ? " z-20 -translate-x-6 -translate-y-4 -rotate-6 scale-[0.92] "
-            : " z-20 translate-x-6 -translate-y-4 rotate-6 scale-[0.92] ";
+            ? " z-20 -translate-x-6 -translate-y-4 -rotate-6 scale-[0.92] opacity-100 "
+            : " z-20 translate-x-6 -translate-y-4 rotate-6 scale-[0.92] opacity-100 ";
         } else {
           styleClasses += reverse
-            ? " z-10 -translate-x-6 -translate-y-4 -rotate-6 scale-[0.92] opacity-0 "
-            : " z-10 translate-x-6 -translate-y-4 rotate-6 scale-[0.92] opacity-0 ";
+            ? " z-10 -translate-x-9 -translate-y-6 -rotate-9 scale-[0.88] opacity-0 "
+            : " z-10 translate-x-9 -translate-y-6 rotate-9 scale-[0.88] opacity-0 ";
         }
 
         return (
           <img
-            key={`${src}-${i}`}
+            key={src}
             src={src}
             alt={`Gallery image ${i + 1}`}
             loading={i === 0 ? "eager" : "lazy"}
             decoding="async"
             className={styleClasses}
-            style={{ transitionDuration: "400ms" }}
+            style={{ transitionDuration: "600ms" }}
           />
         );
       })}
