@@ -1,14 +1,39 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 const enquiryRoutes = require("./routes/enquiry.routes");
 const adminRoutes = require("./routes/admin.routes"); // I added this for the admin system
 const { errorHandler } = require("./middleware/error.middleware");
 
 const app = express();
 
-app.use(cors());
+// Set security HTTP headers
+app.use(helmet());
+
+// Implement CORS
+app.use(cors({
+  origin: process.env.FRONTEND_URL || "http://localhost:5173", // Restrict to frontend URL
+  credentials: true
+}));
+
+// Global Rate Limiting: 100 requests per 15 minutes
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: "Too many requests from this IP, please try again in 15 minutes."
+});
+app.use("/api", limiter);
+
+// Cookie parser
+app.use(cookieParser());
+
+// Body parser, reading data from body into req.body
 app.use(express.json({ limit: "32kb" }));
 
+// Data sanitization against NoSQL query injection
+// Note: express-mongo-sanitize is incompatible with Express 5. Mongoose 6+ provides its own protections.
 // Routes
 app.use("/api/callback", enquiryRoutes); // Mapping /api/callback to enquiry.routes for the customer flow
 app.use("/api/admin", adminRoutes);

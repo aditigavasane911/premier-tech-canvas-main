@@ -14,11 +14,20 @@ function AdminLogin() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Redirect if already logged in
-    const token = localStorage.getItem("adminToken");
-    if (token) {
-      navigate({ to: "/sstadmin_dashboard" });
-    }
+    // Check if already logged in via cookie
+    const checkAuth = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/check`, {
+          credentials: "include",
+        });
+        if (res.ok) {
+          navigate({ to: "/sstadmin_dashboard" });
+        }
+      } catch (error) {
+        // Not logged in or error, stay on login page
+      }
+    };
+    checkAuth();
   }, [navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -30,13 +39,13 @@ function AdminLogin() {
       const res = await fetch(`${API_BASE}/api/admin/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include", // Important for receiving HttpOnly cookies
         body: JSON.stringify({ email, password }),
       });
 
       const data = await res.json();
 
       if (res.ok) {
-        localStorage.setItem("adminToken", data.token);
         navigate({ to: "/sstadmin_dashboard" });
       } else {
         setError(data.message || "Login failed");

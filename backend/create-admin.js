@@ -7,35 +7,44 @@ dotenv.config();
 
 const createAdmin = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/sstdb");
+    if (!process.env.MONGODB_URI) {
+      console.error("Please set MONGODB_URI in your .env file");
+      process.exit(1);
+    }
+    await mongoose.connect(process.env.MONGODB_URI);
     console.log("MongoDB connected.");
 
-    const email = "gosavionkar52@gmail.com";
-    const plainPassword = "adminpassword123";
+    const email = process.env.ADMIN_EMAIL;
+    const plainPassword = process.env.ADMIN_PASSWORD;
 
-    const existingAdmin = await Admin.findOne({ email });
-    if (existingAdmin) {
-      console.log("Admin user already exists with this email.");
-      process.exit(0);
+    if (!email || !plainPassword) {
+      console.error("Please set ADMIN_EMAIL and ADMIN_PASSWORD in your .env file");
+      process.exit(1);
     }
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(plainPassword, salt);
 
-    const newAdmin = new Admin({
-      email,
-      password: hashedPassword,
-    });
+    const existingAdmin = await Admin.findOne({ email });
+    if (existingAdmin) {
+      existingAdmin.password = hashedPassword;
+      await existingAdmin.save();
+      console.log("Admin user password updated successfully to match .env!");
+    } else {
+      const newAdmin = new Admin({
+        email,
+        password: hashedPassword,
+      });
+      await newAdmin.save();
+      console.log(`Admin user created successfully!`);
+    }
 
-    await newAdmin.save();
-    console.log(`Admin user created successfully!`);
     console.log(`Email: ${email}`);
-    console.log(`Password: ${plainPassword}`);
     console.log(
-      `IMPORTANT: Please run this script once, confirm login, and then DELETE this file for security.`,
+      `IMPORTANT: The password is securely stored in your .env file and will not be pushed to GitHub.`,
     );
   } catch (error) {
-    console.error("Error creating admin:", error);
+    console.error("Error creating/updating admin:", error);
   } finally {
     mongoose.connection.close();
     process.exit(0);

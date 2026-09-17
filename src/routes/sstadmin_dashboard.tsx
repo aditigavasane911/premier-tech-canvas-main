@@ -29,22 +29,13 @@ function AdminDashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("adminToken");
-    if (!token) {
-      navigate({ to: "/sstadmin" });
-      return;
-    }
-
     const fetchCallbacks = async () => {
       try {
         const res = await fetch(`${API_BASE}/api/admin/callbacks`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          credentials: "include", // Send cookie automatically
         });
 
         if (res.status === 401) {
-          localStorage.removeItem("adminToken");
           navigate({ to: "/sstadmin" });
           return;
         }
@@ -74,13 +65,10 @@ function AdminDashboard() {
     }
     setConfirmingId(null);
 
-    const token = localStorage.getItem("adminToken");
     try {
       const res = await fetch(`${API_BASE}/api/admin/callbacks/${id}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include",
       });
 
       if (res.ok) {
@@ -96,14 +84,13 @@ function AdminDashboard() {
   };
 
   const handleStatusChange = async (id: string, newStatus: string) => {
-    const token = localStorage.getItem("adminToken");
     try {
       const res = await fetch(`${API_BASE}/api/admin/callbacks/${id}/status`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
+        credentials: "include",
         body: JSON.stringify({ status: newStatus }),
       });
       if (res.ok) {
@@ -131,8 +118,15 @@ function AdminDashboard() {
     );
   });
 
-  const handleLogout = () => {
-    localStorage.removeItem("adminToken");
+  const handleLogout = async () => {
+    try {
+      await fetch(`${API_BASE}/api/admin/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (e) {
+      // Ignore
+    }
     navigate({ to: "/sstadmin" });
   };
 
