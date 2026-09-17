@@ -795,28 +795,28 @@ function Home() {
         </section>
 
         {/* News & Recognition */}
-        <section className="bg-background py-12 lg:py-16 overflow-hidden">
+        <section id="news" className="bg-background py-5 lg:py-6 overflow-hidden">
           <div className="mx-auto w-full max-w-screen-2xl px-5 lg:px-12">
-            <h2 className="text-center font-display text-3xl text-primary sm:text-4xl mb-8 sm:mb-12 lg:mb-16">
+            <h2 className="text-center font-display text-2xl sm:text-3xl text-primary mb-3 sm:mb-4">
               Awards and Rewards
             </h2>
-            <div className="space-y-8 lg:space-y-12">
+            <div className="space-y-4 lg:space-y-5">
               {/* We in News */}
-              <div className="flex flex-col md:flex-row items-center gap-8 lg:gap-12">
+              <div className="flex flex-col md:flex-row items-center gap-6 lg:gap-10">
                 <div className="w-full md:w-1/2 flex flex-col items-center">
                   <ImageStack
                     images={["/news1.webp", "/news2.webp", "/news3.webp"]}
-                    className="w-72 h-56 sm:w-[400px] sm:h-[300px] mt-10"
+                    className="w-60 h-44 sm:w-[300px] sm:h-[200px]"
                   />
-                  <h3 className="mt-12 font-display text-2xl font-bold text-primary">
+                  <h3 className="mt-2.5 sm:mt-3 font-display text-lg sm:text-xl font-bold text-primary">
                     We in <span className="text-[#3b82f6]">News</span>
                   </h3>
                 </div>
-                <div className="w-full md:w-1/2 mt-12 md:mt-0">
-                  <h2 className="font-display text-3xl font-bold text-foreground sm:text-[2.5rem] leading-tight">
+                <div className="w-full md:w-1/2 mt-4 md:mt-0">
+                  <h2 className="font-display text-xl sm:text-2xl font-bold text-foreground leading-snug">
                     From the classroom to the headlines.
                   </h2>
-                  <p className="mt-6 text-[1.1rem] leading-relaxed text-muted-foreground">
+                  <p className="mt-2 text-sm sm:text-base leading-relaxed text-muted-foreground">
                     Our work, ideas, and impact have been recognized by leading media platforms,
                     helping us share our journey, innovations, and the people behind them with a
                     wider audience.
@@ -825,22 +825,22 @@ function Home() {
               </div>
 
               {/* Awards and Rewards */}
-              <div className="flex flex-col md:flex-row-reverse items-center gap-8 lg:gap-12">
+              <div className="flex flex-col md:flex-row-reverse items-center gap-6 lg:gap-10">
                 <div className="w-full md:w-1/2 flex flex-col items-center">
                   <ImageStack
                     images={["/award1.webp", "/award2.webp", "/award3.webp", "/award4.webp"]}
-                    className="w-72 h-48 sm:w-[400px] sm:h-[260px] mt-10"
+                    className="w-60 h-44 sm:w-[300px] sm:h-[200px]"
                     reverse
                   />
-                  <h3 className="mt-12 font-display text-2xl font-bold text-primary">
+                  <h3 className="mt-2.5 sm:mt-3 font-display text-lg sm:text-xl font-bold text-primary">
                     Awards and <span className="text-[#3b82f6]">Rewards</span>
                   </h3>
                 </div>
-                <div className="w-full md:w-1/2 mt-12 md:mt-0">
-                  <h2 className="font-display text-3xl font-bold text-foreground sm:text-[2.5rem] leading-tight">
+                <div className="w-full md:w-1/2 mt-4 md:mt-0">
+                  <h2 className="font-display text-xl sm:text-2xl font-bold text-foreground leading-snug">
                     Recognized for the work that creates impact.
                   </h2>
-                  <p className="mt-6 text-[1.1rem] leading-relaxed text-muted-foreground">
+                  <p className="mt-2 text-sm sm:text-base leading-relaxed text-muted-foreground">
                     Every award represents a milestone in our journey ; celebrating innovation,
                     meaningful contributions, and the commitment to turning ideas into real-world
                     change.
