@@ -80,18 +80,28 @@ function CourseModal({
       }}
     >
       <div className="animate-fade-in relative w-full sm:max-w-2xl max-h-[92vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl bg-white border border-border/50 shadow-2xl">
-        {/* Top accent bar */}
-        <div
-          className="h-1 w-full rounded-t-3xl"
-          style={{ background: "var(--gradient-primary)" }}
-        />
+        {/* Top banner image or accent bar */}
+        {"banner" in course && course.banner ? (
+          <div className="relative h-44 sm:h-56 w-full overflow-hidden rounded-t-3xl bg-muted">
+            <img
+              src={course.banner}
+              alt={`${course.name} banner`}
+              className="h-full w-full object-cover"
+            />
+          </div>
+        ) : (
+          <div
+            className="h-1 w-full rounded-t-3xl"
+            style={{ background: "var(--gradient-primary)" }}
+          />
+        )}
 
         {/* Close */}
         <button
           type="button"
           aria-label="Close course details"
           onClick={onClose}
-          className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full border border-border bg-muted/60 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground z-10"
+          className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full border border-border/80 bg-white/90 backdrop-blur-sm text-foreground shadow-md transition-colors hover:bg-white z-10"
         >
           <X className="h-4 w-4" />
         </button>
