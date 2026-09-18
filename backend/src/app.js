@@ -4,6 +4,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const enquiryRoutes = require("./routes/enquiry.routes");
+const feedbackRoutes = require("./routes/feedback.routes");
 const adminRoutes = require("./routes/admin.routes"); // I added this for the admin system
 const { errorHandler } = require("./middleware/error.middleware");
 
@@ -36,6 +37,7 @@ app.use(express.json({ limit: "32kb" }));
 // Note: express-mongo-sanitize is incompatible with Express 5. Mongoose 6+ provides its own protections.
 // Routes
 app.use("/api/callback", enquiryRoutes); // Mapping /api/callback to enquiry.routes for the customer flow
+app.use("/api/feedback", feedbackRoutes); // Feedback and 5-star rating submission & display
 app.use("/api/admin", adminRoutes);
 
 // Error Middleware

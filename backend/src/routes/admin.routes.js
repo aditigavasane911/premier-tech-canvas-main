@@ -8,6 +8,11 @@ const {
   deleteEnquiry,
   updateEnquiryStatus,
 } = require("../controllers/enquiry.controller");
+const {
+  getAdminFeedbacks,
+  deleteFeedback,
+  updateFeedbackStatus,
+} = require("../controllers/feedback.controller");
 const { protect } = require("../middleware/auth.middleware");
 const rateLimit = require("express-rate-limit");
 
@@ -34,6 +39,11 @@ router.delete("/callbacks/:id", protect, deleteEnquiry);
 
 // Protected route for updating callback status
 router.patch("/callbacks/:id/status", protect, updateEnquiryStatus);
+
+// Protected routes for student feedbacks and ratings
+router.get("/feedbacks", protect, getAdminFeedbacks);
+router.delete("/feedbacks/:id", protect, deleteFeedback);
+router.patch("/feedbacks/:id/status", protect, updateFeedbackStatus);
 
 // Protected route for checking auth state
 router.get("/check", protect, checkAuth);

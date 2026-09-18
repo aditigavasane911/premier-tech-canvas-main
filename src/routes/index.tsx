@@ -15,6 +15,7 @@ import {
   Calendar,
   Linkedin,
   Instagram,
+  Star,
 } from "lucide-react";
 import { ImageStack } from "@/components/site/ImageStack";
 import heroImage1 from "@/assets/group-photo.webp";
@@ -23,6 +24,8 @@ import { TechMarquee } from "@/components/site/Marquee";
 import { WhyUsGallery } from "@/components/site/WhyUsGallery";
 import { AboutCollage } from "@/components/site/AboutCollage";
 import { AboutTheoryReveal } from "@/components/site/AboutTheoryReveal";
+import { FeedbackModal } from "@/components/site/FeedbackModal";
+import { WriteYourOwnFeedback } from "@/components/site/WriteYourOwnFeedback";
 import { Typewriter } from "@/components/site/Typewriter";
 import { WORKSHOPS } from "@/data/workshops";
 import { API_BASE, DEVICON_BASE } from "@/lib/constants";
@@ -262,8 +265,75 @@ function Home() {
     return () => clearInterval(timer);
   }, [heroImages.length]);
 
+  const [liveFeedbacks, setLiveFeedbacks] = useState<
+    Array<{ name: string; role: string; quote: string; rating: number }>
+  >([]);
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+
+  useEffect(() => {
+    // 1. Load cached feedbacks if available
+    try {
+      const cached = JSON.parse(localStorage.getItem("sst_feedbacks") || "[]");
+      if (Array.isArray(cached) && cached.length > 0) {
+        setLiveFeedbacks(
+          cached.map(
+            (f: {
+              name: string;
+              role?: string;
+              course?: string;
+              quote: string;
+              rating: number;
+            }) => ({
+              name: f.name,
+              role: f.course ? `${f.role || "Student"} • ${f.course}` : f.role || "Student",
+              quote: f.quote,
+              rating: f.rating,
+            }),
+          ),
+        );
+      }
+    } catch {
+      // Ignore
+    }
+
+    // 2. Fetch from backend API
+    fetch(`${API_BASE}/api/feedback`)
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setLiveFeedbacks((prev) => {
+            const serverFeedbacks = data.map(
+              (f: {
+                name: string;
+                role?: string;
+                course?: string;
+                quote: string;
+                rating: number;
+              }) => ({
+                name: f.name,
+                role: f.course ? `${f.role || "Student"} • ${f.course}` : f.role || "Student",
+                quote: f.quote,
+                rating: f.rating,
+              }),
+            );
+            const seen = new Set();
+            return [...serverFeedbacks, ...prev].filter((item) => {
+              const key = `${item.name}-${item.quote.slice(0, 20)}`;
+              if (seen.has(key)) return false;
+              seen.add(key);
+              return true;
+            });
+          });
+        }
+      })
+      .catch(() => {
+        // Fallback to static testimonials
+      });
+  }, []);
+
+  const allTestimonials = [...liveFeedbacks, ...TESTIMONIALS];
   const TESTIMONIALS_PER_PAGE = 5;
-  const totalPages = Math.ceil(TESTIMONIALS.length / TESTIMONIALS_PER_PAGE);
+  const totalPages = Math.ceil(allTestimonials.length / TESTIMONIALS_PER_PAGE);
   const [testimonialPage, setTestimonialPage] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(true);
 
@@ -870,9 +940,12 @@ function Home() {
 
         <section id="feedback" className="border-y border-border bg-muted/40 py-12 lg:py-16">
           <div className="mx-auto w-full max-w-screen-2xl px-5 lg:px-12">
-            <h2 className="text-center font-display text-3xl text-primary sm:text-4xl">
-              Student Feedback
-            </h2>
+            <div className="text-center max-w-2xl mx-auto mb-9">
+              <h2 className="font-display text-3xl text-primary sm:text-4xl">Student Feedback</h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Read authentic reviews and ratings from our students and workshop trainees.
+              </p>
+            </div>
             <div className="mt-9 overflow-hidden relative">
               <div
                 className={`flex ${isTransitioning ? "transition-transform duration-700 ease-in-out" : ""}`}
@@ -885,52 +958,54 @@ function Home() {
                       key={pageIndex}
                       className="w-full shrink-0 flex flex-wrap justify-center gap-5"
                     >
-                      {TESTIMONIALS.slice(
-                        actualPageIndex * TESTIMONIALS_PER_PAGE,
-                        (actualPageIndex + 1) * TESTIMONIALS_PER_PAGE,
-                      ).map((t) => (
-                        <figure
-                          key={t.name}
-                          className="surface-card p-5 w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)] flex flex-col"
-                        >
-                          <Quote className="h-5 w-5 text-secondary mx-auto" />
-                          <blockquote className="mt-3 text-[13px] leading-relaxed text-muted-foreground text-center flex-1">
-                            {t.quote}
-                          </blockquote>
-
-                          <div
-                            className="mt-3 flex items-center justify-center gap-1"
-                            aria-label={`${t.rating} out of 5 stars`}
+                      {allTestimonials
+                        .slice(
+                          actualPageIndex * TESTIMONIALS_PER_PAGE,
+                          (actualPageIndex + 1) * TESTIMONIALS_PER_PAGE,
+                        )
+                        .map((t) => (
+                          <figure
+                            key={t.name}
+                            className="surface-card p-5 w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)] flex flex-col"
                           >
-                            <span className="font-semibold text-xs text-foreground mr-1">
-                              {t.rating}
-                            </span>
-                            {[1, 2, 3, 4, 5].map((s) => (
-                              <svg
-                                key={s}
-                                className={`h-3.5 w-3.5 ${s <= Math.round(t.rating) ? "fill-amber-400 text-amber-400" : "fill-muted text-muted"}`}
-                                viewBox="0 0 20 20"
-                              >
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                              </svg>
-                            ))}
-                          </div>
+                            <Quote className="h-5 w-5 text-secondary mx-auto" />
+                            <blockquote className="mt-3 text-[13px] leading-relaxed text-muted-foreground text-center flex-1">
+                              {t.quote}
+                            </blockquote>
 
-                          <figcaption className="mt-4 flex items-center justify-center gap-2">
-                            <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-xs font-semibold text-primary-foreground shrink-0">
-                              {t.name.charAt(0)}
-                            </span>
-                            <span className="text-left">
-                              <span className="block text-[13px] font-semibold text-foreground">
-                                {t.name}
+                            <div
+                              className="mt-3 flex items-center justify-center gap-1"
+                              aria-label={`${t.rating} out of 5 stars`}
+                            >
+                              <span className="font-semibold text-xs text-foreground mr-1">
+                                {t.rating}
                               </span>
-                              <span className="block text-[11px] text-muted-foreground">
-                                {t.role}
+                              {[1, 2, 3, 4, 5].map((s) => (
+                                <svg
+                                  key={s}
+                                  className={`h-3.5 w-3.5 ${s <= Math.round(t.rating) ? "fill-amber-400 text-amber-400" : "fill-muted text-muted"}`}
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                              ))}
+                            </div>
+
+                            <figcaption className="mt-4 flex items-center justify-center gap-2">
+                              <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-xs font-semibold text-primary-foreground shrink-0">
+                                {t.name.charAt(0)}
                               </span>
-                            </span>
-                          </figcaption>
-                        </figure>
-                      ))}
+                              <span className="text-left">
+                                <span className="block text-[13px] font-semibold text-foreground">
+                                  {t.name}
+                                </span>
+                                <span className="block text-[11px] text-muted-foreground">
+                                  {t.role}
+                                </span>
+                              </span>
+                            </figcaption>
+                          </figure>
+                        ))}
                     </div>
                   );
                 })}
@@ -955,6 +1030,24 @@ function Home() {
                 />
               ))}
             </div>
+
+            {/* WRITE YOUR OWN COLUMN */}
+            <WriteYourOwnFeedback
+              onFeedbackAdded={(newFb) => {
+                setLiveFeedbacks((prev) => [
+                  {
+                    name: newFb.name,
+                    role: newFb.course
+                      ? `${newFb.role || "Student"} • ${newFb.course}`
+                      : newFb.role || "Student",
+                    quote: newFb.quote,
+                    rating: newFb.rating,
+                  },
+                  ...prev,
+                ]);
+                setTestimonialPage(0);
+              }}
+            />
           </div>
         </section>
 
@@ -1269,6 +1362,26 @@ function Home() {
           </div>
         </div>
       )}
+
+      {/* FEEDBACK & 5-STAR RATING MODAL */}
+      <FeedbackModal
+        isOpen={showFeedbackModal}
+        onClose={() => setShowFeedbackModal(false)}
+        onFeedbackAdded={(newFb) => {
+          setLiveFeedbacks((prev) => [
+            {
+              name: newFb.name,
+              role: newFb.course
+                ? `${newFb.role || "Student"} • ${newFb.course}`
+                : newFb.role || "Student",
+              quote: newFb.quote,
+              rating: newFb.rating,
+            },
+            ...prev,
+          ]);
+          setTestimonialPage(0);
+        }}
+      />
     </div>
   );
 }
