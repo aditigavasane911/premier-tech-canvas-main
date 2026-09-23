@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { login, refreshToken,  logout,
-  checkAuth,
-} = require("../controllers/admin.controller");
+const { login, refreshToken, logout, checkAuth } = require("../controllers/admin.controller");
 const {
   getEnquiries,
   deleteEnquiry,

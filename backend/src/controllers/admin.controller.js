@@ -24,17 +24,11 @@ exports.login = async (req, res, next) => {
       throw new Error("JWT secrets are not defined in environment variables");
     }
 
-    const token = jwt.sign(
-      { adminId: admin._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "15m" },
-    );
+    const token = jwt.sign({ adminId: admin._id }, process.env.JWT_SECRET, { expiresIn: "15m" });
 
-    const refreshToken = jwt.sign(
-      { adminId: admin._id },
-      process.env.JWT_REFRESH_SECRET,
-      { expiresIn: "7d" }
-    );
+    const refreshToken = jwt.sign({ adminId: admin._id }, process.env.JWT_REFRESH_SECRET, {
+      expiresIn: "7d",
+    });
 
     admin.refreshToken = refreshToken;
     await admin.save();
@@ -43,14 +37,14 @@ exports.login = async (req, res, next) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 15 * 60 * 1000 // 15 minutes
+      maxAge: 15 * 60 * 1000, // 15 minutes
     });
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
     res.status(200).json({ message: "Logged in successfully" });
@@ -77,11 +71,9 @@ exports.refreshToken = async (req, res, next) => {
       return res.status(403).json({ message: "Invalid refresh token" });
     }
 
-    const newAccessToken = jwt.sign(
-      { adminId: admin._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "15m" }
-    );
+    const newAccessToken = jwt.sign({ adminId: admin._id }, process.env.JWT_SECRET, {
+      expiresIn: "15m",
+    });
 
     res.status(200).json({ token: newAccessToken });
   } catch (error) {
