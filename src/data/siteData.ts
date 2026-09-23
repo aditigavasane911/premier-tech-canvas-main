@@ -39,6 +39,7 @@ export const STATS = [
 export const COURSE_LIST = [
   {
     name: "C Fundamentals",
+    banner: "/courses/c-fundamentals.png",
     level: "Beginner",
     icon: "c/c-original.svg",
     bg: "linear-gradient(145deg,#0d2137 0%,#0e3460 60%,#1a5276 100%)",
@@ -67,6 +68,7 @@ export const COURSE_LIST = [
   },
   {
     name: "DSA using C++",
+    banner: "/courses/dsa-using-cpp.png",
     level: "Intermediate",
     icon: "cplusplus/cplusplus-original.svg",
     bg: "linear-gradient(145deg,#1a0533 0%,#3b0764 60%,#5b21b6 100%)",
@@ -90,6 +92,7 @@ export const COURSE_LIST = [
   },
   {
     name: "Core Java Fundamentals",
+    banner: "/courses/core-java.png",
     level: "Beginner",
     icon: "java/java-original.svg",
     bg: "linear-gradient(145deg,#7c2400 0%,#b93e00 60%,#f97316 100%)",
@@ -113,6 +116,7 @@ export const COURSE_LIST = [
   },
   {
     name: "Advanced Java for Enterprise",
+    banner: "/courses/advanced-java.png",
     level: "Advanced",
     icon: "java/java-original.svg",
     bg: "linear-gradient(145deg,#431407 0%,#7c2d12 55%,#c2410c 100%)",
@@ -141,6 +145,7 @@ export const COURSE_LIST = [
   },
   {
     name: "Spring Boot Microservices",
+    banner: "/courses/spring-boot.png",
     level: "Advanced",
     icon: "spring/spring-original.svg",
     bg: "linear-gradient(145deg,#052e16 0%,#14532d 55%,#15803d 100%)",
@@ -164,6 +169,7 @@ export const COURSE_LIST = [
   },
   {
     name: "Frontend with React",
+    banner: "/courses/frontend-react.png",
     level: "Intermediate",
     icon: "react/react-original.svg",
     bg: "linear-gradient(145deg,#082f49 0%,#075985 55%,#0ea5e9 100%)",
@@ -187,6 +193,7 @@ export const COURSE_LIST = [
   },
   {
     name: "Python for Backend",
+    banner: "/courses/python-backend.png",
     level: "Beginner to Intermediate",
     icon: "python/python-original.svg",
     bg: "linear-gradient(145deg,#1e3a5f 0%,#1d4ed8 55%,#f59e0b 100%)",
@@ -210,6 +217,7 @@ export const COURSE_LIST = [
   },
   {
     name: "Cloud Computing with AWS",
+    banner: "/courses/cloud-aws.png",
     level: "Intermediate",
     icon: "amazonwebservices/amazonwebservices-original-wordmark.svg",
     bg: "linear-gradient(145deg,#1c1917 0%,#292524 55%,#ff9900 100%)",
@@ -233,6 +241,7 @@ export const COURSE_LIST = [
   },
   {
     name: "Web Design (HTML5 & CSS3)",
+    banner: "/courses/web-design-html-css.png",
     level: "Beginner",
     icon: "html5/html5-original.svg",
     bg: "linear-gradient(145deg,#7c1d1d 0%,#b91c1c 55%,#e4713a 100%)",
@@ -256,6 +265,7 @@ export const COURSE_LIST = [
   },
   {
     name: "Modern JavaScript (ES6+)",
+    banner: "/courses/modern-javascript.png",
     level: "Intermediate",
     icon: "javascript/javascript-original.svg",
     bg: "linear-gradient(145deg,#1c1400 0%,#3d2e00 55%,#ca8a04 100%)",
@@ -279,6 +289,7 @@ export const COURSE_LIST = [
   },
   {
     name: "Responsive UI with Bootstrap",
+    banner: "/courses/responsive-bootstrap.png",
     level: "Beginner",
     icon: "bootstrap/bootstrap-original.svg",
     bg: "linear-gradient(145deg,#2e0068 0%,#5a0096 55%,#7c3aed 100%)",
@@ -302,6 +313,7 @@ export const COURSE_LIST = [
   },
   {
     name: "Backend with PHP & MySQL",
+    banner: "/courses/backend-php-mysql.png",
     level: "Intermediate",
     icon: "php/php-original.svg",
     bg: "linear-gradient(145deg,#1e1b4b 0%,#312e81 55%,#6366f1 100%)",
@@ -325,6 +337,7 @@ export const COURSE_LIST = [
   },
   {
     name: "Backend with Node.js",
+    banner: "/courses/backend-nodejs.png",
     level: "Intermediate",
     icon: "nodejs/nodejs-original.svg",
     bg: "linear-gradient(145deg,#052e16 0%,#166534 55%,#4ade80 100%)",
@@ -353,6 +366,7 @@ export const COURSE_LIST = [
   },
   {
     name: "Database Design with MongoDB",
+    banner: "/courses/database-mongodb.png",
     level: "Intermediate",
     icon: "mongodb/mongodb-original.svg",
     bg: "linear-gradient(145deg,#052e16 0%,#134e1a 55%,#00ed64 100%)",
@@ -381,6 +395,7 @@ export const COURSE_LIST = [
   },
   {
     name: "Type-Safe Code with TypeScript",
+    banner: "/courses/typesafe-typescript.png",
     level: "Advanced",
     icon: "typescript/typescript-original.svg",
     bg: "linear-gradient(145deg,#172554 0%,#1e3a8a 55%,#2563eb 100%)",
@@ -404,6 +419,7 @@ export const COURSE_LIST = [
   },
   {
     name: "DevOps Basics with Docker",
+    banner: "/courses/devops-docker.png",
     level: "Advanced",
     icon: "docker/docker-original.svg",
     bg: "linear-gradient(145deg,#0c2a4a 0%,#0d3a6e 55%,#2496ed 100%)",

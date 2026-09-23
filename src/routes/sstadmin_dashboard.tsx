@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { Trash2, Search } from "lucide-react";
+import { Trash2, Search, Star } from "lucide-react";
 import { API_BASE } from "@/lib/constants";
 
 export const Route = createFileRoute("/sstadmin_dashboard")({
@@ -18,13 +18,26 @@ interface CallbackRequest {
   submittedAt: string;
 }
 
+interface AdminFeedback {
+  _id: string;
+  name: string;
+  role?: string;
+  rating: number;
+  quote: string;
+  course?: string;
+  status: string;
+  submittedAt: string;
+}
+
 function AdminDashboard() {
   const [callbacks, setCallbacks] = useState<CallbackRequest[]>([]);
+  const [feedbacks, setFeedbacks] = useState<AdminFeedback[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [activeTab, setActiveTab] = useState<"courses" | "workshops">("courses");
+  const [activeTab, setActiveTab] = useState<"courses" | "workshops" | "feedbacks">("courses");
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
+  const [confirmingFeedbackId, setConfirmingFeedbackId] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
   const navigate = useNavigate();
 
@@ -45,6 +58,15 @@ function AdminDashboard() {
           setCallbacks(data);
         } else {
           setError(data.message || "Failed to fetch callbacks");
+        }
+
+        // Fetch feedbacks
+        const fbRes = await fetch(`${API_BASE}/api/admin/feedbacks`, {
+          credentials: "include",
+        });
+        if (fbRes.ok) {
+          const fbData = await fbRes.json();
+          setFeedbacks(fbData);
         }
       } catch {
         setError("Cannot connect to server");
@@ -104,6 +126,53 @@ function AdminDashboard() {
     }
   };
 
+  const handleDeleteFeedback = async (id: string) => {
+    if (confirmingFeedbackId !== id) {
+      setConfirmingFeedbackId(id);
+      setTimeout(() => setConfirmingFeedbackId((cur) => (cur === id ? null : cur)), 3000);
+      return;
+    }
+    setConfirmingFeedbackId(null);
+
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/feedbacks/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+
+      if (res.ok) {
+        setFeedbacks(feedbacks.filter((fb) => fb._id !== id));
+        setNotice("Feedback review deleted.");
+      } else {
+        const data = await res.json();
+        setNotice(data.message || "Failed to delete feedback");
+      }
+    } catch {
+      setNotice("Error connecting to server");
+    }
+  };
+
+  const handleFeedbackStatusChange = async (id: string, newStatus: string) => {
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/feedbacks/${id}/status`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ status: newStatus }),
+      });
+      if (res.ok) {
+        setFeedbacks(feedbacks.map((fb) => (fb._id === id ? { ...fb, status: newStatus } : fb)));
+        setNotice(`Feedback status updated to ${newStatus}.`);
+      } else {
+        setNotice("Failed to update feedback status");
+      }
+    } catch {
+      setNotice("Error updating feedback status");
+    }
+  };
+
   const filteredCallbacks = callbacks.filter((cb) => {
     const isWorkshop = cb.enquiryFor === "Workshop";
     if (activeTab === "workshops" && !isWorkshop) return false;
@@ -118,13 +187,23 @@ function AdminDashboard() {
     );
   });
 
+  const filteredFeedbacks = feedbacks.filter((fb) => {
+    const term = searchTerm.toLowerCase();
+    return (
+      fb.name.toLowerCase().includes(term) ||
+      (fb.role && fb.role.toLowerCase().includes(term)) ||
+      (fb.course && fb.course.toLowerCase().includes(term)) ||
+      fb.quote.toLowerCase().includes(term)
+    );
+  });
+
   const handleLogout = async () => {
     try {
       await fetch(`${API_BASE}/api/admin/logout`, {
         method: "POST",
         credentials: "include",
       });
-    } catch (e) {
+    } catch {
       // Ignore
     }
     navigate({ to: "/sstadmin" });
@@ -200,130 +279,258 @@ function AdminDashboard() {
                 >
                   Workshop Enquiries
                 </button>
+                <button
+                  onClick={() => setActiveTab("feedbacks")}
+                  className={`${
+                    activeTab === "feedbacks"
+                      ? "border-amber-500 text-amber-600"
+                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-1.5`}
+                >
+                  <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                  Student Feedbacks &amp; Ratings
+                  {feedbacks.length > 0 && (
+                    <span className="ml-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-bold text-amber-800">
+                      {feedbacks.length}
+                    </span>
+                  )}
+                </button>
               </nav>
             </div>
           </div>
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Date
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Name
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Contact
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Enquiry For
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Message
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Status
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Action
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {filteredCallbacks.map((cb) => (
-                  <tr key={cb._id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(cb.submittedAt).toLocaleString()}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {cb.name}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <div>{cb.email}</div>
-                      <div>{cb.phone}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                        {cb.enquiryFor}
-                      </span>
-                    </td>
-                    <td
-                      className="px-6 py-4 text-sm text-gray-500 max-w-md whitespace-pre-wrap break-words"
-                      title={cb.message}
-                    >
-                      {cb.message || "-"}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <select
-                        value={cb.status || "Pending"}
-                        onChange={(e) => handleStatusChange(cb._id, e.target.value)}
-                        className={`text-xs font-semibold rounded-full px-2 py-1 border-0 focus:ring-2 focus:ring-blue-500 ${
-                          cb.status === "Approval"
-                            ? "bg-green-100 text-green-800"
-                            : cb.status === "Resolved"
-                              ? "bg-gray-100 text-gray-800"
-                              : "bg-yellow-100 text-yellow-800"
-                        }`}
-                      >
-                        <option value="Pending">Pending</option>
-                        <option value="Approval">Approval</option>
-                        <option value="Resolved">Resolved</option>
-                      </select>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button
-                        onClick={() => handleDelete(cb._id)}
-                        className={`rounded-md px-2 py-1 text-xs font-semibold transition-colors ${
-                          confirmingId === cb._id
-                            ? "bg-red-600 text-white hover:bg-red-700"
-                            : "text-red-600 hover:text-red-900"
-                        }`}
-                        title={
-                          confirmingId === cb._id
-                            ? "Click again to confirm delete"
-                            : "Delete Request"
-                        }
-                      >
-                        {confirmingId === cb._id ? (
-                          "Confirm delete?"
-                        ) : (
-                          <Trash2 className="h-5 w-5" />
-                        )}
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-                {filteredCallbacks.length === 0 && (
+            {activeTab === "feedbacks" ? (
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
                   <tr>
-                    <td colSpan={7} className="px-6 py-8 text-center text-sm text-gray-500">
-                      No callback requests found.
-                    </td>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Date
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Student
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Rating
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Course / Role
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Feedback
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Status
+                    </th>
+                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Action
+                    </th>
                   </tr>
-                )}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {filteredFeedbacks.map((fb) => (
+                    <tr key={fb._id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {new Date(fb.submittedAt).toLocaleString()}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {fb.name}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <div className="flex items-center gap-1">
+                          <span className="font-bold text-amber-600 text-xs mr-1">
+                            {fb.rating}/5
+                          </span>
+                          {[1, 2, 3, 4, 5].map((s) => (
+                            <Star
+                              key={s}
+                              className={`h-3.5 w-3.5 ${
+                                s <= fb.rating
+                                  ? "fill-amber-400 text-amber-400"
+                                  : "fill-gray-100 text-gray-300"
+                              }`}
+                            />
+                          ))}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                          {fb.course || fb.role || "Student"}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-600 max-w-md whitespace-pre-wrap break-words">
+                        "{fb.quote}"
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <select
+                          value={fb.status || "Approved"}
+                          onChange={(e) => handleFeedbackStatusChange(fb._id, e.target.value)}
+                          className={`text-xs font-semibold rounded-full px-2.5 py-1 border-0 focus:ring-2 focus:ring-blue-500 ${
+                            fb.status === "Approved"
+                              ? "bg-green-100 text-green-800"
+                              : fb.status === "Hidden"
+                                ? "bg-gray-100 text-gray-800"
+                                : "bg-yellow-100 text-yellow-800"
+                          }`}
+                        >
+                          <option value="Approved">Approved</option>
+                          <option value="Pending">Pending</option>
+                          <option value="Hidden">Hidden</option>
+                        </select>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button
+                          onClick={() => handleDeleteFeedback(fb._id)}
+                          className={`rounded-md px-2 py-1 text-xs font-semibold transition-colors ${
+                            confirmingFeedbackId === fb._id
+                              ? "bg-red-600 text-white hover:bg-red-700"
+                              : "text-red-600 hover:text-red-900"
+                          }`}
+                          title={
+                            confirmingFeedbackId === fb._id
+                              ? "Click again to confirm delete"
+                              : "Delete Feedback"
+                          }
+                        >
+                          {confirmingFeedbackId === fb._id ? (
+                            "Confirm delete?"
+                          ) : (
+                            <Trash2 className="h-5 w-5" />
+                          )}
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                  {filteredFeedbacks.length === 0 && (
+                    <tr>
+                      <td colSpan={7} className="px-6 py-8 text-center text-sm text-gray-500">
+                        No student feedbacks found.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            ) : (
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Date
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Name
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Contact
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Enquiry For
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Message
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Status
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {filteredCallbacks.map((cb) => (
+                    <tr key={cb._id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {new Date(cb.submittedAt).toLocaleString()}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {cb.name}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <div>{cb.email}</div>
+                        <div>{cb.phone}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                          {cb.enquiryFor}
+                        </span>
+                      </td>
+                      <td
+                        className="px-6 py-4 text-sm text-gray-500 max-w-md whitespace-pre-wrap break-words"
+                        title={cb.message}
+                      >
+                        {cb.message || "-"}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <select
+                          value={cb.status || "Pending"}
+                          onChange={(e) => handleStatusChange(cb._id, e.target.value)}
+                          className={`text-xs font-semibold rounded-full px-2 py-1 border-0 focus:ring-2 focus:ring-blue-500 ${
+                            cb.status === "Approval"
+                              ? "bg-green-100 text-green-800"
+                              : cb.status === "Resolved"
+                                ? "bg-gray-100 text-gray-800"
+                                : "bg-yellow-100 text-yellow-800"
+                          }`}
+                        >
+                          <option value="Pending">Pending</option>
+                          <option value="Approval">Approval</option>
+                          <option value="Resolved">Resolved</option>
+                        </select>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button
+                          onClick={() => handleDelete(cb._id)}
+                          className={`rounded-md px-2 py-1 text-xs font-semibold transition-colors ${
+                            confirmingId === cb._id
+                              ? "bg-red-600 text-white hover:bg-red-700"
+                              : "text-red-600 hover:text-red-900"
+                          }`}
+                          title={
+                            confirmingId === cb._id
+                              ? "Click again to confirm delete"
+                              : "Delete Request"
+                          }
+                        >
+                          {confirmingId === cb._id ? (
+                            "Confirm delete?"
+                          ) : (
+                            <Trash2 className="h-5 w-5" />
+                          )}
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                  {filteredCallbacks.length === 0 && (
+                    <tr>
+                      <td colSpan={7} className="px-6 py-8 text-center text-sm text-gray-500">
+                        No callback requests found.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </main>

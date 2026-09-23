@@ -227,8 +227,9 @@
   overflow: hidden;
   border-radius: 1.5rem;
   cursor: pointer;
-  filter: saturate(0.65) brightness(0.82);
+  filter: saturate(0.75) brightness(0.88);
   transform: translateZ(0);
+  box-shadow: 0 12px 30px -8px rgba(15, 23, 42, 0.18);
   transition:
     transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
     filter 0.55s ease,
@@ -247,7 +248,9 @@
   &[data-active="true"] {
     transform: scale(1.045) translateY(-8px);
     filter: saturate(1.05) brightness(1);
-    box-shadow: 0 30px 60px -25px rgba(0, 0, 0, 0.65);
+    box-shadow:
+      0 25px 50px -12px rgba(15, 23, 42, 0.42),
+      0 0 35px -5px rgba(14, 165, 233, 0.25);
     z-index: 5;
   }
 }
@@ -458,12 +461,12 @@
   z-index: 1;
   max-width: 1536px;
   margin: 0 auto;
-  padding: 3rem 1.25rem;
+  padding: 1.5rem 1.25rem;
 }
 
 @media (min-width: 1024px) {
   .stat-section-inner {
-    padding: 3.5rem 3rem;
+    padding: 1.75rem 2.5rem;
   }
 }
 
@@ -480,14 +483,14 @@
   flex: 1 1 0;
   min-width: 140px;
   text-align: center;
-  padding: 1.5rem 2rem;
+  padding: 0.25rem 1.25rem;
   animation: stat-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 /* Vertical divider between stats */
 .stat-divider {
   width: 1px;
-  height: 3.5rem;
+  height: 3.75rem;
   background: rgba(255, 255, 255, 0.18);
   flex-shrink: 0;
 }
@@ -495,7 +498,7 @@
 /* Bold white counter number */
 .stat-number {
   font-family: var(--font-display);
-  font-size: 2.6rem;
+  font-size: 2.25rem;
   font-weight: 900;
   letter-spacing: -0.04em;
   line-height: 1;
@@ -507,8 +510,8 @@
 
 /* Primary label — uppercase tracking */
 .stat-title {
-  margin-top: 0.55rem;
-  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -517,8 +520,8 @@
 
 /* Secondary label */
 .stat-label {
-  margin-top: 0.18rem;
-  font-size: 0.75rem;
+  margin-top: 0.1rem;
+  font-size: 0.72rem;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.52);
   letter-spacing: 0.02em;
@@ -626,4 +629,39 @@
 
 .animate-fade-in-up {
   animation: fade-in-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ─── ABOUT US PROGRESSIVE TEXT REVEAL ANIMATION ──────────────── */
+.about-reveal-container {
+  contain: layout style;
+}
+
+.about-reveal-word {
+  display: inline;
+  opacity: 0;
+  /* Strictly stationary — no sliding, moving, scaling, or vertical shift */
+  transform: none !important;
+  transition: opacity 300ms cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: opacity;
+}
+
+/* While revealing, lines appear sequentially in reading order via line-delay */
+.about-reveal-container[data-state="revealing"] .about-reveal-word {
+  opacity: 1;
+  transition-delay: var(--line-delay, 0ms);
+}
+
+/* Once fully revealed, paragraph remains permanently visible and unchanged */
+.about-reveal-container[data-state="complete"] .about-reveal-word {
+  opacity: 1;
+  transition: none !important;
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-reveal-word {
+    transition-duration: 0ms !important;
+    transition-delay: 0ms !important;
+    opacity: 1 !important;
+  }
 }

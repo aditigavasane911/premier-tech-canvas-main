@@ -15,6 +15,7 @@ import {
   Calendar,
   Linkedin,
   Instagram,
+  Star,
 } from "lucide-react";
 import { ImageStack } from "@/components/site/ImageStack";
 import heroImage1 from "@/assets/group-photo.webp";
@@ -22,6 +23,9 @@ import heroImage2 from "@/assets/hero-teaching.webp";
 import { TechMarquee } from "@/components/site/Marquee";
 import { WhyUsGallery } from "@/components/site/WhyUsGallery";
 import { AboutCollage } from "@/components/site/AboutCollage";
+import { AboutTheoryReveal } from "@/components/site/AboutTheoryReveal";
+import { FeedbackModal } from "@/components/site/FeedbackModal";
+import { WriteYourOwnFeedback } from "@/components/site/WriteYourOwnFeedback";
 import { Typewriter } from "@/components/site/Typewriter";
 import { WORKSHOPS } from "@/data/workshops";
 import { API_BASE, DEVICON_BASE } from "@/lib/constants";
@@ -80,18 +84,28 @@ function CourseModal({
       }}
     >
       <div className="animate-fade-in relative w-full sm:max-w-2xl max-h-[92vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl bg-white border border-border/50 shadow-2xl">
-        {/* Top accent bar */}
-        <div
-          className="h-1 w-full rounded-t-3xl"
-          style={{ background: "var(--gradient-primary)" }}
-        />
+        {/* Top banner image or accent bar */}
+        {"banner" in course && course.banner ? (
+          <div className="relative h-44 sm:h-56 w-full overflow-hidden rounded-t-3xl bg-muted">
+            <img
+              src={course.banner}
+              alt={`${course.name} banner`}
+              className="h-full w-full object-cover"
+            />
+          </div>
+        ) : (
+          <div
+            className="h-1 w-full rounded-t-3xl"
+            style={{ background: "var(--gradient-primary)" }}
+          />
+        )}
 
         {/* Close */}
         <button
           type="button"
           aria-label="Close course details"
           onClick={onClose}
-          className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full border border-border bg-muted/60 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground z-10"
+          className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full border border-border/80 bg-white/90 backdrop-blur-sm text-foreground shadow-md transition-colors hover:bg-white z-10"
         >
           <X className="h-4 w-4" />
         </button>
@@ -251,8 +265,75 @@ function Home() {
     return () => clearInterval(timer);
   }, [heroImages.length]);
 
+  const [liveFeedbacks, setLiveFeedbacks] = useState<
+    Array<{ name: string; role: string; quote: string; rating: number }>
+  >([]);
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+
+  useEffect(() => {
+    // 1. Load cached feedbacks if available
+    try {
+      const cached = JSON.parse(localStorage.getItem("sst_feedbacks") || "[]");
+      if (Array.isArray(cached) && cached.length > 0) {
+        setLiveFeedbacks(
+          cached.map(
+            (f: {
+              name: string;
+              role?: string;
+              course?: string;
+              quote: string;
+              rating: number;
+            }) => ({
+              name: f.name,
+              role: f.course ? `${f.role || "Student"} • ${f.course}` : f.role || "Student",
+              quote: f.quote,
+              rating: f.rating,
+            }),
+          ),
+        );
+      }
+    } catch {
+      // Ignore
+    }
+
+    // 2. Fetch from backend API
+    fetch(`${API_BASE}/api/feedback`)
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setLiveFeedbacks((prev) => {
+            const serverFeedbacks = data.map(
+              (f: {
+                name: string;
+                role?: string;
+                course?: string;
+                quote: string;
+                rating: number;
+              }) => ({
+                name: f.name,
+                role: f.course ? `${f.role || "Student"} • ${f.course}` : f.role || "Student",
+                quote: f.quote,
+                rating: f.rating,
+              }),
+            );
+            const seen = new Set();
+            return [...serverFeedbacks, ...prev].filter((item) => {
+              const key = `${item.name}-${item.quote.slice(0, 20)}`;
+              if (seen.has(key)) return false;
+              seen.add(key);
+              return true;
+            });
+          });
+        }
+      })
+      .catch(() => {
+        // Fallback to static testimonials
+      });
+  }, []);
+
+  const allTestimonials = [...liveFeedbacks, ...TESTIMONIALS];
   const TESTIMONIALS_PER_PAGE = 5;
-  const totalPages = Math.ceil(TESTIMONIALS.length / TESTIMONIALS_PER_PAGE);
+  const totalPages = Math.ceil(allTestimonials.length / TESTIMONIALS_PER_PAGE);
   const [testimonialPage, setTestimonialPage] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(true);
 
@@ -521,7 +602,7 @@ function Home() {
         {/* HERO */}
         <section
           id="home"
-          className="relative min-h-[85vh] lg:min-h-[90vh] w-full flex items-center overflow-hidden bg-slate-100"
+          className="relative min-h-screen min-h-[100dvh] w-full flex items-center overflow-hidden bg-slate-100"
         >
           {/* Background image carousel with smooth 5-second cross-fade */}
           {heroImages.map((img, idx) => (
@@ -622,7 +703,7 @@ function Home() {
               <AboutCollage />
             </div>
 
-            <div className="animate-fade-in flex flex-col justify-center space-y-8 lg:pl-6">
+            <div className="flex flex-col justify-center space-y-8 lg:pl-6">
               {/* Category Tag */}
               <div>
                 <span className="text-xs sm:text-sm font-bold tracking-[0.2em] text-[#2A75D3] uppercase">
@@ -630,31 +711,15 @@ function Home() {
                 </span>
               </div>
 
-              {/* Paragraph 1 */}
-              <p className="text-center text-base sm:text-lg italic leading-relaxed text-slate-700 font-normal max-w-2xl mx-auto">
-                <span className="text-primary font-serif font-bold text-2xl leading-none inline-block mr-0.5">
-                  “
-                </span>
-                <span className="font-semibold text-slate-800">Softtech</span> Solutions &amp;
-                Training, based in Pune, builds Manufacturing Execution Systems (MES) for
-                manufacturing environments, including automotive production lines, and trains
-                students and developers in Java, Python, AWS, Vaadin, Spring, and full-stack web
-                development.
-              </p>
-
-              {/* Paragraph 2 */}
-              <p className="text-center text-base sm:text-lg italic leading-relaxed text-slate-700 font-normal max-w-2xl mx-auto">
-                Ravindra Swami, whose background spans MES engineering at companies like{" "}
-                <strong className="font-semibold text-slate-900">Fiat India</strong> and{" "}
-                <strong className="font-semibold text-slate-900">Volvo-Eicher</strong>, and academic
-                teaching as a lecturer and Head of Department, the company brings both worlds into
-                every project and course.
-              </p>
+              {/* Progressive Line-by-Line Reveal Paragraph */}
+              <AboutTheoryReveal />
 
               {/* Founder Signature */}
               <div className="pt-4 flex flex-col items-end pr-4">
                 <p className="text-2xl sm:text-3xl font-bold tracking-tight text-[#0B2559] font-serif flex items-center gap-1.5">
-                  <span className="text-primary text-3xl font-serif">“</span>
+                  <span className="text-primary text-2xl sm:text-3xl font-serif font-medium">
+                    —
+                  </span>
                   Ravindra Swami
                 </p>
                 <p className="mt-0.5 text-sm font-medium text-slate-500 mr-1">Founder</p>
@@ -767,46 +832,78 @@ function Home() {
         </section>
 
         {/* WHY US — cinematic gallery */}
-        <section className="border-y border-border bg-primary py-12 lg:py-16">
-          <div className="mx-auto w-full max-w-screen-2xl px-5 text-center lg:px-12">
-            <span className="text-xs font-semibold uppercase tracking-[0.24em] text-primary-foreground/60">
+        <section
+          id="why-us"
+          className="relative overflow-hidden border-y border-[#9ed0f8] bg-gradient-to-b from-[#cae5fc] via-[#b6dcf9] to-[#9eccf5] py-14 lg:py-18 select-none"
+        >
+          {/* Ambient decorative background elements matching user design */}
+          {/* Top-right soft orb */}
+          <div
+            className="pointer-events-none absolute -top-20 -right-20 h-96 w-96 rounded-full bg-[#7ec0f8] opacity-90 blur-3xl"
+            aria-hidden="true"
+          />
+          {/* Left curved orb */}
+          <div
+            className="pointer-events-none absolute top-1/2 -left-28 -translate-y-1/2 h-[480px] w-[480px] rounded-full bg-[#82c5fa] opacity-90 blur-3xl"
+            aria-hidden="true"
+          />
+          {/* Subtle bottom ambient glow */}
+          <div
+            className="pointer-events-none absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-[#6bb4f6]/50 to-transparent"
+            aria-hidden="true"
+          />
+
+          <div className="relative mx-auto w-full max-w-screen-2xl px-5 text-center lg:px-12">
+            {/* Top-right 4x5 dot matrix */}
+            <div
+              className="pointer-events-none absolute top-1 right-6 sm:right-12 lg:right-20 hidden sm:grid grid-cols-4 gap-2.5 opacity-90"
+              aria-hidden="true"
+            >
+              {Array.from({ length: 20 }).map((_, i) => (
+                <span key={i} className="h-1.5 w-1.5 rounded-full bg-[#2563eb]" />
+              ))}
+            </div>
+
+            <span className="text-xs font-bold uppercase tracking-[0.24em] text-[#1e3a66]">
               The HATAEC difference
             </span>
-            <h2 className="mt-3 font-display text-3xl text-primary-foreground sm:text-4xl">
-              Why choose <span className="text-accent">us</span>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#031533] sm:text-4xl">
+              Why choose <span className="text-[#0284c7]">us</span>
             </h2>
-            <p className="mx-auto mt-3 max-w-xl text-sm text-primary-foreground/70">
+            <p className="mx-auto mt-3 max-w-xl text-sm font-medium text-[#1e3a66]">
               Five promises, delivered in every batch — hover a card to read the story.
             </p>
+            {/* Blue accent indicator bar below subtitle */}
+            <div className="mx-auto mt-3 h-1 w-10 rounded-full bg-[#0284c7]" />
           </div>
-          <div className="mt-10">
+          <div className="relative mt-10">
             <WhyUsGallery />
           </div>
         </section>
 
         {/* News & Recognition */}
-        <section className="bg-background py-12 lg:py-16 overflow-hidden">
+        <section id="news" className="bg-background py-5 lg:py-6 overflow-hidden">
           <div className="mx-auto w-full max-w-screen-2xl px-5 lg:px-12">
-            <h2 className="text-center font-display text-3xl text-primary sm:text-4xl mb-8 sm:mb-12 lg:mb-16">
+            <h2 className="text-center font-display text-2xl sm:text-3xl text-primary mb-3 sm:mb-4">
               Awards and Rewards
             </h2>
-            <div className="space-y-8 lg:space-y-12">
+            <div className="space-y-4 lg:space-y-5">
               {/* We in News */}
-              <div className="flex flex-col md:flex-row items-center gap-8 lg:gap-12">
+              <div className="flex flex-col md:flex-row items-center gap-6 lg:gap-10">
                 <div className="w-full md:w-1/2 flex flex-col items-center">
                   <ImageStack
                     images={["/news1.webp", "/news2.webp", "/news3.webp"]}
-                    className="w-72 h-56 sm:w-[400px] sm:h-[300px] mt-10"
+                    className="w-60 h-44 sm:w-[300px] sm:h-[200px]"
                   />
-                  <h3 className="mt-12 font-display text-2xl font-bold text-primary">
+                  <h3 className="mt-2.5 sm:mt-3 font-display text-lg sm:text-xl font-bold text-primary">
                     We in <span className="text-[#3b82f6]">News</span>
                   </h3>
                 </div>
-                <div className="w-full md:w-1/2 mt-12 md:mt-0">
-                  <h2 className="font-display text-3xl font-bold text-foreground sm:text-[2.5rem] leading-tight">
+                <div className="w-full md:w-1/2 mt-4 md:mt-0">
+                  <h2 className="font-display text-xl sm:text-2xl font-bold text-foreground leading-snug">
                     From the classroom to the headlines.
                   </h2>
-                  <p className="mt-6 text-[1.1rem] leading-relaxed text-muted-foreground">
+                  <p className="mt-2 text-sm sm:text-base leading-relaxed text-muted-foreground">
                     Our work, ideas, and impact have been recognized by leading media platforms,
                     helping us share our journey, innovations, and the people behind them with a
                     wider audience.
@@ -815,22 +912,22 @@ function Home() {
               </div>
 
               {/* Awards and Rewards */}
-              <div className="flex flex-col md:flex-row-reverse items-center gap-8 lg:gap-12">
+              <div className="flex flex-col md:flex-row-reverse items-center gap-6 lg:gap-10">
                 <div className="w-full md:w-1/2 flex flex-col items-center">
                   <ImageStack
                     images={["/award1.webp", "/award2.webp", "/award3.webp", "/award4.webp"]}
-                    className="w-72 h-48 sm:w-[400px] sm:h-[260px] mt-10"
+                    className="w-60 h-44 sm:w-[300px] sm:h-[200px]"
                     reverse
                   />
-                  <h3 className="mt-12 font-display text-2xl font-bold text-primary">
+                  <h3 className="mt-2.5 sm:mt-3 font-display text-lg sm:text-xl font-bold text-primary">
                     Awards and <span className="text-[#3b82f6]">Rewards</span>
                   </h3>
                 </div>
-                <div className="w-full md:w-1/2 mt-12 md:mt-0">
-                  <h2 className="font-display text-3xl font-bold text-foreground sm:text-[2.5rem] leading-tight">
+                <div className="w-full md:w-1/2 mt-4 md:mt-0">
+                  <h2 className="font-display text-xl sm:text-2xl font-bold text-foreground leading-snug">
                     Recognized for the work that creates impact.
                   </h2>
-                  <p className="mt-6 text-[1.1rem] leading-relaxed text-muted-foreground">
+                  <p className="mt-2 text-sm sm:text-base leading-relaxed text-muted-foreground">
                     Every award represents a milestone in our journey ; celebrating innovation,
                     meaningful contributions, and the commitment to turning ideas into real-world
                     change.
@@ -843,9 +940,12 @@ function Home() {
 
         <section id="feedback" className="border-y border-border bg-muted/40 py-12 lg:py-16">
           <div className="mx-auto w-full max-w-screen-2xl px-5 lg:px-12">
-            <h2 className="text-center font-display text-3xl text-primary sm:text-4xl">
-              Student Feedback
-            </h2>
+            <div className="text-center max-w-2xl mx-auto mb-9">
+              <h2 className="font-display text-3xl text-primary sm:text-4xl">Student Feedback</h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Read authentic reviews and ratings from our students and workshop trainees.
+              </p>
+            </div>
             <div className="mt-9 overflow-hidden relative">
               <div
                 className={`flex ${isTransitioning ? "transition-transform duration-700 ease-in-out" : ""}`}
@@ -858,52 +958,54 @@ function Home() {
                       key={pageIndex}
                       className="w-full shrink-0 flex flex-wrap justify-center gap-5"
                     >
-                      {TESTIMONIALS.slice(
-                        actualPageIndex * TESTIMONIALS_PER_PAGE,
-                        (actualPageIndex + 1) * TESTIMONIALS_PER_PAGE,
-                      ).map((t) => (
-                        <figure
-                          key={t.name}
-                          className="surface-card p-5 w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)] flex flex-col"
-                        >
-                          <Quote className="h-5 w-5 text-secondary mx-auto" />
-                          <blockquote className="mt-3 text-[13px] leading-relaxed text-muted-foreground text-center flex-1">
-                            {t.quote}
-                          </blockquote>
-
-                          <div
-                            className="mt-3 flex items-center justify-center gap-1"
-                            aria-label={`${t.rating} out of 5 stars`}
+                      {allTestimonials
+                        .slice(
+                          actualPageIndex * TESTIMONIALS_PER_PAGE,
+                          (actualPageIndex + 1) * TESTIMONIALS_PER_PAGE,
+                        )
+                        .map((t) => (
+                          <figure
+                            key={t.name}
+                            className="surface-card p-5 w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)] flex flex-col"
                           >
-                            <span className="font-semibold text-xs text-foreground mr-1">
-                              {t.rating}
-                            </span>
-                            {[1, 2, 3, 4, 5].map((s) => (
-                              <svg
-                                key={s}
-                                className={`h-3.5 w-3.5 ${s <= Math.round(t.rating) ? "fill-amber-400 text-amber-400" : "fill-muted text-muted"}`}
-                                viewBox="0 0 20 20"
-                              >
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                              </svg>
-                            ))}
-                          </div>
+                            <Quote className="h-5 w-5 text-secondary mx-auto" />
+                            <blockquote className="mt-3 text-[13px] leading-relaxed text-muted-foreground text-center flex-1">
+                              {t.quote}
+                            </blockquote>
 
-                          <figcaption className="mt-4 flex items-center justify-center gap-2">
-                            <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-xs font-semibold text-primary-foreground shrink-0">
-                              {t.name.charAt(0)}
-                            </span>
-                            <span className="text-left">
-                              <span className="block text-[13px] font-semibold text-foreground">
-                                {t.name}
+                            <div
+                              className="mt-3 flex items-center justify-center gap-1"
+                              aria-label={`${t.rating} out of 5 stars`}
+                            >
+                              <span className="font-semibold text-xs text-foreground mr-1">
+                                {t.rating}
                               </span>
-                              <span className="block text-[11px] text-muted-foreground">
-                                {t.role}
+                              {[1, 2, 3, 4, 5].map((s) => (
+                                <svg
+                                  key={s}
+                                  className={`h-3.5 w-3.5 ${s <= Math.round(t.rating) ? "fill-amber-400 text-amber-400" : "fill-muted text-muted"}`}
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                              ))}
+                            </div>
+
+                            <figcaption className="mt-4 flex items-center justify-center gap-2">
+                              <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-xs font-semibold text-primary-foreground shrink-0">
+                                {t.name.charAt(0)}
                               </span>
-                            </span>
-                          </figcaption>
-                        </figure>
-                      ))}
+                              <span className="text-left">
+                                <span className="block text-[13px] font-semibold text-foreground">
+                                  {t.name}
+                                </span>
+                                <span className="block text-[11px] text-muted-foreground">
+                                  {t.role}
+                                </span>
+                              </span>
+                            </figcaption>
+                          </figure>
+                        ))}
                     </div>
                   );
                 })}
@@ -928,6 +1030,24 @@ function Home() {
                 />
               ))}
             </div>
+
+            {/* WRITE YOUR OWN COLUMN */}
+            <WriteYourOwnFeedback
+              onFeedbackAdded={(newFb) => {
+                setLiveFeedbacks((prev) => [
+                  {
+                    name: newFb.name,
+                    role: newFb.course
+                      ? `${newFb.role || "Student"} • ${newFb.course}`
+                      : newFb.role || "Student",
+                    quote: newFb.quote,
+                    rating: newFb.rating,
+                  },
+                  ...prev,
+                ]);
+                setTestimonialPage(0);
+              }}
+            />
           </div>
         </section>
 
@@ -1242,6 +1362,26 @@ function Home() {
           </div>
         </div>
       )}
+
+      {/* FEEDBACK & 5-STAR RATING MODAL */}
+      <FeedbackModal
+        isOpen={showFeedbackModal}
+        onClose={() => setShowFeedbackModal(false)}
+        onFeedbackAdded={(newFb) => {
+          setLiveFeedbacks((prev) => [
+            {
+              name: newFb.name,
+              role: newFb.course
+                ? `${newFb.role || "Student"} • ${newFb.course}`
+                : newFb.role || "Student",
+              quote: newFb.quote,
+              rating: newFb.rating,
+            },
+            ...prev,
+          ]);
+          setTestimonialPage(0);
+        }}
+      />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { DEVICON_BASE } from "@/lib/constants";
 
 export interface Course {
   name: string;
+  banner?: string;
   level: string;
   icon: string;
   bg: string;
@@ -54,39 +55,46 @@ export function CourseCard({
         e.currentTarget.style.transform = "none";
       }}
     >
-      {/* Colored Top Section */}
-      <div
-        className="relative h-24 w-full p-3.5 sm:p-4 shrink-0 overflow-hidden"
-        style={{ background: course.bg }}
-      >
-        {/* Subtle light burst */}
-        <div
-          className="absolute right-0 top-0 h-full w-full opacity-20"
-          style={{
-            backgroundImage: "radial-gradient(circle at 100% 0%, white 0%, transparent 60%)",
-          }}
-        />
-
-        {/* Large technology logo watermark */}
-        <img
-          src={`${DEVICON_BASE}${course.icon}`}
-          alt=""
-          loading="lazy"
-          decoding="async"
-          className="absolute -right-3 -bottom-3 h-24 w-24 object-contain opacity-[0.15] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-6"
-          style={{ filter: "grayscale(100%) brightness(200%)" }}
-        />
-
-        {/* Small icon box */}
-        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white shadow-sm relative z-10 transition-transform duration-500 group-hover:scale-110">
+      {/* Banner Top Section */}
+      <div className="relative h-28 sm:h-32 w-full shrink-0 overflow-hidden bg-muted">
+        {course.banner ? (
           <img
-            src={`${DEVICON_BASE}${course.icon}`}
-            alt={`${course.name} logo`}
+            src={course.banner}
+            alt={`${course.name} banner`}
             loading="lazy"
             decoding="async"
-            className="h-4.5 w-4.5 object-contain"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
-        </div>
+        ) : (
+          <div
+            className="relative h-full w-full p-3.5 sm:p-4 shrink-0 overflow-hidden"
+            style={{ background: course.bg }}
+          >
+            <div
+              className="absolute right-0 top-0 h-full w-full opacity-20"
+              style={{
+                backgroundImage: "radial-gradient(circle at 100% 0%, white 0%, transparent 60%)",
+              }}
+            />
+            <img
+              src={`${DEVICON_BASE}${course.icon}`}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              className="absolute -right-3 -bottom-3 h-24 w-24 object-contain opacity-[0.15] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-6"
+              style={{ filter: "grayscale(100%) brightness(200%)" }}
+            />
+            <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white shadow-sm relative z-10 transition-transform duration-500 group-hover:scale-110">
+              <img
+                src={`${DEVICON_BASE}${course.icon}`}
+                alt={`${course.name} logo`}
+                loading="lazy"
+                decoding="async"
+                className="h-4.5 w-4.5 object-contain"
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Content Bottom Section */}
