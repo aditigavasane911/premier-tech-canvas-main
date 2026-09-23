@@ -1174,9 +1174,7 @@ function Home() {
 
               {/* Phone */}
               <div>
-                <label className="mb-1 block text-xs font-medium text-foreground">
-                  Phone no.
-                </label>
+                <label className="mb-1 block text-xs font-medium text-foreground">Phone no.</label>
                 <div className="flex items-center gap-0 rounded-xl border border-input bg-white transition-colors focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200">
                   <span className="flex shrink-0 items-center gap-1.5 border-r border-input px-3 py-2 text-xs sm:text-sm text-muted-foreground">
                     🇮🇳 +91

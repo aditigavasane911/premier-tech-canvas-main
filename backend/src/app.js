@@ -13,16 +13,28 @@ const app = express();
 app.use(helmet());
 
 // Implement CORS
-app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:5173", // Restrict to frontend URL
-  credentials: true
-}));
+const allowedOrigins = [process.env.FRONTEND_URL].filter(Boolean);
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (
+        allowedOrigins.includes(origin) ||
+        /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
+      ) {
+        return callback(null, true);
+      }
+      return callback(new Error("CORS not allowed for origin: " + origin));
+    },
+    credentials: true,
+  }),
+);
 
 // Global Rate Limiting: 100 requests per 15 minutes
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
-  message: "Too many requests from this IP, please try again in 15 minutes."
+  message: "Too many requests from this IP, please try again in 15 minutes.",
 });
 app.use("/api", limiter);
 
