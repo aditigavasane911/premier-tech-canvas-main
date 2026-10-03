@@ -19,6 +19,7 @@ export function WriteYourOwnFeedback({ onFeedbackAdded }: WriteYourOwnFeedbackPr
   const [rating, setRating] = useState<number>(5);
   const [hoveredRating, setHoveredRating] = useState<number>(0);
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
   const [course, setCourse] = useState("");
   const [quote, setQuote] = useState("");
@@ -36,6 +37,11 @@ export function WriteYourOwnFeedback({ onFeedbackAdded }: WriteYourOwnFeedbackPr
 
     if (!name.trim()) {
       setError("Please enter your name.");
+      return;
+    }
+
+    if (!email.trim()) {
+      setError("Please enter your email address.");
       return;
     }
 
@@ -59,6 +65,7 @@ export function WriteYourOwnFeedback({ onFeedbackAdded }: WriteYourOwnFeedbackPr
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             name: name.trim(),
+            email: email.trim(),
             role: role.trim() || "Student",
             rating,
             quote: quote.trim(),
@@ -102,6 +109,7 @@ export function WriteYourOwnFeedback({ onFeedbackAdded }: WriteYourOwnFeedbackPr
 
       // Reset form fields
       setName("");
+      setEmail("");
       setRole("");
       setCourse("");
       setQuote("");
@@ -246,20 +254,37 @@ export function WriteYourOwnFeedback({ onFeedbackAdded }: WriteYourOwnFeedbackPr
                 </div>
               )}
 
-              {/* Name */}
-              <div>
-                <label className="mb-1 block text-xs font-semibold text-slate-700">
-                  Your Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  required
-                  type="text"
-                  maxLength={80}
-                  placeholder="e.g. Tanmay Deshmukh"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full rounded-xl border border-input bg-white px-3.5 py-2.5 text-sm text-slate-800 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                />
+              {/* Name & Email */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="mb-1 block text-xs font-semibold text-slate-700">
+                    Your Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    maxLength={80}
+                    placeholder="e.g. Tanmay Deshmukh"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full rounded-xl border border-input bg-white px-3.5 py-2.5 text-sm text-slate-800 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-xs font-semibold text-slate-700">
+                    Email Address <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    required
+                    type="email"
+                    maxLength={254}
+                    autoComplete="email"
+                    placeholder="e.g. student@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full rounded-xl border border-input bg-white px-3.5 py-2.5 text-sm text-slate-800 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  />
+                </div>
               </div>
 
               {/* Role & Course (2 Columns) */}

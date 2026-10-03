@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { login, refreshToken,  logout,
-  checkAuth,
-} = require("../controllers/admin.controller");
+const { login, refreshToken, logout, checkAuth } = require("../controllers/admin.controller");
 const {
   getEnquiries,
   deleteEnquiry,
@@ -13,6 +11,12 @@ const {
   deleteFeedback,
   updateFeedbackStatus,
 } = require("../controllers/feedback.controller");
+const {
+  getAdminComments,
+  deleteComment,
+  updateCommentStatus,
+  replyToComment,
+} = require("../controllers/comment.controller");
 const { protect } = require("../middleware/auth.middleware");
 const rateLimit = require("express-rate-limit");
 
@@ -44,6 +48,12 @@ router.patch("/callbacks/:id/status", protect, updateEnquiryStatus);
 router.get("/feedbacks", protect, getAdminFeedbacks);
 router.delete("/feedbacks/:id", protect, deleteFeedback);
 router.patch("/feedbacks/:id/status", protect, updateFeedbackStatus);
+
+// Protected routes for user comments
+router.get("/comments", protect, getAdminComments);
+router.delete("/comments/:id", protect, deleteComment);
+router.patch("/comments/:id/status", protect, updateCommentStatus);
+router.patch("/comments/:id/reply", protect, replyToComment);
 
 // Protected route for checking auth state
 router.get("/check", protect, checkAuth);

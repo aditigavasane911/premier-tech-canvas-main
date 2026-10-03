@@ -4,7 +4,8 @@ const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const enquiryRoutes = require("./routes/enquiry.routes");
-const feedbackRoutes = require("./routes/feedback.routes");
+const feedbackRoutes = require("./routes/feedback.routes"); // Feedback and 5-star rating submission & display
+const commentRoutes = require("./routes/comment.routes"); // User comment submission & display
 const adminRoutes = require("./routes/admin.routes"); // I added this for the admin system
 const { errorHandler } = require("./middleware/error.middleware");
 
@@ -14,16 +15,28 @@ const app = express();
 app.use(helmet());
 
 // Implement CORS
-app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:5173", // Restrict to frontend URL
-  credentials: true
-}));
+const allowedOrigins = [process.env.FRONTEND_URL].filter(Boolean);
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (
+        allowedOrigins.includes(origin) ||
+        /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
+      ) {
+        return callback(null, true);
+      }
+      return callback(new Error("CORS not allowed for origin: " + origin));
+    },
+    credentials: true,
+  }),
+);
 
 // Global Rate Limiting: 100 requests per 15 minutes
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
-  message: "Too many requests from this IP, please try again in 15 minutes."
+  message: "Too many requests from this IP, please try again in 15 minutes.",
 });
 app.use("/api", limiter);
 
@@ -38,6 +51,7 @@ app.use(express.json({ limit: "32kb" }));
 // Routes
 app.use("/api/callback", enquiryRoutes); // Mapping /api/callback to enquiry.routes for the customer flow
 app.use("/api/feedback", feedbackRoutes); // Feedback and 5-star rating submission & display
+app.use("/api/comments", commentRoutes); // User comments submission & display
 app.use("/api/admin", adminRoutes);
 
 // Error Middleware

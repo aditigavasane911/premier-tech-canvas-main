@@ -7,12 +7,7 @@ export const NAV = [
   { label: "Contact", href: "#contact" },
 ];
 
-export const ENQUIRY_OPTIONS = [
-  "Online Course",
-  "Offline Course",
-  "Workshop",
-  "Other",
-];
+export const ENQUIRY_OPTIONS = ["Online Course", "Offline Course", "Workshop", "Other"];
 
 export const STATS = [
   {
