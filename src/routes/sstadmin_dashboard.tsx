@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { Trash2, Search, Star } from "lucide-react";
+import { Trash2, Search, Star, MessageCircle, Reply, Shield, Download } from "lucide-react";
 import { API_BASE } from "@/lib/constants";
 
 export const Route = createFileRoute("/sstadmin_dashboard")({
@@ -10,7 +10,7 @@ export const Route = createFileRoute("/sstadmin_dashboard")({
 interface CallbackRequest {
   _id: string;
   name: string;
-  email: string;
+  email?: string;
   phone: string;
   enquiryFor: string;
   message: string;
@@ -21,6 +21,7 @@ interface CallbackRequest {
 interface AdminFeedback {
   _id: string;
   name: string;
+  email: string;
   role?: string;
   rating: number;
   quote: string;
@@ -29,15 +30,134 @@ interface AdminFeedback {
   submittedAt: string;
 }
 
+interface AdminComment {
+  _id: string;
+  name: string;
+  email?: string;
+  message: string;
+  adminReply: string;
+  status: string;
+  submittedAt: string;
+}
+
+const escapePdfText = (value: string) =>
+  value
+    .normalize("NFKD")
+    .replace(/[^\x20-\x7E]/g, "?")
+    .replace(/\\/g, "\\\\")
+    .replace(/\(/g, "\\(")
+    .replace(/\)/g, "\\)");
+
+const wrapPdfText = (label: string, value: string | undefined, maxLength = 86) => {
+  const words = `${label}${value?.trim() || "-"}`.split(/\s+/);
+  const lines: string[] = [];
+  let line = "";
+
+  words.forEach((word) => {
+    const nextLine = line ? `${line} ${word}` : word;
+    if (nextLine.length <= maxLength) {
+      line = nextLine;
+    } else {
+      if (line) lines.push(line);
+      line = word;
+    }
+  });
+
+  if (line) lines.push(line);
+  return lines;
+};
+
+const createInquiryPdf = (inquiries: CallbackRequest[]) => {
+  const header = [
+    "Premier Tech Canvas - Inquiry Export",
+    `Generated: ${new Date().toLocaleString()}`,
+    `Total inquiries: ${inquiries.length}`,
+    "",
+  ];
+  const body = inquiries.flatMap((inquiry, index) => [
+    `${index + 1}. ${new Date(inquiry.submittedAt).toLocaleString()} | ${inquiry.enquiryFor}`,
+    ...wrapPdfText("Name: ", inquiry.name),
+    ...wrapPdfText("Email: ", inquiry.email),
+    ...wrapPdfText("Phone: ", inquiry.phone),
+    ...wrapPdfText("Message: ", inquiry.message),
+    ...wrapPdfText("Status: ", inquiry.status || "Pending"),
+    "",
+  ]);
+  const linesPerPage = 48;
+  const pages: string[][] = [];
+  let currentPage = [...header];
+
+  body.forEach((line) => {
+    if (currentPage.length >= linesPerPage) {
+      pages.push(currentPage);
+      currentPage = [...header];
+    }
+    currentPage.push(line);
+  });
+  pages.push(currentPage);
+
+  const objects: string[] = ["", "", "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>"];
+  const pageObjectNumbers = pages.map((_, index) => 4 + index * 2);
+  objects[0] = "<< /Type /Catalog /Pages 2 0 R >>";
+  objects[1] = `<< /Type /Pages /Kids [${pageObjectNumbers.map((number) => `${number} 0 R`).join(" ")}] /Count ${pages.length} >>`;
+
+  pages.forEach((page, index) => {
+    const pageObjectNumber = pageObjectNumbers[index];
+    const contentObjectNumber = pageObjectNumber + 1;
+    const text = page
+      .map((line) => `(${escapePdfText(line)}) Tj\nT*`)
+      .join("\n");
+    const content = `BT\n/F1 10 Tf\n50 800 Td\n14 TL\n${text}\nET`;
+    objects[pageObjectNumber - 1] = `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents ${contentObjectNumber} 0 R >>`;
+    objects[contentObjectNumber - 1] = `<< /Length ${content.length} >>\nstream\n${content}\nendstream`;
+  });
+
+  let pdf = "%PDF-1.4\n";
+  const offsets = [0];
+  objects.forEach((object, index) => {
+    offsets.push(pdf.length);
+    pdf += `${index + 1} 0 obj\n${object}\nendobj\n`;
+  });
+  const xrefOffset = pdf.length;
+  pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
+  offsets.slice(1).forEach((offset) => {
+    pdf += `${offset.toString().padStart(10, "0")} 00000 n \n`;
+  });
+  pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;
+
+  return new Blob([pdf], { type: "application/pdf" });
+};
+
+const matchesDateSearch = (submittedAt: string, term: string) => {
+  const date = new Date(submittedAt);
+  if (Number.isNaN(date.getTime())) return false;
+
+  const dateFormats = [
+    date.toISOString().slice(0, 10),
+    date.toLocaleDateString(),
+    date.toLocaleString(),
+    date.toLocaleDateString("en-GB"),
+    date.toLocaleDateString("en-US"),
+    date.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }),
+    date.toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" }),
+  ];
+
+  return dateFormats.some((formattedDate) => formattedDate.toLowerCase().includes(term));
+};
+
 function AdminDashboard() {
   const [callbacks, setCallbacks] = useState<CallbackRequest[]>([]);
   const [feedbacks, setFeedbacks] = useState<AdminFeedback[]>([]);
+  const [comments, setComments] = useState<AdminComment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [activeTab, setActiveTab] = useState<"courses" | "workshops" | "feedbacks">("courses");
+  const [activeTab, setActiveTab] = useState<"courses" | "workshops" | "feedbacks" | "comments">("courses");
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
   const [confirmingFeedbackId, setConfirmingFeedbackId] = useState<string | null>(null);
+  const [confirmingCommentId, setConfirmingCommentId] = useState<string | null>(null);
+  const [replyingCommentId, setReplyingCommentId] = useState<string | null>(null);
+  const [replyText, setReplyText] = useState("");
   const [notice, setNotice] = useState("");
   const navigate = useNavigate();
 
@@ -67,6 +187,15 @@ function AdminDashboard() {
         if (fbRes.ok) {
           const fbData = await fbRes.json();
           setFeedbacks(fbData);
+        }
+
+        // Fetch comments
+        const cmRes = await fetch(`${API_BASE}/api/admin/comments`, {
+          credentials: "include",
+        });
+        if (cmRes.ok) {
+          const cmData = await cmRes.json();
+          setComments(cmData);
         }
       } catch {
         setError("Cannot connect to server");
@@ -173,6 +302,37 @@ function AdminDashboard() {
     }
   };
 
+  const handleDownloadInquiries = () => {
+    if (callbacks.length === 0) {
+      setNotice("There are no inquiries to download.");
+      return;
+    }
+
+    const blob = createInquiryPdf(callbacks);
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `inquiries-${new Date().toISOString().slice(0, 10)}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 0);
+    setNotice(`${callbacks.length} inquiries downloaded as a PDF.`);
+  };
+
+  const handleDownloadInquiry = (callback: CallbackRequest) => {
+    const blob = createInquiryPdf([callback]);
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `inquiry-${callback._id}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 0);
+    setNotice(`Inquiry from ${callback.name} downloaded as a PDF.`);
+  };
+
   const filteredCallbacks = callbacks.filter((cb) => {
     const isWorkshop = cb.enquiryFor === "Workshop";
     if (activeTab === "workshops" && !isWorkshop) return false;
@@ -183,7 +343,8 @@ function AdminDashboard() {
       cb.name.toLowerCase().includes(term) ||
       cb.email.toLowerCase().includes(term) ||
       cb.phone.toLowerCase().includes(term) ||
-      cb.enquiryFor.toLowerCase().includes(term)
+      cb.enquiryFor.toLowerCase().includes(term) ||
+      matchesDateSearch(cb.submittedAt, term)
     );
   });
 
@@ -191,6 +352,7 @@ function AdminDashboard() {
     const term = searchTerm.toLowerCase();
     return (
       fb.name.toLowerCase().includes(term) ||
+      (fb.email ?? "").toLowerCase().includes(term) ||
       (fb.role && fb.role.toLowerCase().includes(term)) ||
       (fb.course && fb.course.toLowerCase().includes(term)) ||
       fb.quote.toLowerCase().includes(term)
@@ -248,12 +410,20 @@ function AdminDashboard() {
                 </div>
                 <input
                   type="text"
-                  placeholder="Search callbacks..."
+                  placeholder="Search callbacks or date (YYYY-MM-DD)..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
               </div>
+              <button
+                type="button"
+                onClick={handleDownloadInquiries}
+                className="inline-flex items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
+                <Download className="h-4 w-4" />
+                Download PDF
+              </button>
             </div>
 
             {/* Tabs */}
@@ -310,6 +480,9 @@ function AdminDashboard() {
                       Student
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Email
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Rating
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -334,6 +507,9 @@ function AdminDashboard() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {fb.name}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {fb.email || "-"}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         <div className="flex items-center gap-1">
@@ -402,7 +578,7 @@ function AdminDashboard() {
                   ))}
                   {filteredFeedbacks.length === 0 && (
                     <tr>
-                      <td colSpan={7} className="px-6 py-8 text-center text-sm text-gray-500">
+                      <td colSpan={8} className="px-6 py-8 text-center text-sm text-gray-500">
                         No student feedbacks found.
                       </td>
                     </tr>
@@ -499,25 +675,36 @@ function AdminDashboard() {
                         </select>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button
-                          onClick={() => handleDelete(cb._id)}
-                          className={`rounded-md px-2 py-1 text-xs font-semibold transition-colors ${
-                            confirmingId === cb._id
-                              ? "bg-red-600 text-white hover:bg-red-700"
-                              : "text-red-600 hover:text-red-900"
-                          }`}
-                          title={
-                            confirmingId === cb._id
-                              ? "Click again to confirm delete"
-                              : "Delete Request"
-                          }
-                        >
-                          {confirmingId === cb._id ? (
-                            "Confirm delete?"
-                          ) : (
-                            <Trash2 className="h-5 w-5" />
-                          )}
-                        </button>
+                        <div className="flex items-center justify-end gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleDownloadInquiry(cb)}
+                            className="rounded-md p-1 text-blue-600 transition-colors hover:text-blue-900"
+                            title="Download this inquiry as PDF"
+                            aria-label={`Download inquiry from ${cb.name} as PDF`}
+                          >
+                            <Download className="h-5 w-5" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(cb._id)}
+                            className={`rounded-md px-2 py-1 text-xs font-semibold transition-colors ${
+                              confirmingId === cb._id
+                                ? "bg-red-600 text-white hover:bg-red-700"
+                                : "text-red-600 hover:text-red-900"
+                            }`}
+                            title={
+                              confirmingId === cb._id
+                                ? "Click again to confirm delete"
+                                : "Delete Request"
+                            }
+                          >
+                            {confirmingId === cb._id ? (
+                              "Confirm delete?"
+                            ) : (
+                              <Trash2 className="h-5 w-5" />
+                            )}
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}

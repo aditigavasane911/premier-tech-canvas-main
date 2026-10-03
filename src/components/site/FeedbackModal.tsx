@@ -30,6 +30,7 @@ export function FeedbackModal({ isOpen, onClose, onFeedbackAdded }: FeedbackModa
   const [rating, setRating] = useState<number>(5);
   const [hoveredRating, setHoveredRating] = useState<number>(0);
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
   const [course, setCourse] = useState("");
   const [quote, setQuote] = useState("");
@@ -49,6 +50,11 @@ export function FeedbackModal({ isOpen, onClose, onFeedbackAdded }: FeedbackModa
 
     if (!name.trim()) {
       setError("Please enter your name.");
+      return;
+    }
+
+    if (!email.trim()) {
+      setError("Please enter your email address.");
       return;
     }
 
@@ -72,6 +78,7 @@ export function FeedbackModal({ isOpen, onClose, onFeedbackAdded }: FeedbackModa
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             name: name.trim(),
+            email: email.trim(),
             role: role.trim() || "Student",
             rating,
             quote: quote.trim(),
@@ -130,6 +137,7 @@ export function FeedbackModal({ isOpen, onClose, onFeedbackAdded }: FeedbackModa
     setRating(5);
     setHoveredRating(0);
     setName("");
+    setEmail("");
     setRole("");
     setCourse("");
     setQuote("");
@@ -270,6 +278,23 @@ export function FeedbackModal({ isOpen, onClose, onFeedbackAdded }: FeedbackModa
                   placeholder="e.g. Rahul Sharma"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  className="w-full rounded-xl border border-input bg-white px-3.5 py-2.5 text-sm text-slate-800 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                />
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className="mb-1 block text-xs font-semibold text-slate-700">
+                  Email Address <span className="text-red-500">*</span>
+                </label>
+                <input
+                  required
+                  type="email"
+                  maxLength={254}
+                  autoComplete="email"
+                  placeholder="e.g. student@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="w-full rounded-xl border border-input bg-white px-3.5 py-2.5 text-sm text-slate-800 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                 />
               </div>

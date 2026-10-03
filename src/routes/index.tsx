@@ -26,6 +26,7 @@ import { AboutCollage } from "@/components/site/AboutCollage";
 import { AboutTheoryReveal } from "@/components/site/AboutTheoryReveal";
 import { FeedbackModal } from "@/components/site/FeedbackModal";
 import { WriteYourOwnFeedback } from "@/components/site/WriteYourOwnFeedback";
+import { CommentsSection } from "@/components/site/CommentsSection";
 import { Typewriter } from "@/components/site/Typewriter";
 import { WORKSHOPS } from "@/data/workshops";
 import { API_BASE, DEVICON_BASE } from "@/lib/constants";
@@ -1048,6 +1049,9 @@ function Home() {
                 setTestimonialPage(0);
               }}
             />
+
+            {/* COMMENTS SECTION */}
+            <CommentsSection />
           </div>
         </section>
 

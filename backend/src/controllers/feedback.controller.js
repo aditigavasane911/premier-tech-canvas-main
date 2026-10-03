@@ -3,7 +3,7 @@ const Feedback = require("../models/feedback.model");
 // Public: Submit a new feedback and 5-star rating (no sign-in required)
 exports.submitFeedback = async (req, res, next) => {
   try {
-    const { name, role, rating, quote, course, website } = req.body;
+    const { name, email, role, rating, quote, course, website } = req.body;
 
     // Honeypot anti-spam check: bots automatically fill out invisible fields
     if (website) {
@@ -17,6 +17,10 @@ exports.submitFeedback = async (req, res, next) => {
       return res.status(400).json({ message: "Name is required." });
     }
 
+    if (!email || typeof email !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      return res.status(400).json({ message: "A valid email address is required." });
+    }
+
     if (!quote || typeof quote !== "string" || !quote.trim()) {
       return res.status(400).json({ message: "Feedback comment is required." });
     }
@@ -28,6 +32,7 @@ exports.submitFeedback = async (req, res, next) => {
 
     const newFeedback = new Feedback({
       name: name.trim().slice(0, 80),
+      email: email.trim().toLowerCase().slice(0, 254),
       role: role && typeof role === "string" && role.trim() ? role.trim().slice(0, 80) : "Student",
       rating: numericRating,
       quote: quote.trim().slice(0, 1000),
@@ -39,7 +44,11 @@ exports.submitFeedback = async (req, res, next) => {
 
     return res.status(201).json({
       message: "Feedback submitted successfully! Thank you for rating us.",
-      feedback: saved,
+      feedback: (() => {
+        const publicFeedback = saved.toObject();
+        delete publicFeedback.email;
+        return publicFeedback;
+      })(),
     });
   } catch (error) {
     next(error);
@@ -50,6 +59,7 @@ exports.submitFeedback = async (req, res, next) => {
 exports.getPublicFeedbacks = async (req, res, next) => {
   try {
     const feedbacks = await Feedback.find({ status: "Approved" })
+      .select("-email")
       .sort({ submittedAt: -1 })
       .limit(60);
     return res.status(200).json(feedbacks);

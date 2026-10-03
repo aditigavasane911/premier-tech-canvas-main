@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const FeedbackSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true, maxlength: 80 },
+  email: { type: String, required: true, trim: true, lowercase: true, maxlength: 254 },
   role: { type: String, trim: true, maxlength: 80, default: "Student" },
   rating: { type: Number, required: true, min: 1, max: 5 },
   quote: { type: String, required: true, trim: true, maxlength: 1000 },
